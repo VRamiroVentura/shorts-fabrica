@@ -1,0 +1,108 @@
+# Fábrica de contenido · plata, economía e impuestos
+
+Todos los días a las 10 de la mañana (hora de Argentina), este repositorio hace solo:
+
+1. **Elige la serie del día**: lunes libro, martes plata fácil, miércoles economía, jueves la idea de un autor, viernes monotributo, sábado historias de plata, domingo **viral en el mundo** (un video de plata que explotó en Japón, Alemania, Corea, etc., contado en argentino y con la pregunta "¿acá funcionaría?").
+2. **Investiga**: busca en los canales de referencia los videos que funcionaron muy por encima de su promedio.
+3. **Escribe** el guion, el carrusel y los textos con voz argentina natural (ver `prompts/`). Después hace una segunda pasada que corrige todo lo que suene a IA.
+4. **Diseña** las placas del carrusel y el video vertical con voz argentina, subtítulos y portada.
+5. **Publica** en Instagram (Reel todos los días y carrusel martes y viernes), en YouTube Shorts y en TikTok, según lo que actives.
+6. **Guarda el historial** en `publicaciones/` y te manda un mail con el resumen.
+
+Los lunes además arma un **reporte** en `reportes/`: cómo le fue a cada serie nuestra (vistas, guardados, compartidos y comentarios), qué está funcionando en la competencia, qué series conviene reforzar o cambiar, y 10 ideas nuevas.
+
+**Costo: US$ 0.** Usa GitHub Actions (gratis en repos públicos), la clave gratuita de Gemini, la API gratuita de YouTube y voces gratuitas de Microsoft.
+
+---
+
+## Puesta en marcha
+
+### Paso 1 · Subir los archivos (5 minutos)
+
+1. Descomprimí el zip en tu compu.
+2. En el repo, tocá **Add file → Upload files**.
+3. Arrastrá **todo el contenido** de la carpeta descomprimida, incluida la carpeta `.github`. En Windows se ve normal. En Mac, si no la ves, apretá `Cmd + Shift + .` en el Finder.
+4. Tocá **Commit changes**.
+
+### Paso 2 · Activar la página donde se alojan los archivos (1 minuto)
+
+**Settings → Pages → Build and deployment → Source: GitHub Actions.**
+
+Ahí se suben cada día el video y las placas. Instagram y TikTok necesitan un link público para leerlos.
+
+### Paso 3 · Cargar las claves gratuitas mínimas (10 minutos)
+
+Van en **Settings → Secrets and variables → Actions → New repository secret**. Nunca las pegues en un chat ni en un archivo.
+
+| Secreto | Dónde se saca |
+|---|---|
+| `GEMINI_API_KEY` | https://aistudio.google.com/apikey → **Create API key** (gratis, sin tarjeta) |
+| `YT_API_KEY` | https://console.cloud.google.com → creá un proyecto → **APIs y servicios → Biblioteca → YouTube Data API v3 → Habilitar** → **Credenciales → Crear credenciales → Clave de API** |
+| `SMTP_USER` y `SMTP_PASS` (opcional, para recibir el mail diario) | `SMTP_USER` es tu Gmail. `SMTP_PASS` es una **contraseña de aplicación**: https://myaccount.google.com/apppasswords (necesita tener activada la verificación en dos pasos) |
+
+### Paso 4 · Poner tu usuario
+
+Abrí `config.json`, tocá el lápiz y cambiá `"usuario": "@tu_cuenta"` por el @ que vas a usar en las tres redes. Guardá con **Commit changes**.
+
+### Paso 5 · Primera prueba (sin publicar nada)
+
+1. Pestaña **Actions → Publicación diaria → Run workflow**.
+2. Destildá **"¿Publicar en las redes?"** y tocá **Run workflow**.
+3. Esperá unos 5 minutos y entrá a la ejecución. Abajo de todo vas a ver el **resumen**: las placas, el link al video, el texto y el guion.
+
+Si te gusta cómo queda, seguí con las redes.
+
+---
+
+## Conectar las redes
+
+### Instagram (se publica solo desde el primer día)
+
+Requisito: la cuenta de Instagram tiene que ser **profesional** (creador o empresa). Se cambia desde la app en *Configuración → Tipo de cuenta*.
+
+1. Entrá a https://developers.facebook.com → **Mis apps → Crear app** → tipo **Empresa** (o "Otro").
+2. Dentro de la app, agregá el producto **Instagram** → **Configuración de la API con inicio de sesión de Instagram**.
+3. En **Generar tokens de acceso**, agregá tu cuenta de Instagram, aceptá los permisos y copiá el token.
+4. Guardalo como secreto `IG_TOKEN`.
+5. **Para que el token se renueve solo** (vence cada 60 días): creá un token de GitHub en https://github.com/settings/personal-access-tokens/new con **Repository access: solo `shorts-fabrica`** y **Permissions → Secrets: Read and write**. Guardalo como secreto `GH_PAT`.
+6. En `config.json` poné `"instagram_reel": true` e `"instagram_carrusel": true`.
+
+### YouTube (se sube solo, pero queda privado hasta que Google apruebe la app)
+
+1. En el mismo proyecto de Google Cloud, habilitá **YouTube Data API v3** (ya lo hiciste en el paso 3).
+2. **Pantalla de consentimiento de OAuth**: elegí tipo **Externo**, completá nombre y mail, y en **Estado de publicación** tocá **Publicar app (En producción)**. Si queda en "Prueba", el permiso vence cada 7 días y se corta todo.
+3. **Credenciales → Crear credenciales → ID de cliente de OAuth → Aplicación web**. En *URI de redireccionamiento autorizados* poné `https://developers.google.com/oauthplayground`. Copiá el **ID de cliente** y el **secreto**.
+4. Entrá a https://developers.google.com/oauthplayground:
+   1. Tocá el engranaje, tildá **Use your own OAuth credentials** y pegá el ID y el secreto.
+   2. A la izquierda escribí `https://www.googleapis.com/auth/youtube.upload` y tocá **Authorize APIs**. Entrá con la cuenta del canal; si aparece "app no verificada", tocá **Avanzado → Ir a la app**.
+   3. Tocá **Exchange authorization code for tokens** y copiá el **Refresh token**.
+5. Guardá los secretos `YT_CLIENT_ID`, `YT_CLIENT_SECRET` y `YT_REFRESH_TOKEN`.
+6. En `config.json` poné `"youtube": true`.
+7. Pedí la auditoría gratis en el formulario **"YouTube API Services - Audit and Quota Extension Form"** de Google. Hasta que la aprueben, los videos quedan privados y los pasás a público desde YouTube Studio con dos toques.
+
+### TikTok (más adelante)
+
+TikTok exige crear una app en https://developers.tiktok.com con **Content Posting API** y aprobarla. Hasta entonces, los videos subidos por API quedan en privado. Mientras tanto, el mail diario te trae el video y el texto para subirlo desde el celular en 30 segundos. Cuando quieras activarlo, avisame y lo configuramos juntos.
+
+---
+
+## Opcionales que mejoran el resultado (también gratis)
+
+| Secreto | Para qué |
+|---|---|
+| `CF_ACCOUNT_ID` y `CF_API_TOKEN` | Ilustraciones de stickman con IA en el video (Cloudflare Workers AI, cupo gratis diario). Sin esto, el video usa placas con emojis grandes. Se sacan en https://dash.cloudflare.com: Account ID en la home, y token en *My Profile → API Tokens → plantilla "Workers AI"* |
+| `SUPADATA_KEY` | Baja la transcripción de los videos de referencia para que la IA entienda mejor qué funcionó (https://supadata.ai, plan gratis). Sin esto, usa el título y la descripción |
+
+---
+
+## Cómo cambiar cosas
+
+- **Días, series y canales de referencia:** `config.json`. La serie "Mito o verdad" quedó guardada: para volver a usarla, poné `"mito"` en algún día de `plan_semanal`. En la serie viral, los países y búsquedas están en `busquedas`.
+- **La voz y el estilo de escritura:** `prompts/maestro.md`. Las reglas de formato están en `prompts/formato.md` y la revisión anti-IA en `prompts/revision.md`.
+- **Probar una serie puntual:** *Actions → Publicación diaria → Run workflow* y escribí la serie (por ejemplo `monotributo`).
+
+## Si algo falla
+
+- GitHub te manda un mail automático cuando una ejecución falla.
+- El mail diario dice qué se publicó y qué no, con el motivo.
+- Todo queda registrado en `publicaciones/` (un archivo por día) y en `data/historial.json`.

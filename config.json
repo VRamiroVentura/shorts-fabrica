@@ -1,0 +1,171 @@
+{
+  "_ayuda": "Editá este archivo desde GitHub (ícono del lápiz). usuario: tu @ en las redes. plan_semanal: 1=lunes ... 7=domingo. publicar: poné true en cada red a medida que la conectes. carrusel_dias: días en que además del Reel se sube un carrusel a Instagram. La serie 'mito' (Mito o verdad) queda guardada: para volver a usarla, poné \"mito\" en algún día de plan_semanal.",
+  "usuario": "@tu_cuenta",
+  "email_aviso": "rventrura95@gmail.com",
+  "firma": "Contenido educativo. No es asesoramiento financiero ni impositivo.",
+  "gemini_modelos": [
+    "gemini-2.5-flash",
+    "gemini-flash-latest",
+    "gemini-2.0-flash"
+  ],
+  "voz": "es-AR-TomasNeural",
+  "fuentes_por_video": 2,
+  "plan_semanal": {
+    "1": "libro",
+    "2": "plata",
+    "3": "economia",
+    "4": "autor",
+    "5": "monotributo",
+    "6": "historias",
+    "7": "viral"
+  },
+  "carrusel_dias": [
+    2,
+    5
+  ],
+  "publicar": {
+    "instagram_reel": false,
+    "instagram_carrusel": false,
+    "youtube": false,
+    "tiktok": false
+  },
+  "youtube_privacidad": "public",
+  "tiktok_privacidad": "SELF_ONLY",
+  "series": {
+    "libro": {
+      "nombre": "Un libro en 60 segundos",
+      "prompt": "Serie: UN LIBRO EN 60 SEGUNDOS.\nElegí un libro de plata, economía, inversión o negocios relacionado con el material de referencia. Contalo como si se lo recomendaras a un amigo que no lee.\n- Escena 1: una situación o una frase que enganche, sin nombrar el libro todavía.\n- Escena 2: título y autor, dicho al pasar (\"lo dice un libro que se llama...\").\n- Después, una o dos ideas del libro (no más), cada una bajada a un ejemplo argentino concreto.\n- Cierre: qué harías vos con esa idea esta semana.\nExplicá las ideas con tus palabras. Nunca cites frases textuales ni le atribuyas al autor algo que no dijo.",
+      "canales": [
+        "The Swedish Investor",
+        "Libros para Emprendedores Luis Ramos",
+        "Productivity Game",
+        "Value School"
+      ]
+    },
+    "plata": {
+      "nombre": "Plata fácil",
+      "prompt": "Serie: PLATA FÁCIL.\nUn truco o concepto de ahorro, presupuesto, deudas, tarjeta o cuotas. Un solo tema.\nUsá un ejemplo con números redondos en pesos (\"si cobrás ochocientos mil...\") y terminá con una acción concreta que se pueda hacer hoy, en menos de 10 minutos.",
+      "canales": [
+        "Camino Financiero",
+        "Humphrey Yang",
+        "Two Cents",
+        "The Financial Diet"
+      ]
+    },
+    "economia": {
+      "nombre": "Economía de todos los días",
+      "prompt": "Serie: ECONOMÍA DE TODOS LOS DÍAS.\nPartí de algo que la gente ve en la calle o en el súper (\"¿por qué el café sale el doble que hace un año?\", \"¿por qué en Chile la ropa es más barata?\") y explicá el mecanismo de fondo con un ejemplo simple. Sin política partidaria. Cerrá con lo que eso significa para el bolsillo de quien mira.",
+      "canales": [
+        "Memorias de Tiburón",
+        "VisualEconomik",
+        "Economics Explained",
+        "How Money Works"
+      ]
+    },
+    "autor": {
+      "nombre": "La idea de...",
+      "prompt": "Serie: LA IDEA DE...\nUn pensador del dinero (Morgan Housel, Benjamin Graham, Daniel Kahneman, Nassim Taleb, Warren Buffett, George Clason u otro) y UNA idea suya. Nombralo en las primeras dos escenas. Bajalo a una situación argentina (\"es como cuando...\") y decí si estás de acuerdo o no, y por qué.",
+      "canales": [
+        "The Swedish Investor",
+        "Alux.com",
+        "Better Than Yesterday",
+        "Investors Archive"
+      ]
+    },
+    "monotributo": {
+      "nombre": "Monotributo en 1 minuto",
+      "prompt": "Serie: MONOTRIBUTO EN 1 MINUTO.\nUn error común o una duda real de monotributistas o freelancers. Hablá como el contador que se lo explica a un cliente que está nervioso: tranquilo, claro, sin tecnicismos (si usás uno, explicalo en la misma frase).\nSin montos, topes ni fechas. Cerrá con: \"si tu caso es distinto, consultalo con un contador\" dicho con tus palabras.",
+      "canales": [
+        "Las Contas estudio contable",
+        "monotributo argentina",
+        "contador impuestos argentina"
+      ]
+    },
+    "historias": {
+      "nombre": "Historias de plata",
+      "prompt": "Serie: HISTORIAS DE PLATA.\nUna empresa, una burbuja, un fraude o una fortuna real, contada como quien cuenta un chisme bueno: arranque con el momento más loco, después cómo se llegó ahí, y al final la lección para tu plata de todos los días. Solo hechos verificables.",
+      "canales": [
+        "MagnatesMedia",
+        "Wall Street Millennial",
+        "Modern MBA"
+      ]
+    },
+    "mito": {
+      "nombre": "Mito o verdad",
+      "prompt": "Serie: MITO O VERDAD.\nUna creencia popular sobre la plata planteada como pregunta en la escena 1 (\"¿Invertir es para gente con plata?\"). Explicá por qué mucha gente lo cree (sin burlarte) y qué es lo real. Veredicto claro al final: mito, verdad, o \"depende\" con el porqué.",
+      "canales": [
+        "Lord Draugr",
+        "Finanzas para Todos",
+        "Humphrey Yang"
+      ]
+    },
+    "viral": {
+      "nombre": "Viral en el mundo",
+      "modo": "virales",
+      "prompt": "Serie: VIRAL EN EL MUNDO.\nTe paso uno o dos videos de plata que se volvieron virales en otros países. Elegí el que tenga la idea más interesante para Argentina y contalo como quien le muestra a un amigo algo que vio en internet.\n- Escena 1: el país y el gancho. Por ejemplo: \"En Japón este video tiene tres millones de vistas, y dice algo que acá nos haría ruido.\" Redondeá las vistas que te paso (nunca inventes otras).\n- Contá la idea con tus palabras. Nada de traducir frase por frase.\n- Explicá por qué allá tiene sentido: la cultura, los sueldos, cómo se ahorra o se gasta en ese país.\n- Comparalo con Argentina: ¿acá funcionaría?, ¿qué cambia con la inflación, el dólar o las cuotas?\n- Cierre con una pregunta abierta que invite a opinar (\"¿Coincidís o acá no va? Te leo\").\n- texto_pantalla de la escena 1: \"Viral en [país]\". En el carrusel, la portada también arranca con \"Viral en [país]\".\n- No uses emojis de banderas.",
+      "canales": [],
+      "busquedas": [
+        {
+          "q": "お金 節約 貯金",
+          "idioma": "ja",
+          "region": "JP",
+          "pais": "Japón"
+        },
+        {
+          "q": "Geld sparen Tipps",
+          "idioma": "de",
+          "region": "DE",
+          "pais": "Alemania"
+        },
+        {
+          "q": "돈 모으는 법 재테크",
+          "idioma": "ko",
+          "region": "KR",
+          "pais": "Corea del Sur"
+        },
+        {
+          "q": "理財 存錢",
+          "idioma": "zh-Hant",
+          "region": "TW",
+          "pais": "Taiwán"
+        },
+        {
+          "q": "money tips saving",
+          "idioma": "en",
+          "region": "US",
+          "pais": "Estados Unidos"
+        },
+        {
+          "q": "dicas de dinheiro economizar",
+          "idioma": "pt",
+          "region": "BR",
+          "pais": "Brasil"
+        },
+        {
+          "q": "conseils argent économiser",
+          "idioma": "fr",
+          "region": "FR",
+          "pais": "Francia"
+        },
+        {
+          "q": "money saving tips",
+          "idioma": "en",
+          "region": "GB",
+          "pais": "Reino Unido"
+        },
+        {
+          "q": "paise kaise bachaye",
+          "idioma": "hi",
+          "region": "IN",
+          "pais": "India"
+        },
+        {
+          "q": "risparmiare soldi consigli",
+          "idioma": "it",
+          "region": "IT",
+          "pais": "Italia"
+        }
+      ]
+    }
+  }
+}

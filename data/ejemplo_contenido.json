@@ -1,0 +1,23 @@
+{
+ "titulo": "La regla que te ordena el sueldo en un minuto",
+ "descripcion": "Una forma simple de repartir lo que cobrás sin volverte loco. ¿Vos cuánto separás apenas cobrás?",
+ "hashtags": ["#finanzaspersonales","#ahorro","#argentina","#plata","#sueldo"],
+ "miniatura": {"linea1":"Tu sueldo no alcanza","linea2":"por esto","emoji":"💸","prompt":"stick figure with empty wallet"},
+ "escenas": [
+  {"texto_voz":"Cobrás el cinco. El quince ya estás contando monedas.","texto_pantalla":"Cobrás el 5... y el 15 no queda nada","emoji":"😩","prompt":"stick figure empty wallet"},
+  {"texto_voz":"Te pasa a vos y le pasa a medio país. Probá esto el mes que viene.","texto_pantalla":"Probá esto","emoji":"👇","prompt":"stick figure pointing"},
+  {"texto_voz":"El día que cobrás, antes de pagar nada, mandá una parte a otra cuenta.","texto_pantalla":"Primero separás","emoji":"🏦","prompt":"stick figure bank"},
+  {"texto_voz":"Aunque sea poco. Un diez por ciento, o lo que puedas.","texto_pantalla":"Aunque sea poco","emoji":"🪙","prompt":"coins"},
+  {"texto_voz":"La plata que no ves, no la gastás. Así de simple.","texto_pantalla":"Lo que no ves, no lo gastás","emoji":"🙈","prompt":"hidden piggy bank"},
+  {"texto_voz":"Guardalo para cuando cobres, y seguime que mañana va otro.","texto_pantalla":"Guardalo 📌","emoji":"📌","prompt":"thumbs up"}
+ ],
+ "carrusel": [
+  {"titulo":"Cobrás el 5 y el 15 ya no tenés nada","cuerpo":"Probá esto el mes que viene","emoji":"💸"},
+  {"titulo":"No es que ganes poco","cuerpo":"Muchas veces el problema es el orden: pagás todo primero y ahorrás lo que sobra. Y nunca sobra.","emoji":"🤔"},
+  {"titulo":"Separá apenas cobrás","cuerpo":"El mismo día que entra el sueldo, mandá una parte a otra cuenta o a una billetera que no uses para gastar.","emoji":"🏦"},
+  {"titulo":"Aunque sea poco","cuerpo":"Un diez por ciento, un cinco, lo que puedas. Lo importante es el hábito, no el monto.","emoji":"🪙"},
+  {"titulo":"Automatizalo","cuerpo":"Si tu banco o billetera te deja programar una transferencia, hacelo. Así no depende de tu fuerza de voluntad.","emoji":"⚙️"},
+  {"titulo":"Lo que no ves, no lo gastás","cuerpo":"Esa es toda la magia. Tener la plata a la vista es la forma más fácil de gastarla.","emoji":"🙈"},
+  {"titulo":"Guardalo para cuando cobres","cuerpo":"Mandáselo a quien siempre llega pelado a fin de mes","emoji":"📌"}
+ ]
+}
