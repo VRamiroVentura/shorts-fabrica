@@ -1,0 +1,105 @@
+name: Publicación diaria
+
+on:
+  schedule:
+    - cron: "7 13 * * *"   # todos los días 10:07 de Argentina
+  workflow_dispatch:
+    inputs:
+      serie:
+        description: "Forzar una serie (libro, plata, economia, autor, monotributo, historias, viral, mito). Vacío = la del día"
+        required: false
+        default: ""
+      publicar:
+        description: "¿Publicar en las redes? (si no, solo genera y lo podés ver acá)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: fabrica
+  cancel-in-progress: false
+
+jobs:
+  fabricar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      SERIE: ${{ inputs.serie }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      YT_API_KEY: ${{ secrets.YT_API_KEY }}
+      SUPADATA_KEY: ${{ secrets.SUPADATA_KEY }}
+      CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+      CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      IG_TOKEN: ${{ secrets.IG_TOKEN }}
+      YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+      YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+      YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+      TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+      TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+      TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      GH_PAT: ${{ secrets.GH_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar herramientas
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji > /dev/null
+          pip install -q -r requirements.txt
+          mkdir -p fonts
+          for f in ofl/anton/Anton-Regular.ttf ofl/poppins/Poppins-Regular.ttf ofl/poppins/Poppins-SemiBold.ttf ofl/poppins/Poppins-Bold.ttf; do
+            curl -fsSL -o "fonts/$(basename $f)" "https://github.com/google/fonts/raw/main/$f" || echo "No bajó $f"
+          done
+
+      - name: Investigar, escribir y diseñar
+        run: python -m fabrica.main generar
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out/sitio
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Esperar a que los archivos estén online
+        run: |
+          URL="${{ steps.deployment.outputs.page_url }}$(python -c "import json;print(json.load(open('out/publicacion.json'))['archivos']['video'])")"
+          for i in $(seq 1 30); do
+            if curl -sfI "$URL" > /dev/null; then echo "Online: $URL"; exit 0; fi
+            sleep 10
+          done
+          echo "Los archivos no aparecieron online"; exit 1
+
+      - name: Publicar en las redes
+        if: ${{ github.event_name == 'schedule' || inputs.publicar }}
+        run: python -m fabrica.main publicar --base-url "${{ steps.deployment.outputs.page_url }}"
+
+      - name: Resumen (sin publicar)
+        if: ${{ github.event_name == 'workflow_dispatch' && !inputs.publicar }}
+        run: python -m fabrica.main resumen --base-url "${{ steps.deployment.outputs.page_url }}"
+
+      - name: Guardar historial
+        if: always()
+        run: |
+          git config user.name "fabrica-bot"
+          git config user.email "fabrica-bot@users.noreply.github.com"
+          git add data 2>/dev/null || true
+          git add publicaciones 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "Publicación $(date +%F) [skip ci]"
+          git push || (git pull --rebase && git push)
