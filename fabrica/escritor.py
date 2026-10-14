@@ -21,7 +21,16 @@ def _json_de(texto):
 
 
 LISTA = "https://generativelanguage.googleapis.com/v1beta/models"
-_DESCARTAR = ("image", "tts", "audio", "live", "embed", "native", "exp", "computer", "robotics", "vision")
+_DESCARTAR = ("image", "tts", "audio", "live", "embed", "native", "exp", "computer", "robotics", "vision", "omni")
+# Motivos por los que Google bloquea el pedido por su contenido (no tiene sentido probar otro modelo)
+BLOQUEOS = ("PROHIBITED_CONTENT", "SAFETY", "BLOCKLIST", "SPII", "OTHER", "IMAGE_SAFETY", "RECITATION")
+_SEGURIDAD = [{"category": c, "threshold": "BLOCK_ONLY_HIGH"} for c in
+              ("HARM_CATEGORY_HARASSMENT", "HARM_CATEGORY_HATE_SPEECH", "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+               "HARM_CATEGORY_DANGEROUS_CONTENT")]
+
+
+class Bloqueado(RuntimeError):
+    """Google rechazó el pedido por su contenido (pasa con el pedido, no con el modelo)."""
 _modelo_ok = None  # el primer modelo que anduvo en esta ejecución se reusa
 
 
@@ -50,7 +59,7 @@ def _descubrir(clave):
     return nombres
 
 
-def _cuerpo(sistema, usuario, temperatura, modelo, con_pensamiento):
+def _cuerpo(sistema, usuario, temperatura, modelo, con_pensamiento, con_seguridad=True):
     gen = {"responseMimeType": "application/json", "maxOutputTokens": 32768}
     moderno = "latest" in modelo or _version(modelo) >= 3
     if moderno:
@@ -60,11 +69,14 @@ def _cuerpo(sistema, usuario, temperatura, modelo, con_pensamiento):
             gen["thinkingConfig"] = {"thinkingLevel": util.config().get("gemini_pensamiento", "low")}
     else:
         gen["temperature"] = temperatura
-    return {
+    cuerpo = {
         "systemInstruction": {"parts": [{"text": sistema}]},
         "contents": [{"role": "user", "parts": [{"text": usuario}]}],
         "generationConfig": gen,
     }
+    if con_seguridad:
+        cuerpo["safetySettings"] = _SEGURIDAD
+    return cuerpo
 
 
 def _mensaje(r):
@@ -80,12 +92,12 @@ def gemini(sistema, usuario, temperatura=0.9):
     if not clave:
         raise RuntimeError("Falta el secreto GEMINI_API_KEY (Settings → Secrets and variables → Actions)")
     preferidos = ([_modelo_ok] if _modelo_ok else []) + util.config().get("gemini_modelos", ["gemini-flash-latest"])
-    probados, errores, descubiertos = set(), [], False
+    probados, errores, descubiertos, bloqueos = set(), [], False, 0
     cola = list(preferidos)
     while cola or not descubiertos:
         if not cola:
             descubiertos = True
-            cola = [m for m in _descubrir(clave) if m not in probados][:6]
+            cola = [m for m in _descubrir(clave) if m not in probados][:5]
             if cola:
                 util.log("Busco modelos vigentes de Gemini:", ", ".join(cola))
             continue
@@ -94,12 +106,13 @@ def gemini(sistema, usuario, temperatura=0.9):
             continue
         probados.add(modelo)
         texto, fin = "", ""
-        for con_pensamiento in (True, False):
+        # Si el modelo no acepta algún ajuste (pensamiento o filtros), pruebo sin él.
+        for ajustes in ((True, True), (False, True), (False, False)):
             r = util.pedir("POST", API.format(modelo=modelo), headers={"x-goog-api-key": clave},
-                           json=_cuerpo(sistema, usuario, temperatura, modelo, con_pensamiento),
-                           intentos=3, espera=15, timeout=240)
-            if r is not None and r.status_code == 400 and "think" in _mensaje(r).lower() and con_pensamiento:
-                continue  # el modelo no acepta el ajuste de pensamiento: pruebo sin él
+                           json=_cuerpo(sistema, usuario, temperatura, modelo, *ajustes),
+                           intentos=1 if descubiertos else 3, espera=15, timeout=240)
+            if r is not None and r.status_code == 400 and any(x in _mensaje(r).lower() for x in ("think", "safety")):
+                continue
             break
         if r is None or r.status_code != 200:
             errores.append(f"{modelo}: {getattr(r, 'status_code', '?')} {_mensaje(r)}")
@@ -116,7 +129,11 @@ def gemini(sistema, usuario, temperatura=0.9):
             _modelo_ok = modelo
             return resultado
         except Exception as e:  # noqa
-            errores.append(f"{modelo}: respuesta sin JSON (motivo: {fin or 'desconocido'}) {str(e)[:120]}")
+            errores.append(f"{modelo}: respuesta sin JSON (motivo: {fin or 'desconocido'}) {str(e)[:80]}")
+            if fin in BLOQUEOS:
+                bloqueos += 1
+                if bloqueos >= 2:  # dos modelos distintos lo rechazan: es el contenido del pedido
+                    raise Bloqueado(f"Google bloqueó el pedido por su contenido ({fin})")
     raise RuntimeError("Gemini falló con todos los modelos: " + " | ".join(errores))
 
 
@@ -128,7 +145,7 @@ def _limpiar(s, voz=False):
 
 
 _SIGLAS = ["ARCA", "AFIP", "IVA", "CUIT", "CUIL", "CBU", "CVU", "ANSES", "AUH", "DNI", "IIBB", "ARBA", "AGIP",
-           "AFJP", "PBI", "FMI", "BCRA", "CEDEAR", "CEDEARs", "FCI", "UVA", "SAC", "ART"]
+           "AFJP", "PBI", "FMI", "BCRA", "CEDEAR", "CEDEARs", "FCI", "UVA", "SAC"]
 _SIGLAS_RE = re.compile(r"\b(" + "|".join(sorted(_SIGLAS, key=len, reverse=True)) + r")\b", re.IGNORECASE)
 _SIGLAS_MAP = {s.lower(): s for s in _SIGLAS}
 
@@ -192,8 +209,10 @@ def validar(d):
     }
 
 
-def escribir(serie, fuentes, titulos_previos):
-    sistema = _prompt("maestro.md")
+def _material(fuentes, nivel):
+    """nivel 0: todo el material; 1: solo los títulos; 2: sin material."""
+    if nivel >= 2 or not fuentes:
+        return "", []
     bloques = []
     for i, f in enumerate(fuentes, 1):
         tipo = "Short" if 0 < f.get("segundos", 0) <= 180 else "video largo (tomá UNA sola idea)"
@@ -211,11 +230,14 @@ def escribir(serie, fuentes, titulos_previos):
         else:
             cab = (f'FUENTE {i} · "{f["titulo"]}" · canal {f["canal"]} · {f["vistas"]} vistas, '
                    f'{f["score"]} veces su promedio · {tipo}')
-        bloques.append(cab + "\n" + texto[:3500])
-    material = ("\n\n".join(bloques) if bloques else
-                "(Hoy no hay material de referencia: elegí vos un tema que sepas que interesa mucho, "
-                "dentro de la serie.)")
-    usuario = (
+        bloques.append(cab + ("\n" + texto[:3500] if nivel == 0 and texto else ""))
+    return "\n\n".join(bloques), bloques
+
+
+def _pedido(serie, titulos_previos, material):
+    material = material or ("(Hoy no hay material de referencia: elegí vos un tema que sepas que interesa mucho, "
+                            "dentro de la serie.)")
+    return (
         serie["prompt"] + "\n\n" + _prompt("formato.md") + "\n\n"
         "Temas ya publicados (NO repetir ni hacer variantes muy parecidas):\n"
         + ("\n".join("- " + t for t in titulos_previos[:40]) or "- (ninguno todavía)") + "\n\n"
@@ -223,16 +245,36 @@ def escribir(serie, fuentes, titulos_previos):
         "pueden estar en otro idioma). Usalo para entender qué tema y qué gancho funciona. El texto tiene que ser "
         "nuestro, nunca traducido ni parafraseado frase por frase:\n\n" + material
     )
-    borrador = validar(gemini(sistema, usuario))
+
+
+_NIVELES = ["material completo", "solo los títulos del material", "sin material"]
+
+
+def escribir(serie, fuentes, titulos_previos):
+    sistema = _prompt("maestro.md")
+    borrador, material = None, ""
+    for nivel in ((0, 1, 2) if fuentes else (2,)):
+        material, _ = _material(fuentes, nivel)
+        try:
+            borrador = validar(gemini(sistema, _pedido(serie, titulos_previos, material)))
+            if nivel:
+                util.log(f"Salió con {_NIVELES[nivel]}")
+            break
+        except Bloqueado as e:
+            lista = "; ".join(f'{f.get("canal")}: {str(f.get("titulo"))[:70]}' for f in fuentes) or "ninguna"
+            if nivel == 2:
+                raise Bloqueado(f"{e}. Lo bloquea hasta sin material: revisar prompts/ y la serie. Fuentes: {lista}")
+            util.avisar("Google bloqueó el pedido, reintento con menos material",
+                        f"Intento con {_NIVELES[nivel]}: {e}. Fuentes del día: {lista}")
     util.log("Borrador:", borrador["titulo"], f'({borrador["palabras"]} palabras)')
     try:
         chequeo = ("\n\nMATERIAL DE REFERENCIA (solo para chequear que cada dato del guion exista acá):\n" +
-                   material[:9000]) if bloques else ""
+                   material[:9000]) if material else ""
         revisado = gemini(sistema, _prompt("revision.md") + "\n\nJSON A REVISAR:\n" +
                           json.dumps(borrador, ensure_ascii=False) + chequeo, temperatura=0.6)
         final = validar(revisado)
         util.log("Revisado:", final["titulo"])
         return final
     except Exception as e:  # noqa
-        util.log("La revisión falló, uso el borrador:", e)
+        util.log("La revisión falló, uso el borrador:", util.ocultar(e))
         return borrador

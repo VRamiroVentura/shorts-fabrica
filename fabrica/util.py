@@ -57,6 +57,16 @@ def ocultar(texto):
     return re.sub(r"([?&](?:key|access_token|token)=)[^&\s]+", r"\1***", texto)
 
 
+def avisar(titulo, mensaje):
+    """Aviso que no corta la ejecución, visible en la portada de la ejecución de GitHub."""
+    msg = ocultar(mensaje)[:1500]
+    print(f"::warning title={titulo}::" + msg.replace("%", "%25").replace("\r", "").replace("\n", "%0A"), flush=True)
+    destino = os.getenv("GITHUB_STEP_SUMMARY")
+    if destino:
+        with open(destino, "a", encoding="utf-8") as f:
+            f.write(f"> ⚠️ **{titulo}**: {msg}\n\n")
+
+
 def avisar_error(accion, e):
     """Deja el motivo del error a la vista en la portada de la ejecución de GitHub (sin claves)."""
     msg = ocultar(f"{type(e).__name__}: {e}")[:1500]
