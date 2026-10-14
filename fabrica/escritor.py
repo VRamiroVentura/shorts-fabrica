@@ -119,7 +119,9 @@ def gemini(sistema, usuario, temperatura=0.9):
             continue
         datos = r.json()
         cand = (datos.get("candidates") or [{}])[0]
-        fin = cand.get("finishReason", "") or (datos.get("promptFeedback") or {}).get("blockReason", "")
+        en_pedido = (datos.get("promptFeedback") or {}).get("blockReason", "")
+        fin = cand.get("finishReason", "") or en_pedido
+        donde = "en lo que le mandamos" if en_pedido and not datos.get("candidates") else "en lo que la IA escribió"
         partes = (cand.get("content") or {}).get("parts", [])
         texto = "".join(p.get("text", "") for p in partes if not p.get("thought"))
         try:
@@ -133,7 +135,7 @@ def gemini(sistema, usuario, temperatura=0.9):
             if fin in BLOQUEOS:
                 bloqueos += 1
                 if bloqueos >= 2:  # dos modelos distintos lo rechazan: es el contenido del pedido
-                    raise Bloqueado(f"Google bloqueó el pedido por su contenido ({fin})")
+                    raise Bloqueado(f"Google bloqueó el pedido por su contenido ({fin}, {donde})")
     raise RuntimeError("Gemini falló con todos los modelos: " + " | ".join(errores))
 
 
@@ -249,6 +251,29 @@ def _pedido(serie, titulos_previos, material):
 
 _NIVELES = ["material completo", "solo los títulos del material", "sin material"]
 
+_SISTEMA_MINIMO = ("Sos un contador argentino de La Plata que explica plata e impuestos para gente común. "
+                   "Escribís guiones de videos cortos en español rioplatense, con voseo, claro y sin tecnicismos. "
+                   "Nunca inventás datos ni números.")
+
+
+def _diagnostico(sistema, serie):
+    """Cuando Google bloquea hasta el pedido sin material, prueba cada pieza por separado (pedidos chiquitos)
+    para saber cuál dispara el bloqueo. El resultado queda como aviso en la ejecución."""
+    prueba = 'Respondé solo con este JSON: {"ok": true}'
+    piezas = [("maestro.md", sistema, prueba),
+              ("prompt de la serie", _SISTEMA_MINIMO, serie["prompt"] + "\n\n" + prueba),
+              ("formato.md", _SISTEMA_MINIMO, _prompt("formato.md") + "\n\n" + prueba)]
+    resultado = []
+    for nombre, sis, usu in piezas:
+        try:
+            gemini(sis, usu)
+            resultado.append(f"{nombre}: pasa")
+        except Bloqueado as e:
+            resultado.append(f"{nombre}: BLOQUEADO ({e})")
+        except Exception as e:  # noqa
+            resultado.append(f"{nombre}: error {str(e)[:80]}")
+    util.avisar("Diagnóstico del bloqueo de Google", " | ".join(resultado))
+
 
 def escribir(serie, fuentes, titulos_previos):
     sistema = _prompt("maestro.md")
@@ -262,10 +287,17 @@ def escribir(serie, fuentes, titulos_previos):
             break
         except Bloqueado as e:
             lista = "; ".join(f'{f.get("canal")}: {str(f.get("titulo"))[:70]}' for f in fuentes) or "ninguna"
-            if nivel == 2:
-                raise Bloqueado(f"{e}. Lo bloquea hasta sin material: revisar prompts/ y la serie. Fuentes: {lista}")
             util.avisar("Google bloqueó el pedido, reintento con menos material",
                         f"Intento con {_NIVELES[nivel]}: {e}. Fuentes del día: {lista}")
+            if nivel == 2:
+                _diagnostico(sistema, serie)
+                # Último recurso: instrucciones mínimas para que el video del día salga igual.
+                sistema = _SISTEMA_MINIMO
+                pedido = (f'Serie: {serie.get("nombre", "")}. Elegí un tema útil y concreto de esta serie.\n\n'
+                          + _prompt("formato.md"))
+                borrador = validar(gemini(sistema, pedido))
+                util.avisar("Video hecho con instrucciones mínimas",
+                            "Salió sin el estilo completo. Revisar el diagnóstico de arriba.")
     util.log("Borrador:", borrador["titulo"], f'({borrador["palabras"]} palabras)')
     try:
         chequeo = ("\n\nMATERIAL DE REFERENCIA (solo para chequear que cada dato del guion exista acá):\n" +
