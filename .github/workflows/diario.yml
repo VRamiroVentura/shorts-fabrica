@@ -37,6 +37,8 @@ jobs:
       SUPADATA_KEY: ${{ secrets.SUPADATA_KEY }}
       CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
       CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       IG_TOKEN: ${{ secrets.IG_TOKEN }}
       IG_FB_TOKEN: ${{ secrets.IG_FB_TOKEN }}
       IG_FB_ID: ${{ secrets.IG_FB_ID }}
@@ -57,13 +59,19 @@ jobs:
           python-version: "3.12"
           cache: pip
 
+      - name: Modelo de Whisper (para sincronizar subtítulos) en caché
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-base-v1
+
       - name: Instalar herramientas
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji > /dev/null
           pip install -q -r requirements.txt
           mkdir -p fonts
-          for f in ofl/anton/Anton-Regular.ttf ofl/poppins/Poppins-Regular.ttf ofl/poppins/Poppins-SemiBold.ttf ofl/poppins/Poppins-Bold.ttf; do
+          for f in ofl/anton/Anton-Regular.ttf ofl/poppins/Poppins-Regular.ttf ofl/poppins/Poppins-SemiBold.ttf ofl/poppins/Poppins-Bold.ttf ofl/poppins/Poppins-ExtraBold.ttf ofl/poppins/Poppins-Black.ttf; do
             curl -fsSL -o "fonts/$(basename $f)" "https://github.com/google/fonts/raw/main/$f" || echo "No bajó $f"
           done
 
