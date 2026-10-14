@@ -1,5 +1,5 @@
 {
-  "_ayuda": "Editá este archivo desde GitHub (ícono del lápiz). usuario: tu @ en las redes. referentes_contables: cuentas, sitios y canales de contadores que se usan los viernes. plan_semanal: 1=lunes ... 7=domingo. publicar: poné true en cada red a medida que la conectes. carrusel_dias: días en que además del Reel se sube un carrusel a Instagram. La serie 'mito' (Mito o verdad) queda guardada: para volver a usarla, poné \"mito\" en algún día de plan_semanal.",
+  "_ayuda": "Editá este archivo desde GitHub (ícono del lápiz). usuario: tu @ en las redes. voz: es-AR-TomasNeural (hombre) o es-AR-ElenaNeural (mujer). voz_velocidad: +15% es un poco más rápido que lo normal. voz_pausa_maxima: segundos máximos de silencio entre palabras. referentes_contables: cuentas, sitios y canales de contadores que se usan los viernes. plan_semanal: 1=lunes ... 7=domingo. publicar: poné true en cada red a medida que la conectes. carrusel_dias: días en que además del Reel se sube un carrusel a Instagram. La serie 'mito' (Mito o verdad) queda guardada: para volver a usarla, poné \"mito\" en algún día de plan_semanal.",
   "usuario": "@ramacontable",
   "email_aviso": "rventrura95@gmail.com",
   "firma": "Contenido educativo. No es asesoramiento financiero ni impositivo.",
@@ -12,6 +12,8 @@
   ],
   "gemini_pensamiento": "low",
   "voz": "es-AR-TomasNeural",
+  "voz_velocidad": "+15%",
+  "voz_pausa_maxima": 0.28,
   "fuentes_por_video": 2,
   "plan_semanal": {
     "1": "libro",

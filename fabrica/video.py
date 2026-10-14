@@ -12,7 +12,8 @@ Variables de entorno (secretos de GitHub):
   CF_ACCOUNT_ID, CF_API_TOKEN   -> imágenes con Cloudflare Workers AI (FLUX schnell, gratis)
   POLLINATIONS_KEY              -> (opcional) respaldo de imágenes
   TTS_VOICE                     -> por defecto es-AR-TomasNeural (alternativa: es-AR-ElenaNeural)
-  TTS_RATE                      -> por defecto +8%
+  TTS_RATE                      -> por defecto +15%
+  TTS_MAX_PAUSA                 -> pausa máxima entre palabras, en segundos (por defecto 0.28)
   TTS_ENGINE                    -> edge (defecto) | silent (solo para pruebas locales)
 """
 import asyncio, base64, json, os, random, re, subprocess, sys, textwrap, time, urllib.parse
@@ -26,7 +27,8 @@ from . import marca as mk
 W, H, FPS = 1080, 1920, 30
 IMG_SIZE, IMG_Y = 1080, 380          # imagen cuadrada en el centro
 SUB_Y = 1570                          # centro de los subtítulos (zona segura, arriba de la UI de las apps)
-PAD = 0.18                            # respiro entre escenas (seg)
+PAD = 0.06                            # respiro entre escenas (seg)
+COLA = 0.10                           # silencio que queda después de la última palabra de cada escena
 INTRO = 0.5                           # la miniatura se ve el primer medio segundo
 BG = (255, 255, 255)
 ACCENT = (255, 212, 0)                # amarillo
@@ -42,7 +44,8 @@ STYLE = ("Simple 2D stickman cartoon illustration, thick clean black outlines, f
          "centered composition, expressive stick figure, no text, no letters, no words, no numbers. Scene: ")
 
 VOICE = os.getenv("TTS_VOICE", "es-AR-TomasNeural")
-RATE = os.getenv("TTS_RATE", "+8%")
+RATE = os.getenv("TTS_RATE", "+15%")
+MAX_PAUSA = float(os.getenv("TTS_MAX_PAUSA", "0.28"))   # ninguna pausa dentro de una escena dura más que esto
 TTS_ENGINE = os.getenv("TTS_ENGINE", "edge")
 
 
@@ -203,6 +206,46 @@ def synth(text, mp3_path):
     return tts_silent(text, mp3_path)
 
 
+_PRONUNCIA = {"ARCA": "Arca", "ANSES": "Anses", "AFIP": "Afip", "CUIT": "Cuit", "CUIL": "Cuil", "IVA": "Iva",
+              "ARBA": "Arba", "AGIP": "Agip", "IIBB": "Ingresos Brutos", "BCRA": "Banco Central", "FMI": "Fondo Monetario"}
+
+
+def texto_voz(t):
+    """Ajustes para que la voz lea natural: siglas que se dicen como palabra y puntos suspensivos."""
+    t = re.sub(r"\.{2,}|…", ",", t or "")
+    for sigla, dicha in _PRONUNCIA.items():
+        t = re.sub(r"\b" + sigla + r"\b", dicha, t)
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def compactar(mp3_path, words, wav_path):
+    """Saca los silencios de más que mete el TTS: al principio, entre palabras (las pausas largas
+    se acortan a MAX_PAUSA) y al final. Devuelve las palabras con los tiempos corridos."""
+    dur = duration(mp3_path)
+    words = sorted([w for w in words if w[1] > w[0] or w[2]], key=lambda w: w[0])
+    cortes = []
+    if words:
+        inicio = max(0.0, words[0][0] - 0.04)
+        if inicio > 0.02:
+            cortes.append((0.0, inicio))
+        for a, b in zip(words, words[1:]):
+            if b[0] - a[1] > MAX_PAUSA:
+                cortes.append((a[1] + MAX_PAUSA / 2, b[0] - MAX_PAUSA / 2))
+        fin = min(dur, words[-1][1] + COLA)
+        if dur - fin > 0.02:
+            cortes.append((fin, dur + 1))
+    filtro = "aresample=44100"
+    if cortes:
+        expr = "+".join(f"between(t,{a:.3f},{b:.3f})" for a, b in cortes)
+        filtro += f",asetnsamples=n=64:p=0,aselect='not({expr})',asetpts=N/SR/TB"
+    run(["ffmpeg", "-y", "-i", str(mp3_path), "-af", filtro, "-ac", "1", "-c:a", "pcm_s16le", str(wav_path)])
+
+    def corrido(t):
+        return t - sum(min(b, t) - a for a, b in cortes if t > a)
+
+    return [[corrido(w[0]), corrido(w[1]), w[2]] for w in words], duration(wav_path)
+
+
 def align_words(text, words, dur):
     """Usa las palabras del guion (con puntuación) y los tiempos del TTS."""
     toks = text.split()
@@ -255,20 +298,30 @@ Style: Sub,{fname},104,&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,0,0,0,100,1
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
-    lines = []
+    eventos = []
     for ch in chunk_words(all_words):
         for i, w in enumerate(ch):
             s = w[0]
-            e = ch[i + 1][0] if i + 1 < len(ch) else w[1] + 0.12
-            if e <= start_at:
-                continue
-            s = max(s, start_at)
+            e = ch[i + 1][0] if i + 1 < len(ch) else w[1] + 0.25
             parts = []
             for j, x in enumerate(ch):
                 t = clean_sub(x[2])
                 parts.append("{\\c&H0000D4FF&}" + t + "{\\c&H00FFFFFF&}" if j == i else t)
             txt = "{\\pos(%d,%d)\\fscx100\\fscy100}" % (W // 2, SUB_Y) + " ".join(parts)
-            lines.append(f"Dialogue: 0,{ass_time(s)},{ass_time(e)},Sub,,0,0,0,,{txt}")
+            eventos.append([s, e, txt])
+    eventos.sort(key=lambda x: x[0])
+    # Nunca dos subtítulos a la vez: cada uno termina justo cuando arranca el siguiente
+    # (y si el hueco es cortito, se estira para que no parpadee).
+    for k in range(len(eventos) - 1):
+        sig = eventos[k + 1][0]
+        if eventos[k][1] > sig or sig - eventos[k][1] < 0.4:
+            eventos[k][1] = sig
+    lines = []
+    for s, e, txt in eventos:
+        s = max(s, start_at)
+        if e - s < 0.02:
+            continue
+        lines.append(f"Dialogue: 0,{ass_time(s)},{ass_time(e)},Sub,,0,0,0,,{txt}")
     path.write_text(head + "\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -376,9 +429,10 @@ def main(spec_path):
     all_words, seg_durs, t0 = [], [], 0.0
     for i, esc in enumerate(escenas):
         mp3 = WORK / f"voz{i}.mp3"
-        words = synth(esc["texto"], mp3)
-        d = duration(mp3)
-        words = align_words(esc["texto"], words, d)
+        dicho = texto_voz(esc["texto"])
+        words = synth(dicho, mp3)
+        words = align_words(dicho, words, duration(mp3))
+        words, d = compactar(mp3, words, WORK / f"voz{i}.wav")
         for w in words:
             all_words.append([w[0] + t0, w[1] + t0, w[2]])
         seg = d + PAD
@@ -389,7 +443,7 @@ def main(spec_path):
     n = len(escenas)
     ins, flt = [], ""
     for i in range(n):
-        ins += ["-i", str(WORK / f"voz{i}.mp3")]
+        ins += ["-i", str(WORK / f"voz{i}.wav")]
         flt += f"[{i}:a]aresample=44100,apad=pad_dur={PAD}[a{i}];"
     flt += "".join(f"[a{i}]" for i in range(n)) + f"concat=n={n}:v=0:a=1[out]"
     run(["ffmpeg", "-y", *ins, "-filter_complex", flt, "-map", "[out]", "-c:a", "pcm_s16le",

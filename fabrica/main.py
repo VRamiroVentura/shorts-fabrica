@@ -22,6 +22,8 @@ def _serie_del_dia(cfg):
 def generar(simulado=False):
     cfg = util.config()
     os.environ.setdefault("TTS_VOICE", cfg.get("voz", "es-AR-TomasNeural"))
+    os.environ.setdefault("TTS_RATE", str(cfg.get("voz_velocidad", "+15%")))
+    os.environ.setdefault("TTS_MAX_PAUSA", str(cfg.get("voz_pausa_maxima", 0.28)))
     from . import carrusel, escritor, investigar, video  # importa después de fijar la voz
 
     clave_serie = _serie_del_dia(cfg)
