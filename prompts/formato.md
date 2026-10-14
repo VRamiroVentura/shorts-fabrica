@@ -15,7 +15,7 @@ Formato: CARRUSEL de 6 a 8 placas.
 - Para cada placa, un emoji (UN solo emoji estándar, sin banderas ni tonos de piel) para ilustrarla.
 
 TEXTOS PARA PUBLICAR (los mismos en las 3 redes):
-- titulo: máximo 55 caracteres, en minúscula normal (no Título En Mayúsculas), con curiosidad real y sin mentir. Sin emojis.
+- titulo: máximo 55 caracteres, escrito como una oración normal: mayúscula solo al principio y en las siglas (ARCA, IVA, CUIT, ANSES), nunca Título En Mayúsculas. Con curiosidad real y sin mentir. Sin emojis.
 - descripcion: 2 o 3 frases como si le escribieras a alguien por WhatsApp. La última invita a comentar con una pregunta concreta ("¿Vos en qué gastás el aguinaldo?").
 - hashtags: 5 a 7, en minúscula, sin tildes, siempre #argentina más los de la serie (#finanzaspersonales, #ahorro, #economia, #monotributo, #libros, #plata).
 - miniatura: linea1 (máximo 4 palabras) y linea2 (máximo 3), pensadas para que alguien frene el scroll.

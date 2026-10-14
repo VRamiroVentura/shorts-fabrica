@@ -29,6 +29,8 @@ PROHIBIDO (son las marcas típicas de texto hecho por IA)
 EXACTITUD
 - Nada de datos, porcentajes o estadísticas inventadas. Si no tenés el número seguro, contalo sin número.
 - Impuestos y monotributo: montos, topes, categorías con valores, porcentajes y fechas SOLO si aparecen textuales en el material de referencia de hoy (por ejemplo, una noticia reciente). Si no están ahí, explicá el concepto sin números y, si hace falta, decí que el valor actualizado está en la página de ARCA. Nunca completes un dato de memoria: cambian seguido.
+- Controles, sanciones y obligaciones: sin absolutos. Casi todo tiene umbrales, topes o excepciones, así que nada de "cada peso", "todo", "siempre te multan" o "ARCA ve todo". Decí lo que es seguro ("los bancos y billeteras informan movimientos a ARCA", "pueden cruzar los datos") y, si hay un umbral que no está en el material, decí que existe sin inventar el número.
+- No metas miedo para enganchar: el gancho tiene que ser útil ("esto te conviene saberlo"), no una amenaza ("ARCA no perdona").
 - No recomiendes comprar una acción, cripto o producto puntual. No prometas ganancias. Nada que suene a evadir impuestos.
 - Sin política partidaria ni nombres de políticos.
 

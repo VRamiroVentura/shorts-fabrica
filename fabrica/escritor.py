@@ -127,6 +127,23 @@ def _limpiar(s, voz=False):
     return re.sub(r"\s+", " ", s).replace(" ,", ",").strip()
 
 
+_SIGLAS = ["ARCA", "AFIP", "IVA", "CUIT", "CUIL", "CBU", "CVU", "ANSES", "AUH", "DNI", "IIBB", "ARBA", "AGIP",
+           "AFJP", "PBI", "FMI", "BCRA", "CEDEAR", "CEDEARs", "FCI", "UVA", "SAC", "ART"]
+_SIGLAS_RE = re.compile(r"\b(" + "|".join(sorted(_SIGLAS, key=len, reverse=True)) + r")\b", re.IGNORECASE)
+_SIGLAS_MAP = {s.lower(): s for s in _SIGLAS}
+
+
+def _siglas(s, oracion=False):
+    """Siglas siempre en mayúscula y, si es un título, mayúscula al principio."""
+    s = _SIGLAS_RE.sub(lambda m: _SIGLAS_MAP.get(m.group(0).lower(), m.group(0)), s or "")
+    if oracion:
+        for i, c in enumerate(s):
+            if c.isalpha():
+                s = s[:i] + c.upper() + s[i + 1:]
+                break
+    return s
+
+
 def _emoji(e, defecto):
     e = str(e or "").strip()
     return e[:4] if e else defecto
@@ -138,13 +155,13 @@ def validar(d):
         voz = _limpiar(e.get("texto_voz") or e.get("texto"), voz=True)
         if voz:
             escenas.append({"texto_voz": voz,
-                            "texto_pantalla": _limpiar(e.get("texto_pantalla")) or voz[:40],
+                            "texto_pantalla": _siglas(_limpiar(e.get("texto_pantalla")) or voz[:40]),
                             "emoji": _emoji(e.get("emoji"), "💡"),
                             "prompt": str(e.get("prompt") or "").strip()})
     carrusel = []
     for p in d.get("carrusel", []):
         if p.get("titulo"):
-            carrusel.append({"titulo": _limpiar(p["titulo"]), "cuerpo": _limpiar(p.get("cuerpo")),
+            carrusel.append({"titulo": _siglas(_limpiar(p["titulo"]), True), "cuerpo": _siglas(_limpiar(p.get("cuerpo")), True),
                              "emoji": _emoji(p.get("emoji"), "💡")})
     palabras = sum(len(e["texto_voz"].split()) for e in escenas)
     if len(escenas) < 4:
@@ -162,11 +179,11 @@ def validar(d):
         tags.append("#argentina")
     mini = d.get("miniatura") or {}
     return {
-        "titulo": _limpiar(d.get("titulo"))[:95],
-        "descripcion": _limpiar(d.get("descripcion")),
+        "titulo": _siglas(_limpiar(d.get("titulo")), True)[:95],
+        "descripcion": _siglas(_limpiar(d.get("descripcion")), True),
         "hashtags": tags[:8],
-        "miniatura": {"linea1": _limpiar(mini.get("linea1") or d.get("titulo")),
-                      "linea2": _limpiar(mini.get("linea2")),
+        "miniatura": {"linea1": _siglas(_limpiar(mini.get("linea1") or d.get("titulo")), True),
+                      "linea2": _siglas(_limpiar(mini.get("linea2"))),
                       "emoji": _emoji(mini.get("emoji"), escenas[0]["emoji"]),
                       "prompt": str(mini.get("prompt") or escenas[0]["prompt"])},
         "escenas": escenas,
