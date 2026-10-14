@@ -1,6 +1,6 @@
 {
   "_ayuda": "Editá este archivo desde GitHub (ícono del lápiz). usuario: tu @ en las redes. plan_semanal: 1=lunes ... 7=domingo. publicar: poné true en cada red a medida que la conectes. carrusel_dias: días en que además del Reel se sube un carrusel a Instagram. La serie 'mito' (Mito o verdad) queda guardada: para volver a usarla, poné \"mito\" en algún día de plan_semanal.",
-  "usuario": "@tu_cuenta",
+  "usuario": "@ramacontable",
   "email_aviso": "rventrura95@gmail.com",
   "firma": "Contenido educativo. No es asesoramiento financiero ni impositivo.",
   "gemini_modelos": [
