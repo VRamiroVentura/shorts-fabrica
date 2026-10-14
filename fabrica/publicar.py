@@ -177,6 +177,50 @@ def tiktok(video_path, caption, privacidad="SELF_ONLY"):
 
 
 # ------------------------------------------------------------------ mail
+# ------------------------------------------------------------------ Facebook (Reels de la página)
+FB = "https://graph.facebook.com/v25.0/"
+
+
+def _fb_error(r):
+    try:
+        return r.json().get("error", {}).get("message", r.text[:300])
+    except Exception:  # noqa
+        return getattr(r, "text", "")[:300]
+
+
+def facebook_reel(video_path, descripcion, titulo=""):
+    """Sube el video como Reel a la página de Facebook (necesita FB_PAGE_TOKEN y FB_PAGE_ID)."""
+    token, pagina = util.secreto("FB_PAGE_TOKEN"), util.secreto("FB_PAGE_ID")
+    if not (token and pagina):
+        raise RuntimeError("faltan los secretos FB_PAGE_TOKEN y FB_PAGE_ID")
+    r = util.pedir("POST", FB + f"{pagina}/video_reels", data={"upload_phase": "start", "access_token": token})
+    if r is None or r.status_code != 200 or "video_id" not in r.json():
+        raise RuntimeError("Facebook no abrió la subida: " + _fb_error(r))
+    vid = r.json()["video_id"]
+    datos = open(video_path, "rb").read()
+    r = util.pedir("POST", f"https://rupload.facebook.com/video-upload/v25.0/{vid}", timeout=600,
+                   headers={"Authorization": f"OAuth {token}", "offset": "0", "file_size": str(len(datos)),
+                            "Content-Type": "application/octet-stream"}, data=datos)
+    if r is None or r.status_code != 200 or not r.json().get("success"):
+        raise RuntimeError("Facebook no recibió el video: " + _fb_error(r))
+    r = util.pedir("POST", FB + f"{pagina}/video_reels",
+                   data={"upload_phase": "finish", "video_id": vid, "video_state": "PUBLISHED",
+                         "description": descripcion[:2200], "title": titulo[:100], "access_token": token})
+    if r is None or r.status_code != 200 or not r.json().get("success"):
+        raise RuntimeError("Facebook no publicó el Reel: " + _fb_error(r))
+    fin = time.time() + 6 * 60
+    while time.time() < fin:
+        r = util.pedir("GET", FB + vid, params={"fields": "status", "access_token": token})
+        st = (r.json() if r is not None and r.status_code == 200 else {}).get("status", {})
+        fases = [st.get(k, {}) for k in ("uploading_phase", "processing_phase", "publishing_phase")]
+        if any(f.get("status") == "error" for f in fases) or st.get("video_status") == "error":
+            raise RuntimeError("Facebook rechazó el video: " + str(st)[:300])
+        if st.get("publishing_phase", {}).get("status") == "complete":
+            break
+        time.sleep(10)
+    return vid
+
+
 def mail(asunto, html):
     usuario, clave = util.secreto("SMTP_USER"), util.secreto("SMTP_PASS")
     if not (usuario and clave):

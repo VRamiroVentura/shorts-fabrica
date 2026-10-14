@@ -274,7 +274,7 @@ def _rendimiento(posts):
 
 
 def instagram(usuarios, usados, maximo=2):
-    token, mi_id = util.secreto("IG_FB_TOKEN"), util.secreto("IG_FB_ID")
+    token, mi_id = (util.secreto("IG_FB_TOKEN") or util.secreto("FB_PAGE_TOKEN")), util.secreto("IG_FB_ID")
     if not (token and mi_id):
         util.log("Instagram de referentes: sin IG_FB_TOKEN/IG_FB_ID, lo salteo")
         return []
@@ -303,7 +303,7 @@ def instagram(usuarios, usados, maximo=2):
 
 def resumen_instagram(usuarios):
     """Para el reporte semanal: qué les funcionó a los contadores de referencia."""
-    token, mi_id = util.secreto("IG_FB_TOKEN"), util.secreto("IG_FB_ID")
+    token, mi_id = (util.secreto("IG_FB_TOKEN") or util.secreto("FB_PAGE_TOKEN")), util.secreto("IG_FB_ID")
     if not (token and mi_id):
         return ""
     bloques = []

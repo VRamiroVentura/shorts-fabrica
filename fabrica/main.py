@@ -135,10 +135,12 @@ def publicar(base_url):
                                                 cfg.get("youtube_privacidad", "public")))
     if quiere.get("tiktok"):
         intentar("tiktok", lambda: pub.tiktok(video_local, p["caption"], cfg.get("tiktok_privacidad", "SELF_ONLY")))
+    if quiere.get("facebook"):
+        intentar("facebook", lambda: pub.facebook_reel(video_local, p["caption"], p["titulo"]))
 
     historial = util.leer_json("data/historial.json", [])
-    historial.append({"fecha": p["fecha"], "serie": p["serie"], "titulo": p["titulo"], "fuentes": p["fuentes"],
-                      "resultados": resultados})
+    historial.append({"fecha": p["fecha"], "hora": util.ahora().strftime("%H:%M"), "serie": p["serie"],
+                      "titulo": p["titulo"], "fuentes": p["fuentes"], "resultados": resultados})
     util.guardar_json("data/historial.json", historial[-400:])
     _registro(p, resultados, base)
     _mail_diario(p, resultados, base)
@@ -215,8 +217,8 @@ def _rendimiento(cfg, clave_yt, dias=30):
     filas = []
     for h in recientes:
         res = h.get("resultados", {})
-        fila = {"fecha": h["fecha"], "serie": h["serie"], "titulo": h["titulo"], "vistas": 0, "guardados": 0,
-                "compartidos": 0, "comentarios": 0, "likes": 0}
+        fila = {"fecha": h["fecha"], "hora": h.get("hora", ""), "serie": h["serie"], "titulo": h["titulo"],
+                "vistas": 0, "guardados": 0, "compartidos": 0, "comentarios": 0, "likes": 0}
         if res.get("youtube", {}).get("ok"):
             m = yt.get(res["youtube"]["id"], {})
             fila["vistas"] += m.get("vistas", 0)
@@ -240,6 +242,56 @@ def _rendimiento(cfg, clave_yt, dias=30):
         for k in ("vistas", "guardados", "compartidos", "comentarios"):
             a[k] += f[k]
     return filas, por_serie
+
+
+# ---------------------------------------------------------------- horarios
+VENTANA = (30, 60)  # se arranca entre 60 y 30 minutos antes del horario (el reloj corre cada 30 min)
+
+
+def _objetivo(cfg, momento=None):
+    momento = momento or util.ahora()
+    h = (cfg.get("horarios") or {}).get(str(momento.isoweekday()))
+    if not h:
+        return None
+    hh, mm = (int(x) for x in str(h).split(":")[:2])
+    return momento.replace(hour=hh, minute=mm, second=0, microsecond=0)
+
+
+def toca():
+    """Lo usa el reloj de GitHub cada 30 minutos: ¿hay que fabricar y publicar ahora?"""
+    cfg = util.config()
+    si, motivo = True, "ejecución manual"
+    if os.getenv("GITHUB_EVENT_NAME") == "schedule":
+        ahora = util.ahora()
+        objetivo = _objetivo(cfg, ahora)
+        hoy = ahora.strftime("%Y-%m-%d")
+        if objetivo is None:
+            si, motivo = False, "hoy no tiene horario"
+        elif any(h.get("fecha") == hoy for h in util.leer_json("data/historial.json", [])):
+            si, motivo = False, "hoy ya se publicó"
+        else:
+            faltan = (objetivo - ahora).total_seconds() / 60
+            si = VENTANA[0] <= faltan < VENTANA[1]
+            motivo = f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
+    util.log("¿Toca publicar?", "sí" if si else "no", "·", motivo)
+    salida = os.getenv("GITHUB_OUTPUT")
+    if salida:
+        with open(salida, "a", encoding="utf-8") as f:
+            f.write(f"si={'true' if si else 'false'}\n")
+
+
+def esperar():
+    """Con el video listo, espera al minuto exacto del horario antes de publicar."""
+    import time
+    if os.getenv("GITHUB_EVENT_NAME") != "schedule":
+        return
+    objetivo = _objetivo(util.config())
+    if not objetivo:
+        return
+    segundos = (objetivo - util.ahora()).total_seconds()
+    if 0 < segundos < 70 * 60:
+        util.log(f"Video listo. Espero {segundos / 60:.0f} minutos para publicar a las {objetivo:%H:%M}.")
+        time.sleep(segundos)
 
 
 def reporte():
@@ -314,6 +366,17 @@ def reporte():
                "", "Lo que peor anduvo: " + "; ".join(f'{f["titulo"]} ({f["vistas"]:,})' for f in peores)]
     else:
         md += ["Todavía no hay publicaciones para medir."]
+    horas = {}
+    for f in propias:
+        if f.get("hora"):
+            franja = f["hora"][:2] + " h"
+            x = horas.setdefault(franja, {"posts": 0, "vistas": 0})
+            x["posts"] += 1
+            x["vistas"] += f["vistas"]
+    if horas:
+        md += ["", "## Por horario de publicación", "", "| Franja | Publicaciones | Vistas promedio |", "|---|---|---|"]
+        md += [f'| {k} | {v["posts"]} | {v["vistas"] // max(v["posts"], 1):,} |' for k, v in
+               sorted(horas.items(), key=lambda x: -x[1]["vistas"] / max(x[1]["posts"], 1))]
     md += ["", "## Qué reforzar y qué cambiar", ""]
     md += [f"- Reforzar: {x}" for x in a.get("series_reforzar", [])]
     md += [f'- Cambiar **{x.get("serie", "")}**: {x.get("por_que", "")} → {x.get("propuesta", "")}'
@@ -334,12 +397,16 @@ def reporte():
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("accion", choices=["generar", "publicar", "resumen", "reporte"])
+    ap.add_argument("accion", choices=["generar", "publicar", "resumen", "reporte", "toca", "esperar"])
     ap.add_argument("--base-url", default="")
     ap.add_argument("--simulado", action="store_true")
     a = ap.parse_args()
     try:
-        if a.accion == "generar":
+        if a.accion == "toca":
+            toca()
+        elif a.accion == "esperar":
+            esperar()
+        elif a.accion == "generar":
             generar(a.simulado)
         elif a.accion == "publicar":
             publicar(a.base_url)

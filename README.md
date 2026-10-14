@@ -1,6 +1,6 @@
 # Fábrica de contenido · plata, economía e impuestos
 
-Todos los días a las 10 de la mañana (hora de Argentina), este repositorio hace solo:
+Todos los días, a la hora que le toca a cada serie (ver **Horarios**), este repositorio hace solo:
 
 1. **Elige la serie del día**: lunes libro, martes plata fácil, miércoles economía, jueves la idea de un autor, viernes **impuestos sin vueltas** (la novedad impositiva que más le toca el bolsillo a la gente, tomada de los sitios y cuentas de contadores de referencia), sábado historias de plata, domingo **viral en el mundo** (un video de plata que explotó en Japón, Alemania, Corea, etc., contado en argentino y con la pregunta "¿acá funcionaría?").
 2. **Investiga**: busca en los canales de referencia los videos que funcionaron muy por encima de su promedio.
@@ -68,6 +68,19 @@ Requisito: la cuenta de Instagram tiene que ser **profesional** (creador o empre
 5. **Para que el token se renueve solo** (vence cada 60 días): creá un token de GitHub en https://github.com/settings/personal-access-tokens/new con **Repository access: solo `shorts-fabrica`** y **Permissions → Secrets: Read and write**. Guardalo como secreto `GH_PAT`.
 6. En `config.json` poné `"instagram_reel": true` e `"instagram_carrusel": true`.
 
+### Facebook (Reels en una página, se publica solo desde el primer día)
+
+La API de Meta solo publica en **páginas**, no en perfiles personales.
+
+1. Creá la página desde tu perfil: https://www.facebook.com/pages/create (mismo nombre y foto que en Instagram; categoría "Creador digital" o "Servicio financiero").
+2. Vinculá Instagram a la página: en la página, *Configuración → Cuentas vinculadas → Instagram*.
+3. En tu app de developers.facebook.com: *Casos de uso → Agregar caso de uso → "Administrar todo en tu página"*. Permisos: `pages_show_list`, `pages_read_engagement`, `pages_manage_posts` (y, si querés leer el Instagram de los contadores de referencia, también `instagram_basic` y `business_management`).
+4. En https://developers.facebook.com/tools/explorer elegí la app, tocá **Generate Access Token** (token de usuario), tildá esos permisos y elegí tu página.
+5. Hacelo durar: https://developers.facebook.com/tools/debug/accesstoken → pegá el token → **Extend Access Token** y copiá el nuevo.
+6. En el Explorer, con ese token largo, consultá `me/accounts`. De tu página copiá `access_token` (este no vence) e `id`.
+7. Guardá los secretos `FB_PAGE_TOKEN` y `FB_PAGE_ID`, y en `config.json` poné `"facebook": true`.
+8. (Opcional) Consultá `{id de la página}?fields=instagram_business_account` y guardá ese id como `IG_FB_ID`: con eso la serie de impuestos también mira qué les funciona en Instagram a los contadores de referencia.
+
 ### YouTube (se sube solo, pero queda privado hasta que Google apruebe la app)
 
 1. En el mismo proyecto de Google Cloud, habilitá **YouTube Data API v3** (ya lo hiciste en el paso 3).
@@ -117,6 +130,24 @@ Sin esto, la serie igual funciona con los sitios y YouTube.
 | `SUPADATA_KEY` | Baja la transcripción de los videos de referencia para que la IA entienda mejor qué funcionó (https://supadata.ai, plan gratis). Sin esto, usa el título y la descripción |
 
 ---
+
+## Horarios
+
+Cada día sale a la hora que figura en `config.json` → `horarios` (hora de Argentina; 1 = lunes … 7 = domingo):
+
+| Día | Serie | Hora | Por qué |
+|---|---|---|---|
+| Lunes | Un libro en 60 segundos | 19:30 | Salida del laburo, ganas de "arrancar la semana" |
+| Martes | Plata fácil | 13:00 | Almuerzo; martes al mediodía es de lo más fuerte en Instagram |
+| Miércoles | Economía | 21:30 | Después de cenar, el pico de uso en Argentina |
+| Jueves | La idea de un autor | 19:30 | Salida del laburo |
+| Viernes | Impuestos sin vueltas | 12:30 | Contenido de trabajo: el monotributista lo ve en horario laboral |
+| Sábado | Historias de plata | 18:30 | Sábado a la tarde, entretenimiento |
+| Domingo | Viral en el mundo | 21:00 | Domingo a la noche, todos en casa con el celu |
+
+Cómo funciona: un "reloj" corre cada 30 minutos; entre 60 y 30 minutos antes del horario arranca a fabricar y, con el video listo, espera al minuto exacto para publicar. Los horarios se pueden poner entre las 12:10 y las 22:30. Si un día publicás a mano (Run workflow con "publicar" tildado), ese día no vuelve a publicar solo.
+
+El reporte de los lunes muestra las vistas promedio por franja horaria; cuando la cuenta pase los 100 seguidores, Instagram también muestra en *Panel profesional → Seguidores* las horas en que tu público está más activo. Con eso ajustamos.
 
 ## Voz y música
 

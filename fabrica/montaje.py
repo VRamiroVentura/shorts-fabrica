@@ -364,7 +364,9 @@ def generar(contenido, serie_nombre, usuario, carpeta):
         filtro_a = "[1:a]aresample=44100,apad=pad_dur=0.6,loudnorm=I=-14:TP=-1.5:LRA=11[a]"
     cmd += ["-filter_complex", filtro_v + ";" + filtro_a, "-map", "[v]", "-map", "[a]", "-t", f"{total:.3f}",
             "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-pix_fmt", "yuv420p", "-r", str(FPS),
-            "-c:a", "aac", "-b:a", "160k", "-ar", "44100", "-movflags", "+faststart", str(salida / "video.mp4")]
+            "-g", str(FPS * 2), "-keyint_min", str(FPS * 2), "-sc_threshold", "0",
+            "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2", "-movflags", "+faststart",
+            str(salida / "video.mp4")]
     _run(cmd)
 
     # 5) portada
