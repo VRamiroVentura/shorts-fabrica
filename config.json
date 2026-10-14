@@ -1,13 +1,16 @@
 {
-  "_ayuda": "Editá este archivo desde GitHub (ícono del lápiz). usuario: tu @ en las redes. plan_semanal: 1=lunes ... 7=domingo. publicar: poné true en cada red a medida que la conectes. carrusel_dias: días en que además del Reel se sube un carrusel a Instagram. La serie 'mito' (Mito o verdad) queda guardada: para volver a usarla, poné \"mito\" en algún día de plan_semanal.",
+  "_ayuda": "Editá este archivo desde GitHub (ícono del lápiz). usuario: tu @ en las redes. referentes_contables: cuentas, sitios y canales de contadores que se usan los viernes. plan_semanal: 1=lunes ... 7=domingo. publicar: poné true en cada red a medida que la conectes. carrusel_dias: días en que además del Reel se sube un carrusel a Instagram. La serie 'mito' (Mito o verdad) queda guardada: para volver a usarla, poné \"mito\" en algún día de plan_semanal.",
   "usuario": "@ramacontable",
   "email_aviso": "rventrura95@gmail.com",
   "firma": "Contenido educativo. No es asesoramiento financiero ni impositivo.",
   "gemini_modelos": [
-    "gemini-2.5-flash",
+    "gemini-3.8-flash",
     "gemini-flash-latest",
-    "gemini-2.0-flash"
+    "gemini-3.6-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-flash-lite-latest"
   ],
+  "gemini_pensamiento": "low",
   "voz": "es-AR-TomasNeural",
   "fuentes_por_video": 2,
   "plan_semanal": {
@@ -31,6 +34,32 @@
   },
   "youtube_privacidad": "public",
   "tiktok_privacidad": "SELF_ONLY",
+  "referentes_contables": {
+    "_nota": "Contadores de referencia para la serie de impuestos. Instagram solo se lee si cargás IG_FB_TOKEN e IG_FB_ID (ver README). Los sitios se leen siempre; YouTube con YT_API_KEY.",
+    "instagram": [
+      "blogdelcontador",
+      "errepar",
+      "contadorasalcuadra2",
+      "ignacio.online",
+      "contadores_net"
+    ],
+    "sitios": [
+      {
+        "nombre": "Blog del Contador",
+        "url": "https://blogdelcontador.com.ar/"
+      },
+      {
+        "nombre": "Ignacio Online",
+        "url": "https://www.ignacioonline.com.ar/feed/"
+      }
+    ],
+    "youtube": [
+      "Errepar",
+      "Ignacio Online",
+      "Blog del Contador",
+      "Las Contas estudio contable"
+    ]
+  },
   "series": {
     "libro": {
       "nombre": "Un libro en 60 segundos",
@@ -73,13 +102,10 @@
       ]
     },
     "monotributo": {
-      "nombre": "Monotributo en 1 minuto",
-      "prompt": "Serie: MONOTRIBUTO EN 1 MINUTO.\nUn error común o una duda real de monotributistas o freelancers. Hablá como el contador que se lo explica a un cliente que está nervioso: tranquilo, claro, sin tecnicismos (si usás uno, explicalo en la misma frase).\nSin montos, topes ni fechas. Cerrá con: \"si tu caso es distinto, consultalo con un contador\" dicho con tus palabras.",
-      "canales": [
-        "Las Contas estudio contable",
-        "monotributo argentina",
-        "contador impuestos argentina"
-      ]
+      "nombre": "Impuestos sin vueltas",
+      "prompt": "Serie: IMPUESTOS SIN VUELTAS.\nObjetivo: que un video de impuestos lo comparta gente que no sigue a ningún contador. Para eso el tema tiene que tocarle el bolsillo a mucha gente: empleados, monotributistas, freelancers que cobran del exterior, gente que vende por Mercado Libre o Instagram, inquilinos, quien cobra por transferencia o billetera virtual, quien compra afuera o tiene una empleada en casa.\nCómo elegir el tema:\n1. Mirá el MATERIAL: noticias recientes de sitios contables y videos o posts de contadores que funcionaron muy por encima de lo normal.\n2. Elegí UNA sola cosa: la que más gente común sienta propia. Descartá lo que solo le importa a contadores o empresas grandes (aplicativos, regímenes de información, convenios colectivos, eventos, productos).\n3. Si un post o video de un contador pegó fuerte, usá su tema o su formato como pista, nunca su texto.\n4. Si no hay material que sirva, elegí una duda clásica de monotributistas o empleados.\nFormatos (elegí el que mejor le quede al tema):\n- \"Esto te cambia\": la novedad contada como consecuencia concreta para quien mira.\n- \"Hacé la cuenta\": un ejemplo con números simples, solo con números que estén en el material.\n- \"El error que sale caro\": algo que hace mal mucha gente y qué le puede costar.\n- \"Lo que casi nadie aprovecha\": un beneficio, deducción o derecho poco conocido.\n- \"Mito o verdad\": algo que circula (ARCA, transferencias, Mercado Pago, el colchón) y qué es cierto.\nReglas:\n- La primera frase nombra a quien mira y le promete algo concreto. Ejemplo de tono: \"Si cobrás por transferencia, esto te conviene saberlo\".\n- Montos, topes, porcentajes y fechas: solo si aparecen textuales en el MATERIAL de hoy. Si no están, contalo sin números y, si hace falta, decí que el valor actualizado está en la página de ARCA. Nunca completes datos de memoria.\n- Si algo depende del caso de cada uno, decilo en una frase y seguí.\n- Tono: el amigo contador que te lo explica en un asado, tranquilo, sin asustar y sin vender humo. Cero tecnicismos; si usás uno, explicalo en la misma frase. Nada que suene a evadir impuestos.\n- Cierre: invitá a mandárselo a alguien puntual (por ejemplo, al amigo que factura por Mercado Pago) o a guardarlo para cuando le toque. Nada de \"seguime para más\".\n- El carrusel de ese día es la versión para guardar: los pasos, la lista o el resumen de lo que contaste.",
+      "canales": [],
+      "modo": "contable"
     },
     "historias": {
       "nombre": "Historias de plata",

@@ -35,7 +35,13 @@ def generar(simulado=False):
 
     fuentes = []
     clave_yt = util.secreto("YT_API_KEY")
-    if clave_yt and not simulado:
+    if serie.get("modo") == "contable" and not simulado:
+        from . import contable
+        fuentes = contable.buscar(cfg.get("referentes_contables", {}), clave_yt, usados,
+                                  cfg.get("fuentes_por_video", 2))
+        util.log("Fuentes:", [f'{f["canal"]}: {f["titulo"][:90]} ({f.get("tipo")}, {f.get("score")})'
+                              for f in fuentes] or "ninguna, la IA elige el tema")
+    elif clave_yt and not simulado:
         try:
             if serie.get("modo") == "virales":
                 lista = serie["busquedas"]
@@ -234,8 +240,9 @@ def reporte():
         return
     cache = util.leer_json("data/canales.json", {})
     vistos, filas = set(), []
-    for s in cfg["series"].values():
-        for b in s["canales"]:
+    ref = cfg.get("referentes_contables", {})
+    for s in list(cfg["series"].values()) + [{"canales": ref.get("youtube", [])}]:
+        for b in s.get("canales", []):
             if b.lower() in vistos:
                 continue
             vistos.add(b.lower())
@@ -255,6 +262,13 @@ def reporte():
         f'{f["pct_shorts"]}% Shorts\n' + "\n".join(
             f'  - "{t["titulo"]}" ({t["vistas"]} vistas, {t["veces"]} veces lo normal)' for t in f["top"])
         for f in filas)
+    try:
+        from . import contable
+        ig = contable.resumen_instagram(ref.get("instagram", []))
+        if ig:
+            resumen += "\n\n" + ig
+    except Exception as ex:  # noqa
+        util.log("No pude leer el Instagram de los referentes:", util.ocultar(ex))
     sistema = ("Sos analista de contenido de una cuenta argentina sin cara de Shorts, Reels y TikTok sobre plata, "
                "economía, libros de dinero e impuestos. Respondé en español rioplatense natural.")
     pedido = ("Con estas métricas de canales de referencia, devolvé un JSON con: "
@@ -312,11 +326,17 @@ if __name__ == "__main__":
     ap.add_argument("--base-url", default="")
     ap.add_argument("--simulado", action="store_true")
     a = ap.parse_args()
-    if a.accion == "generar":
-        generar(a.simulado)
-    elif a.accion == "publicar":
-        publicar(a.base_url)
-    elif a.accion == "resumen":
-        resumen(a.base_url)
-    else:
-        reporte()
+    try:
+        if a.accion == "generar":
+            generar(a.simulado)
+        elif a.accion == "publicar":
+            publicar(a.base_url)
+        elif a.accion == "resumen":
+            resumen(a.base_url)
+        else:
+            reporte()
+    except Exception as error:  # noqa
+        import traceback
+        print(util.ocultar(traceback.format_exc()), flush=True)
+        util.avisar_error(a.accion, error)
+        sys.exit(1)

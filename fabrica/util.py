@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -39,6 +40,32 @@ def secreto(nombre):
 
 def log(*a):
     print("[fabrica]", *a, flush=True)
+
+
+_SECRETOS = ["GEMINI_API_KEY", "YT_API_KEY", "SUPADATA_KEY", "CF_ACCOUNT_ID", "CF_API_TOKEN", "IG_TOKEN",
+             "YT_CLIENT_ID", "YT_CLIENT_SECRET", "YT_REFRESH_TOKEN", "TIKTOK_CLIENT_KEY", "TIKTOK_CLIENT_SECRET",
+             "TIKTOK_REFRESH_TOKEN", "SMTP_USER", "SMTP_PASS", "GH_PAT"]
+
+
+def ocultar(texto):
+    """Tapa cualquier clave que pudiera colarse en un mensaje de error."""
+    texto = str(texto)
+    for n in _SECRETOS:
+        v = os.getenv(n, "").strip()
+        if len(v) >= 6:
+            texto = texto.replace(v, "***")
+    return re.sub(r"([?&](?:key|access_token|token)=)[^&\s]+", r"\1***", texto)
+
+
+def avisar_error(accion, e):
+    """Deja el motivo del error a la vista en la portada de la ejecución de GitHub (sin claves)."""
+    msg = ocultar(f"{type(e).__name__}: {e}")[:1500]
+    linea = msg.replace("%", "%25").replace("\r", "").replace("\n", "%0A")
+    print(f"::error title=Falló «{accion}»::{linea}", flush=True)
+    destino = os.getenv("GITHUB_STEP_SUMMARY")
+    if destino:
+        with open(destino, "a", encoding="utf-8") as f:
+            f.write(f"## ❌ Falló «{accion}»\n\n```\n{msg}\n```\n")
 
 
 def pedir(metodo, url, intentos=4, espera=5, ok=(200, 201, 202, 204), **kw):

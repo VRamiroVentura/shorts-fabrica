@@ -20,28 +20,103 @@ def _json_de(texto):
     return json.loads(t[a:b + 1])
 
 
-def gemini(sistema, usuario, temperatura=0.9):
-    clave = util.secreto("GEMINI_API_KEY")
-    if not clave:
-        raise RuntimeError("Falta el secreto GEMINI_API_KEY")
-    cuerpo = {
+LISTA = "https://generativelanguage.googleapis.com/v1beta/models"
+_DESCARTAR = ("image", "tts", "audio", "live", "embed", "native", "exp", "computer", "robotics", "vision")
+_modelo_ok = None  # el primer modelo que anduvo en esta ejecución se reusa
+
+
+def _version(nombre):
+    m = re.search(r"gemini-(\d+(?:\.\d+)?)", nombre)
+    return float(m.group(1)) if m else 0.0
+
+
+def _descubrir(clave):
+    """Pide a Google la lista de modelos vigentes y ordena los Flash del más nuevo al más viejo.
+    Así, cuando Google retire un modelo, la fábrica encuentra sola el reemplazo."""
+    try:
+        r = util.pedir("GET", LISTA, headers={"x-goog-api-key": clave}, params={"pageSize": 1000}, timeout=60)
+        modelos = r.json().get("models", []) if r is not None and r.status_code == 200 else []
+    except Exception as e:  # noqa
+        util.log("No pude listar los modelos de Gemini:", util.ocultar(str(e)))
+        return []
+    nombres = []
+    for m in modelos:
+        n = m.get("name", "").split("/")[-1]
+        if ("generateContent" in m.get("supportedGenerationMethods", []) and "flash" in n
+                and not any(x in n for x in _DESCARTAR)):
+            nombres.append(n)
+    # primero Flash común, después Lite; dentro de cada grupo, estable antes que preview y versión más nueva primero
+    nombres.sort(key=lambda n: ("lite" in n, "preview" in n, -_version(n), n))
+    return nombres
+
+
+def _cuerpo(sistema, usuario, temperatura, modelo, con_pensamiento):
+    gen = {"responseMimeType": "application/json", "maxOutputTokens": 32768}
+    moderno = "latest" in modelo or _version(modelo) >= 3
+    if moderno:
+        # Gemini 3+: Google recomienda temperatura 1.0 y, si no se aclara, piensa "a fondo" y gasta
+        # todo el cupo de salida pensando. Con nivel bajo alcanza para guiones cortos.
+        if con_pensamiento:
+            gen["thinkingConfig"] = {"thinkingLevel": util.config().get("gemini_pensamiento", "low")}
+    else:
+        gen["temperature"] = temperatura
+    return {
         "systemInstruction": {"parts": [{"text": sistema}]},
         "contents": [{"role": "user", "parts": [{"text": usuario}]}],
-        "generationConfig": {"temperature": temperatura, "responseMimeType": "application/json",
-                             "maxOutputTokens": 8192},
+        "generationConfig": gen,
     }
-    errores = []
-    for modelo in util.config().get("gemini_modelos", ["gemini-2.5-flash"]):
-        r = util.pedir("POST", API.format(modelo=modelo), params={"key": clave}, json=cuerpo, espera=20, timeout=180)
-        if r is not None and r.status_code == 200:
-            partes = r.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
-            texto = "".join(p.get("text", "") for p in partes)
-            try:
-                return _json_de(texto)
-            except Exception as e:  # noqa
-                errores.append(f"{modelo}: {e}")
-                continue
-        errores.append(f"{modelo}: {getattr(r, 'status_code', '?')} {getattr(r, 'text', '')[:200]}")
+
+
+def _mensaje(r):
+    try:
+        return r.json()["error"]["message"][:220]
+    except Exception:  # noqa
+        return (getattr(r, "text", "") or "")[:220]
+
+
+def gemini(sistema, usuario, temperatura=0.9):
+    global _modelo_ok
+    clave = util.secreto("GEMINI_API_KEY")
+    if not clave:
+        raise RuntimeError("Falta el secreto GEMINI_API_KEY (Settings → Secrets and variables → Actions)")
+    preferidos = ([_modelo_ok] if _modelo_ok else []) + util.config().get("gemini_modelos", ["gemini-flash-latest"])
+    probados, errores, descubiertos = set(), [], False
+    cola = list(preferidos)
+    while cola or not descubiertos:
+        if not cola:
+            descubiertos = True
+            cola = [m for m in _descubrir(clave) if m not in probados][:6]
+            if cola:
+                util.log("Busco modelos vigentes de Gemini:", ", ".join(cola))
+            continue
+        modelo = cola.pop(0)
+        if modelo in probados:
+            continue
+        probados.add(modelo)
+        texto, fin = "", ""
+        for con_pensamiento in (True, False):
+            r = util.pedir("POST", API.format(modelo=modelo), headers={"x-goog-api-key": clave},
+                           json=_cuerpo(sistema, usuario, temperatura, modelo, con_pensamiento),
+                           intentos=3, espera=15, timeout=240)
+            if r is not None and r.status_code == 400 and "think" in _mensaje(r).lower() and con_pensamiento:
+                continue  # el modelo no acepta el ajuste de pensamiento: pruebo sin él
+            break
+        if r is None or r.status_code != 200:
+            errores.append(f"{modelo}: {getattr(r, 'status_code', '?')} {_mensaje(r)}")
+            continue
+        datos = r.json()
+        cand = (datos.get("candidates") or [{}])[0]
+        fin = cand.get("finishReason", "") or (datos.get("promptFeedback") or {}).get("blockReason", "")
+        partes = (cand.get("content") or {}).get("parts", [])
+        texto = "".join(p.get("text", "") for p in partes if not p.get("thought"))
+        try:
+            resultado = _json_de(texto)
+            if _modelo_ok != modelo:
+                util.log("Modelo de Gemini usado:", modelo)
+            _modelo_ok = modelo
+            return resultado
+        except Exception as e:  # noqa
+            errores.append(f"{modelo}: respuesta sin JSON (motivo: {fin or 'desconocido'}) {str(e)[:120]}")
     raise RuntimeError("Gemini falló con todos los modelos: " + " | ".join(errores))
 
 
@@ -106,7 +181,14 @@ def escribir(serie, fuentes, titulos_previos):
     for i, f in enumerate(fuentes, 1):
         tipo = "Short" if 0 < f.get("segundos", 0) <= 180 else "video largo (tomá UNA sola idea)"
         texto = f.get("transcripcion") or f.get("descripcion") or ""
-        if f.get("pais"):
+        if f.get("tipo") == "noticia":
+            cab = (f'NOTICIA RECIENTE de {f["canal"]}' + (f' ({f["publicado"]})' if f.get("publicado") else "") +
+                   f' · "{f["titulo"]}"')
+        elif f.get("tipo") == "instagram":
+            cab = (f'POST DE INSTAGRAM QUE PEGÓ FUERTE en {f["canal"]} · formato {f.get("formato", "post")} · '
+                   f'{f.get("likes") or "?"} me gusta, {f.get("comentarios") or "?"} comentarios · '
+                   f'{f["score"]} veces lo normal de esa cuenta (tomá el tema o el formato, nunca el texto)')
+        elif f.get("pais"):
             cab = (f'VIDEO VIRAL EN {f["pais"].upper()} (idioma {f.get("idioma")}) · "{f["titulo"]}" · '
                    f'canal {f["canal"]} · {f["vistas"]} vistas · {tipo}')
         else:
@@ -120,15 +202,17 @@ def escribir(serie, fuentes, titulos_previos):
         serie["prompt"] + "\n\n" + _prompt("formato.md") + "\n\n"
         "Temas ya publicados (NO repetir ni hacer variantes muy parecidas):\n"
         + ("\n".join("- " + t for t in titulos_previos[:40]) or "- (ninguno todavía)") + "\n\n"
-        "MATERIAL DE REFERENCIA (videos que funcionaron muy por encima de lo normal; pueden estar en otro idioma). "
-        "Usalo para entender qué tema y qué gancho funciona. El texto tiene que ser nuestro, nunca traducido ni "
-        "parafraseado frase por frase:\n\n" + material
+        "MATERIAL DE REFERENCIA (videos y posts que funcionaron muy por encima de lo normal, o noticias recientes; "
+        "pueden estar en otro idioma). Usalo para entender qué tema y qué gancho funciona. El texto tiene que ser "
+        "nuestro, nunca traducido ni parafraseado frase por frase:\n\n" + material
     )
     borrador = validar(gemini(sistema, usuario))
     util.log("Borrador:", borrador["titulo"], f'({borrador["palabras"]} palabras)')
     try:
+        chequeo = ("\n\nMATERIAL DE REFERENCIA (solo para chequear que cada dato del guion exista acá):\n" +
+                   material[:9000]) if bloques else ""
         revisado = gemini(sistema, _prompt("revision.md") + "\n\nJSON A REVISAR:\n" +
-                          json.dumps(borrador, ensure_ascii=False), temperatura=0.6)
+                          json.dumps(borrador, ensure_ascii=False) + chequeo, temperatura=0.6)
         final = validar(revisado)
         util.log("Revisado:", final["titulo"])
         return final

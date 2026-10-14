@@ -2,7 +2,7 @@
 
 Todos los días a las 10 de la mañana (hora de Argentina), este repositorio hace solo:
 
-1. **Elige la serie del día**: lunes libro, martes plata fácil, miércoles economía, jueves la idea de un autor, viernes monotributo, sábado historias de plata, domingo **viral en el mundo** (un video de plata que explotó en Japón, Alemania, Corea, etc., contado en argentino y con la pregunta "¿acá funcionaría?").
+1. **Elige la serie del día**: lunes libro, martes plata fácil, miércoles economía, jueves la idea de un autor, viernes **impuestos sin vueltas** (la novedad impositiva que más le toca el bolsillo a la gente, tomada de los sitios y cuentas de contadores de referencia), sábado historias de plata, domingo **viral en el mundo** (un video de plata que explotó en Japón, Alemania, Corea, etc., contado en argentino y con la pregunta "¿acá funcionaría?").
 2. **Investiga**: busca en los canales de referencia los videos que funcionaron muy por encima de su promedio.
 3. **Escribe** el guion, el carrusel y los textos con voz argentina natural (ver `prompts/`). Después hace una segunda pasada que corrige todo lo que suene a IA.
 4. **Diseña** las placas del carrusel y el video vertical con voz argentina, subtítulos y portada.
@@ -86,6 +86,28 @@ TikTok exige crear una app en https://developers.tiktok.com con **Content Postin
 
 ---
 
+## Contadores de referencia (serie de los viernes)
+
+Están en `config.json`, en `referentes_contables`:
+
+- **Sitios** (se leen siempre, sin claves): Blog del Contador e Ignacio Online. La fábrica toma las novedades de los últimos 12 días y prioriza las que le tocan el bolsillo a la gente común (sueldo, monotributo, Ganancias, transferencias, alquileres, compras afuera). Descarta lo que solo le importa a contadores (convenios, aplicativos, eventos).
+- **YouTube** (con `YT_API_KEY`): Errepar, Ignacio Online, Blog del Contador y Las Contas. Busca el video que rindió muy por encima de su promedio.
+- **Instagram**: blogdelcontador, errepar, contadorasalcuadra2, ignacio.online y contadores_net. Busca el post que más les pegó comparado con lo normal de cada cuenta. Necesita la configuración opcional de abajo.
+
+Nunca se copia el texto: el material solo sirve para elegir el tema y el formato. Los montos, topes y fechas solo se dicen si están textuales en la noticia del día.
+
+### Opcional: leer el Instagram de los contadores de referencia
+
+Instagram solo deja ver datos de otras cuentas con su API de Facebook ("Business Discovery"). Es gratis, pero pide que tu Instagram esté vinculado a una página de Facebook. Lo hacemos juntos cuando conectemos Instagram; estos son los pasos:
+
+1. Creá una página de Facebook (puede llamarse igual que la cuenta) y vinculala desde Instagram: *Editar perfil → Página* o desde el *Centro de cuentas*.
+2. En https://developers.facebook.com/tools/explorer elegí tu app, tocá **Generate Access Token** y tildá los permisos `instagram_basic`, `pages_show_list`, `pages_read_engagement` y `business_management`.
+3. Hacé que dure: en https://developers.facebook.com/tools/debug/accesstoken pegá el token y tocá **Extend Access Token**.
+4. De vuelta en el Explorer, con ese token, consultá `me/accounts` y copiá el `access_token` de tu página (ese no vence). Después consultá `{id de tu página}?fields=instagram_business_account` y copiá el `id`.
+5. Guardá los secretos `IG_FB_TOKEN` (el token de la página) e `IG_FB_ID` (el id de Instagram).
+
+Sin esto, la serie igual funciona con los sitios y YouTube.
+
 ## Opcionales que mejoran el resultado (también gratis)
 
 | Secreto | Para qué |
@@ -99,7 +121,7 @@ TikTok exige crear una app en https://developers.tiktok.com con **Content Postin
 
 - **Días, series y canales de referencia:** `config.json`. La serie "Mito o verdad" quedó guardada: para volver a usarla, poné `"mito"` en algún día de `plan_semanal`. En la serie viral, los países y búsquedas están en `busquedas`.
 - **La voz y el estilo de escritura:** `prompts/maestro.md`. Las reglas de formato están en `prompts/formato.md` y la revisión anti-IA en `prompts/revision.md`.
-- **Probar una serie puntual:** *Actions → Publicación diaria → Run workflow* y escribí la serie (por ejemplo `monotributo`).
+- **Probar una serie puntual:** *Actions → Publicación diaria → Run workflow* y escribí la serie (por ejemplo `monotributo`, que es la de impuestos).
 
 ## Si algo falla
 
