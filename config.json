@@ -1,5 +1,5 @@
 {
-  "_ayuda": "Editá este archivo desde GitHub (ícono del lápiz). usuario: tu @ en las redes. voz: es-AR-TomasNeural (hombre) o es-AR-ElenaNeural (mujer). voz_velocidad: +15% es un poco más rápido que lo normal. voz_pausa_maxima: segundos máximos de silencio entre palabras. referentes_contables: cuentas, sitios y canales de contadores que se usan los viernes. plan_semanal: 1=lunes ... 7=domingo. publicar: poné true en cada red a medida que la conectes. carrusel_dias: días en que además del Reel se sube un carrusel a Instagram. La serie 'mito' (Mito o verdad) queda guardada: para volver a usarla, poné \"mito\" en algún día de plan_semanal.",
+  "_ayuda": "Editá este archivo desde GitHub (ícono del lápiz). usuario: tu @ en las redes. voz_motor: gemini (más natural) o edge (la de Microsoft). voz_gemini: auto o el nombre de una voz (Puck, Orus, Charon, Kore...). voz_genero: hombre o mujer. voz_tempo: 1.0 normal, 1.1 un poco más rápido. voz: la de Microsoft de respaldo (es-AR-TomasNeural o es-AR-ElenaNeural). musica: archivo mp3 en la carpeta assets (si no está, va sin música); musica_volumen: 0.08 es bajita. referentes_contables: cuentas, sitios y canales de contadores que se usan los viernes. plan_semanal: 1=lunes ... 7=domingo. publicar: poné true en cada red a medida que la conectes. carrusel_dias: días en que además del Reel se sube un carrusel a Instagram. La serie 'mito' (Mito o verdad) queda guardada: para volver a usarla, poné \"mito\" en algún día de plan_semanal.",
   "usuario": "@ramacontable",
   "email_aviso": "rventrura95@gmail.com",
   "firma": "Contenido educativo. No es asesoramiento financiero ni impositivo.",
@@ -14,6 +14,17 @@
   "voz": "es-AR-TomasNeural",
   "voz_velocidad": "+15%",
   "voz_pausa_maxima": 0.28,
+  "voz_motor": "gemini",
+  "voz_gemini": "auto",
+  "voz_genero": "hombre",
+  "voz_tempo": 1.0,
+  "voz_gemini_modelos": [
+    "gemini-3.8-flash-tts",
+    "gemini-3.8-flash-lite-tts",
+    "gemini-3.1-flash-tts-preview"
+  ],
+  "musica": "assets/music.mp3",
+  "musica_volumen": 0.08,
   "fuentes_por_video": 2,
   "plan_semanal": {
     "1": "libro",

@@ -24,7 +24,7 @@ def generar(simulado=False):
     os.environ.setdefault("TTS_VOICE", cfg.get("voz", "es-AR-TomasNeural"))
     os.environ.setdefault("TTS_RATE", str(cfg.get("voz_velocidad", "+15%")))
     os.environ.setdefault("TTS_MAX_PAUSA", str(cfg.get("voz_pausa_maxima", 0.28)))
-    from . import carrusel, escritor, investigar, video  # importa después de fijar la voz
+    from . import carrusel, escritor, investigar, montaje  # importa después de fijar la voz
 
     clave_serie = _serie_del_dia(cfg)
     serie = cfg["series"][clave_serie]
@@ -71,15 +71,19 @@ def generar(simulado=False):
         shutil.rmtree(SALIDA)
     carpeta.mkdir(parents=True)
     placas = carrusel.generar(contenido, serie["nombre"], cfg["usuario"], carpeta)
-    video_path, thumb_path = video.generar(contenido, serie["nombre"], cfg["usuario"], carpeta)
+    video_path, thumb_path = montaje.generar(contenido, serie["nombre"], cfg["usuario"], carpeta)
     shutil.rmtree(carpeta / "_trabajo", ignore_errors=True)
     (carpeta / "spec.json").unlink(missing_ok=True)
+    meta_video = util.leer_json(str((carpeta / "meta.json").relative_to(util.RAIZ)), {}) or {}
+    (carpeta / "meta.json").unlink(missing_ok=True)
     (SITIO / "index.html").write_text("<meta charset='utf-8'><p>Fábrica de Shorts</p>", encoding="utf-8")
 
     firma = cfg.get("firma", "")
     if serie.get("modo") == "virales" and fuentes:
         firma = ("Inspirado en videos virales de " +
                  ", ".join(f'{f["canal"]} ({f["pais"]})' for f in fuentes) + ".\n" + firma)
+    if meta_video.get("clips_stock"):
+        firma = firma + f'\nVideos de stock: {meta_video.get("banco")}.'
     tags = " ".join(contenido["hashtags"])
     publicacion = {
         "fecha": fecha,
@@ -96,6 +100,7 @@ def generar(simulado=False):
         "archivos": {"video": f"{fecha}/video.mp4", "portada": f"{fecha}/thumb.jpg",
                      "placas": [f"{fecha}/{p.name}" for p in placas]},
         "contenido": contenido,
+        "video": meta_video,
     }
     util.guardar_json("out/publicacion.json", publicacion)
     util.log("Listo:", contenido["titulo"])
@@ -154,6 +159,10 @@ def resumen(base_url, res=None):
     md = [f'## {p["serie_nombre"]}: {p["titulo"]}', ""]
     for red, r in (res or {}).items():
         md.append(f'- **{red}**: ' + ("✅ publicado" if r["ok"] else "❌ " + r["error"]))
+    v = p.get("video") or {}
+    if v:
+        md += [f'Voz: {v.get("voz", "?")} · {v.get("duracion", "?")} s · fondos: {v.get("clips_stock", 0)} de '
+               f'{v.get("clips", 0)} clips de {v.get("banco") or "stock"} · música: {v.get("musica") or "no"}', ""]
     md += ["", f'[▶️ Ver el video]({base}{p["archivos"]["video"]}) · [Portada]({base}{p["archivos"]["portada"]})', ""]
     md += [" ".join(f'<img src="{base}{x}" width="180">' for x in p["archivos"]["placas"]), ""]
     md += ["**Texto para publicar:**", "", "```", p["caption"], "```", "", "**Guion:** " + p["guion"]]

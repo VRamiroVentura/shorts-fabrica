@@ -77,7 +77,7 @@ BANCOS PARA VARIAR (inspiración, nunca copiar tal cual dos veces seguidas)
 
 **Cierres** (rotar, nunca el mismo dos días seguidos):
 - "Guardalo para cuando cobres."
-- "Mandáselo a quien siempre llega pelado a fin de mes."
+- "Mandáselo a quien siempre llega justo a fin de mes."
 - "Si te sirvió, seguime que mañana va otro."
 - "Contame en los comentarios cómo lo hacés vos."
 - "El viernes hablo de monotributo, no te lo pierdas."

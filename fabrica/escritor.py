@@ -163,9 +163,21 @@ def _siglas(s, oracion=False):
     return s
 
 
+_EMOJI_REEMPLAZO = {"📅": "🗓️", "📆": "🗓️"}  # los calendarios muestran una fecha fija ("JULY 17") que confunde
+
+
 def _emoji(e, defecto):
     e = str(e or "").strip()
+    for viejo, nuevo in _EMOJI_REEMPLAZO.items():
+        e = e.replace(viejo, nuevo)
     return e[:4] if e else defecto
+
+
+def _broll(b):
+    """Búsquedas en inglés para los videos de stock de la escena (una o dos)."""
+    lista = b if isinstance(b, list) else [b]
+    limpias = [re.sub(r"[^A-Za-z0-9 \-]", "", str(x or "")).strip()[:60] for x in lista]
+    return [x for x in limpias if len(x) > 2][:2]
 
 
 def validar(d):
@@ -176,11 +188,12 @@ def validar(d):
             escenas.append({"texto_voz": voz,
                             "texto_pantalla": _siglas(_limpiar(e.get("texto_pantalla")) or voz[:40]),
                             "emoji": _emoji(e.get("emoji"), "💡"),
-                            "prompt": str(e.get("prompt") or "").strip()})
+                            "prompt": str(e.get("prompt") or "").strip(),
+                            "broll": _broll(e.get("broll"))})
     carrusel = []
     for p in d.get("carrusel", []):
         if p.get("titulo"):
-            carrusel.append({"titulo": _siglas(_limpiar(p["titulo"]), True), "cuerpo": _siglas(_limpiar(p.get("cuerpo")), True),
+            carrusel.append({"titulo": _siglas(_limpiar(p["titulo"]), True), "cuerpo": _siglas(_limpiar(p.get("cuerpo") or p.get("texto")), True),
                              "emoji": _emoji(p.get("emoji"), "💡")})
     palabras = sum(len(e["texto_voz"].split()) for e in escenas)
     if len(escenas) < 4:
@@ -302,8 +315,11 @@ def escribir(serie, fuentes, titulos_previos):
     try:
         chequeo = ("\n\nMATERIAL DE REFERENCIA (solo para chequear que cada dato del guion exista acá):\n" +
                    material[:9000]) if material else ""
+        para_revisar = {k: v for k, v in borrador.items() if k != "palabras"}
+        para_revisar["carrusel"] = [{"titulo": c["titulo"], "texto": c["cuerpo"], "emoji": c["emoji"]}
+                                    for c in borrador["carrusel"]]
         revisado = gemini(sistema, _prompt("revision.md") + "\n\nJSON A REVISAR:\n" +
-                          json.dumps(borrador, ensure_ascii=False) + chequeo, temperatura=0.6)
+                          json.dumps(para_revisar, ensure_ascii=False) + chequeo, temperatura=0.6)
         final = validar(revisado)
         util.log("Revisado:", final["titulo"])
         return final

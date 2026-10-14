@@ -5,7 +5,7 @@ Todos los días a las 10 de la mañana (hora de Argentina), este repositorio hac
 1. **Elige la serie del día**: lunes libro, martes plata fácil, miércoles economía, jueves la idea de un autor, viernes **impuestos sin vueltas** (la novedad impositiva que más le toca el bolsillo a la gente, tomada de los sitios y cuentas de contadores de referencia), sábado historias de plata, domingo **viral en el mundo** (un video de plata que explotó en Japón, Alemania, Corea, etc., contado en argentino y con la pregunta "¿acá funcionaría?").
 2. **Investiga**: busca en los canales de referencia los videos que funcionaron muy por encima de su promedio.
 3. **Escribe** el guion, el carrusel y los textos con voz argentina natural (ver `prompts/`). Después hace una segunda pasada que corrige todo lo que suene a IA.
-4. **Diseña** las placas del carrusel y el video vertical con voz argentina, subtítulos y portada.
+4. **Diseña** las placas del carrusel y el video vertical: voz de Gemini (o la de Microsoft de respaldo), videos de stock de Pexels que cambian cada ~2 segundos, subtítulos grandes palabra por palabra, el gancho escrito desde el segundo 0, barra de progreso y música suave si hay un tema en `assets/`.
 5. **Publica** en Instagram (Reel todos los días y carrusel martes y viernes), en YouTube Shorts y en TikTok, según lo que actives.
 6. **Guarda el historial** en `publicaciones/` y te manda un mail con el resumen.
 
@@ -38,6 +38,7 @@ Van en **Settings → Secrets and variables → Actions → New repository secre
 |---|---|
 | `GEMINI_API_KEY` | https://aistudio.google.com/apikey → **Create API key** (gratis, sin tarjeta) |
 | `YT_API_KEY` | https://console.cloud.google.com → creá un proyecto → **APIs y servicios → Biblioteca → YouTube Data API v3 → Habilitar** → **Credenciales → Crear credenciales → Clave de API** |
+| `PIXABAY_API_KEY` (videos de fondo) | Creá una cuenta gratis en https://pixabay.com y entrá a https://pixabay.com/api/docs/ : tu clave aparece en verde en la sección **Parameters → key**. Sin tarjeta. Sin esto, el video usa ilustraciones o emojis de fondo. (También acepta `PEXELS_API_KEY` si algún día Pexels vuelve a dar claves.) |
 | `SMTP_USER` y `SMTP_PASS` (opcional, para recibir el mail diario) | `SMTP_USER` es tu Gmail. `SMTP_PASS` es una **contraseña de aplicación**: https://myaccount.google.com/apppasswords (necesita tener activada la verificación en dos pasos) |
 
 ### Paso 4 · Poner tu usuario
@@ -116,6 +117,11 @@ Sin esto, la serie igual funciona con los sitios y YouTube.
 | `SUPADATA_KEY` | Baja la transcripción de los videos de referencia para que la IA entienda mejor qué funcionó (https://supadata.ai, plan gratis). Sin esto, usa el título y la descripción |
 
 ---
+
+## Voz y música
+
+- **Voz:** en `config.json`, `voz_motor` es `gemini` (más natural, usa la misma clave) o `edge` (Microsoft). `voz_gemini` en `auto` busca una voz argentina en la biblioteca de Google; si no hay, usa `Puck`. Podés probar otras: `Orus`, `Charon`, `Fenrir` (hombre) o `Kore`, `Aoede`, `Leda` (mujer). `voz_tempo` en `1.1` la hace un poco más rápida. Si la voz de Gemini falla un día, el video sale igual con la de Microsoft y queda un aviso amarillo en la ejecución.
+- **Música:** subí uno o varios `.mp3` libres de derechos a la carpeta `assets/` (ver `assets/LEEME.md`). Si no hay, va sin música.
 
 ## Cómo cambiar cosas
 
