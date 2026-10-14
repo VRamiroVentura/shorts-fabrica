@@ -114,51 +114,185 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 
 # ---------------------------------------------------------------- fondo
+# Comodines: escenas de plata y trámites que acompañan casi cualquier frase de finanzas sin desentonar.
+COMODINES = ["hands counting money", "hand holding smartphone", "typing on laptop keyboard",
+             "calculator and paperwork", "card payment terminal", "wallet with cash",
+             "signing documents", "us dollar bills"]
+
+PUNTUAR = """Sos editor de videos cortos para una cuenta argentina de finanzas personales e impuestos.
+Te paso las escenas (lo que se dice) con opciones de video de fondo, y al final unos COMODINES.
+Mirá la imagen de cada opción y poné un puntaje:
+3 = muestra justo lo que se dice: la acción, el objeto o el lugar.
+2 = muestra plata, pagos, un celular, una compu, papeles, trabajo o compras, y acompaña bien la frase.
+1 = neutro: no molesta pero no aporta.
+0 = no tiene nada que ver (un cielo, flores, alguien en la cama, paisajes), o no puede pasar por Argentina:
+    carteles en otros idiomas o alfabetos, lugares reconocibles de otros países, billetes que no sean pesos
+    argentinos o dólares.
+Las opciones marcadas PROPIA son videos grabados en Argentina.
+Para los COMODINES puntuá en general: ¿sirven para acompañar un video de plata e impuestos en Argentina?
+Las POSTALES son tomas de Argentina para enganchar la vista (paisajes, drones, ciudades, cosas típicas):
+3 = hermosa y claramente argentina (Buenos Aires, Patagonia, Iguazú, glaciares, cordillera, mar, mate, asado);
+2 = linda y puede pasar por Argentina; 0 = fea, borrosa o de otro país.
+Respondé solo con JSON: {"escenas": [{"escena": 1, "puntajes": [3, 0, 2]}], "comodines": [2, 0, 3], "postales": [3, 0]}"""
+
+
+def _imagen(c, ruta):
+    import base64
+    mini = broll.miniatura(c, ruta)
+    if not mini:
+        return None
+    return {"inlineData": {"mimeType": "image/jpeg", "data": base64.b64encode(Path(mini).read_bytes()).decode()}}
+
+
+def _puntuar_con_ia(escenas, candidatos, comodines, trabajo, postales=()):
+    """La IA mira una imagen de cada opción y la puntúa de 0 a 3.
+    Si falla, se usa un puntaje por defecto (2 para lo que pasó el filtro)."""
+    from . import escritor
+    defecto = ([[2] * len(c) for c in candidatos], [2] * len(comodines), [2] * len(postales))
+    partes, hay = [{"text": "ESCENAS Y OPCIONES:"}], False
+    for i, (esc, cands) in enumerate(zip(escenas, candidatos), 1):
+        partes.append({"text": f'\nESCENA {i}: "{esc["texto"]}"'})
+        for k, c in enumerate(cands):
+            img = _imagen(c, trabajo / f"mini_{i}_{k}.jpg")
+            if img:
+                hay = True
+                partes += [{"text": f"Opción {k}" + (" (PROPIA)" if c.get("propio") else "") + ":"}, img]
+            else:
+                partes.append({"text": f"Opción {k}: (sin imagen, poné 1)"})
+    partes.append({"text": "\nCOMODINES:"})
+    for k, c in enumerate(comodines):
+        img = _imagen(c, trabajo / f"mini_comodin_{k}.jpg")
+        partes += [{"text": f"Comodín {k}:"}, img] if img else [{"text": f"Comodín {k}: (sin imagen, poné 1)"}]
+        hay = hay or bool(img)
+    if postales:
+        partes.append({"text": "\nPOSTALES:"})
+        for k, c in enumerate(postales):
+            img = _imagen(c, trabajo / f"mini_postal_{k}.jpg")
+            partes += [{"text": f"Postal {k}:"}, img] if img else [{"text": f"Postal {k}: (sin imagen, poné 1)"}]
+            hay = hay or bool(img)
+    if not hay:
+        return defecto
+    try:
+        r = escritor.gemini(PUNTUAR, partes, temperatura=0.2)
+        por_escena = {int(e.get("escena", 0)) - 1: e.get("puntajes", []) for e in r.get("escenas", [])
+                      if isinstance(e, dict)}
+        puntajes = []
+        for i, cands in enumerate(candidatos):
+            p = [int(x) if str(x).lstrip("-").isdigit() else 1 for x in por_escena.get(i, [])]
+            puntajes.append((p + [1] * len(cands))[:len(cands)])
+        pc = [int(x) if str(x).lstrip("-").isdigit() else 1 for x in r.get("comodines", [])]
+        pc = (pc + [1] * len(comodines))[:len(comodines)]
+        pp = [int(x) if str(x).lstrip("-").isdigit() else 1 for x in r.get("postales", [])]
+        pp = (pp + [1] * len(postales))[:len(postales)]
+        util.log("Puntajes de los fondos:", puntajes, "comodines:", pc, "postales:", pp)
+        return puntajes, pc, pp
+    except Exception as e:  # noqa
+        util.log("No pude puntuar los fondos con la IA:", util.ocultar(e))
+        return defecto
+
+
 def _fondos(escenas, tiempos, trabajo, seed):
-    """Un clip cada ~2.3 s. Devuelve (lista de segmentos, cuántos son de stock, nombre del banco)."""
+    """Un clip cada ~2.3 s. Siempre video: primero lo que muestra justo lo que se dice, si no un comodín
+    de plata y trámites; nunca algo de otro país ni sin relación. Devuelve (segmentos, de stock, banco, propios)."""
     from . import video
     banco, buscar, clave = broll.proveedor()
-    usados, segmentos, de_pexels = set(), [], 0
-    n = 0
-    for i, (esc, (ini, fin)) in enumerate(zip(escenas, tiempos)):
+    propios = broll.propios()
+    # 1) opciones por escena: primero los clips propios, después los del banco (sin los que son de afuera)
+    candidatos = []
+    for esc, (ini, fin) in zip(escenas, tiempos):
         dur = fin - ini
-        cortes = max(1, round(dur / CORTE))
-        largos = [dur / cortes] * cortes
-        candidatos = []
-        if clave:
-            consultas = esc.get("broll") or []
-            if isinstance(consultas, str):
-                consultas = [consultas]
-            consultas = [x for x in consultas if x][:2]
-            consultas += [" ".join(x.split()[:2]) for x in consultas if len(x.split()) > 2]  # más general
+        lista = broll.propios_para(propios, esc)
+        consultas = [x for x in (esc.get("broll") or []) if x][:2]
+        if clave and consultas:
+            consultas += [" ".join(x.split()[:2]) for x in consultas if len(x.split()) > 2]
             for c in consultas:
                 try:
-                    candidatos += buscar(c, clave, usados, cantidad=cortes + 1, minimo=min(dur, 3))
+                    lista += [x for x in buscar(c, clave, set(), cantidad=3, minimo=min(dur, 3))
+                              if not broll.de_afuera(x)]
                 except Exception as e:  # noqa
                     util.log(f"{banco} falló:", util.ocultar(e))
-                if len(candidatos) >= cortes:
+                if len(lista) >= 4:
                     break
-        for k, largo in enumerate(largos):
+        vistos, unicos = set(), []
+        for x in lista:
+            if x["id"] not in vistos:
+                vistos.add(x["id"])
+                unicos.append(x)
+        candidatos.append(unicos[:4])
+    # comodines: tus clips propios primero, después algunos del banco
+    comodines = [c for c in propios][:6]
+    if clave:
+        for q in random.sample(COMODINES, len(COMODINES)):
+            if len(comodines) >= 12:
+                break
+            try:
+                comodines += [x for x in buscar(q, clave, set(), cantidad=2, minimo=3) if not broll.de_afuera(x)]
+            except Exception as e:  # noqa
+                util.log(f"{banco} falló:", util.ocultar(e))
+    ya = {x["id"] for lst in candidatos for x in lst}
+    comodines = [c for c in comodines if c["id"] not in ya]
+    cfg = util.config()
+    tope_postales = int(cfg.get("postales_por_video", 3))
+    lindas = broll.postales(buscar, clave) if (clave and tope_postales > 0) else []
+    # 2) la IA puntúa
+    puntajes, p_comodin, p_postal = _puntuar_con_ia(escenas, candidatos, comodines, trabajo, lindas)
+    # 3) armado
+    usados, segmentos, de_video, de_propios, n = set(), [], 0, 0, 0
+    con_ia_de_imagen = bool(util.secreto("CF_ACCOUNT_ID") and util.secreto("CF_API_TOKEN"))
+
+    def mejores(lista, pts, minimo):
+        orden = sorted([(p, k) for k, p in enumerate(pts) if p >= minimo and lista[k]["id"] not in usados],
+                       key=lambda x: (-x[0], not lista[x[1]].get("propio"), x[1]))
+        return [lista[k] for _, k in orden]
+
+    postales_usadas, anterior_postal = 0, False
+    ultima = len(escenas) - 1
+    for i, (esc, (ini, fin)) in enumerate(zip(escenas, tiempos)):
+        dur = fin - ini
+        buenos = mejores(candidatos[i], puntajes[i], 2)          # pegan con la frase
+        exacto = any(p >= 3 for p in puntajes[i])
+        # Postal de Argentina: en la intriga (escena 2) y en el cierre siempre que no haya un clip exacto,
+        # y en cualquier escena que no tenga nada bueno. Nunca dos seguidas ni más del tope.
+        postal = []
+        if lindas and postales_usadas < tope_postales and not anterior_postal:
+            if (not buenos) or (i in (1, ultima) and not exacto):
+                postal = mejores(lindas, p_postal, 2)[:1]
+        if postal:
+            buenos = postal
+        if not buenos:
+            buenos = mejores(comodines, p_comodin, 2)[:1]          # comodín de plata y trámites
+        if not buenos:
+            buenos = (mejores(candidatos[i], puntajes[i], 1) or mejores(comodines, p_comodin, 1))[:1]
+        cortes = max(1, min(round(dur / CORTE), len(buenos))) if buenos else 1
+        for largo in [dur / cortes] * cortes:
             destino = trabajo / f"fondo{n:03d}.mp4"
             hecho = False
-            while candidatos and not hecho:
-                c = candidatos.pop(0)
+            while buenos and not hecho:
+                c = buenos.pop(0)
                 try:
                     crudo = broll.bajar(c["link"], trabajo / f"stock_{c['id']}.mp4")
                     broll.recortar(crudo, largo, destino)
                     usados.add(c["id"])
-                    hecho, de_pexels = True, de_pexels + 1
+                    hecho = True
+                    postales_usadas += 1 if c.get("postal") else 0
+                    anterior_postal = bool(c.get("postal"))
+                    if c.get("propio"):
+                        de_propios += 1
+                    else:
+                        de_video += 1
                 except Exception as e:  # noqa
                     util.log("Clip descartado:", util.ocultar(e))
-            if not hecho:
-                img = trabajo / f"img{i}.png"
-                if not img.exists():
-                    # sin texto: los subtítulos ya cuentan lo que se dice
-                    video.make_image(esc.get("prompt") or "", "", img, seed + i, esc.get("emoji") or "💡")
-                broll.clip_de_imagen(img, largo, destino, acercar=(n % 2 == 0))
+            if not hecho:  # sin ningún video posible (por ejemplo, sin clave del banco)
+                if con_ia_de_imagen:
+                    img = trabajo / f"img{i}.png"
+                    if not img.exists():
+                        video.make_image(esc.get("prompt") or "", "", img, seed + i, esc.get("emoji") or "💡")
+                    broll.clip_de_imagen(img, largo, destino, acercar=(n % 2 == 0))
+                else:
+                    broll.clip_tarjeta(esc.get("emoji") or "💡", largo, destino, acercar=(n % 2 == 0))
             segmentos.append(destino)
             n += 1
-    return segmentos, de_pexels, banco
+    return segmentos, de_video, banco, de_propios, postales_usadas
 
 
 def _musica(cfg):
@@ -201,7 +335,7 @@ def generar(contenido, serie_nombre, usuario, carpeta):
     total = round(tiempos[-1][1], 3)
 
     # 2) fondos
-    segmentos, de_pexels, banco = _fondos(escenas, tiempos, trabajo, seed)
+    segmentos, de_pexels, banco, de_propios, de_postales = _fondos(escenas, tiempos, trabajo, seed)
     (trabajo / "lista.txt").write_text("".join(f"file '{p.resolve()}'\n" for p in segmentos))
     _run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(trabajo / "lista.txt"),
           "-c", "copy", str(trabajo / "fondo.mp4")])
@@ -237,7 +371,7 @@ def generar(contenido, serie_nombre, usuario, carpeta):
     _portada(segmentos, contenido, salida / "thumb.jpg", trabajo)
 
     meta = {"duracion": round(voz.duracion(salida / "video.mp4"), 2), "voz": motor, "clips": len(segmentos),
-            "clips_stock": de_pexels, "banco": banco, "musica": musica.name if musica else None, "voz_seg": round(dur_voz, 2)}
+            "clips_stock": de_pexels, "banco": banco, "clips_propios": de_propios, "postales": de_postales, "musica": musica.name if musica else None, "voz_seg": round(dur_voz, 2)}
     (salida / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
     util.log("Video:", json.dumps(meta, ensure_ascii=False))
     shutil.rmtree(trabajo, ignore_errors=True)

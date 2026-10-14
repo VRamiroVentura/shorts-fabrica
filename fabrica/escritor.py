@@ -71,7 +71,8 @@ def _cuerpo(sistema, usuario, temperatura, modelo, con_pensamiento, con_segurida
         gen["temperature"] = temperatura
     cuerpo = {
         "systemInstruction": {"parts": [{"text": sistema}]},
-        "contents": [{"role": "user", "parts": [{"text": usuario}]}],
+        # usuario puede ser texto o una lista de partes (texto + imágenes)
+        "contents": [{"role": "user", "parts": usuario if isinstance(usuario, list) else [{"text": usuario}]}],
         "generationConfig": gen,
     }
     if con_seguridad:

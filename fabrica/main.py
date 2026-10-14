@@ -162,7 +162,8 @@ def resumen(base_url, res=None):
     v = p.get("video") or {}
     if v:
         md += [f'Voz: {v.get("voz", "?")} · {v.get("duracion", "?")} s · fondos: {v.get("clips_stock", 0)} de '
-               f'{v.get("clips", 0)} clips de {v.get("banco") or "stock"} · música: {v.get("musica") or "no"}', ""]
+               f'{v.get("clips", 0)} clips de {v.get("banco") or "stock"}, {v.get("clips_propios", 0)} propios, '
+               f'{v.get("postales", 0)} postales de Argentina · música: {v.get("musica") or "no"}', ""]
     md += ["", f'[▶️ Ver el video]({base}{p["archivos"]["video"]}) · [Portada]({base}{p["archivos"]["portada"]})', ""]
     md += [" ".join(f'<img src="{base}{x}" width="180">' for x in p["archivos"]["placas"]), ""]
     md += ["**Texto para publicar:**", "", "```", p["caption"], "```", "", "**Guion:** " + p["guion"]]

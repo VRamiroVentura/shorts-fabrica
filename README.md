@@ -122,6 +122,7 @@ Sin esto, la serie igual funciona con los sitios y YouTube.
 
 - **Voz:** en `config.json`, `voz_motor` es `gemini` (más natural, usa la misma clave) o `edge` (Microsoft). `voz_gemini` en `auto` busca una voz argentina en la biblioteca de Google; si no hay, usa `Puck`. Podés probar otras: `Orus`, `Charon`, `Fenrir` (hombre) o `Kore`, `Aoede`, `Leda` (mujer). `voz_tempo` en `1.1` la hace un poco más rápida. Si la voz de Gemini falla un día, el video sale igual con la de Microsoft y queda un aviso amarillo en la ejecución.
 - **Música:** subí uno o varios `.mp3` libres de derechos a la carpeta `assets/` (ver `assets/LEEME.md`). Si no hay, va sin música.
+- **Fondos:** para cada escena la fábrica junta opciones (tus clips de `assets/clips/` primero y después Pixabay), descarta las que muestran otros países o monedas, y una IA mira una imagen de cada una y elige solo las que pegan con lo que se dice. Si ninguna pega, usa un comodín de plata y trámites (manos contando plata, celular, posnet, papeles). Además mete hasta 3 **postales de Argentina** por video (drones de Buenos Aires, Patagonia, Iguazú, glaciares, mar, mate, asado) en la intriga, en el cierre y donde no haya nada mejor, para enganchar la vista; solo usa tomas cuyas etiquetas dicen que son de acá. Se regula con `postales_por_video` en `config.json`. Grabar 20 o 30 clips propios con el celu (billetes, tarjeta, celular, calles de La Plata) es lo que más lo hace "argento": ver `assets/clips/LEEME.md`.
 
 ## Cómo cambiar cosas
 

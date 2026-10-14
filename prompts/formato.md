@@ -8,7 +8,12 @@ Formato: VIDEO CORTO (Reel, Short o TikTok) con voz en off y videos de fondo.
   5. Cierre (última escena): invitá a mandárselo a alguien puntual o a guardarlo, con una frase distinta cada vez.
 - texto_voz: lo que se dice, escrito para el oído, como se habla.
 - texto_pantalla: solo en la escena 1, el gancho escrito para leer sin sonido (máximo 7 palabras). En las demás escenas dejalo vacío.
-- broll: búsqueda en inglés para encontrar un video de stock que muestre lo que se dice en esa escena. De 2 a 4 palabras, algo filmable y concreto (personas, manos, objetos, lugares). Sin marcas, logos, texto ni ideas abstractas. Ejemplos: "paying with credit card", "man counting cash", "woman looking at phone", "receipt printer", "calculator on desk", "busy city street".
+- broll: búsqueda en inglés para encontrar un video de stock que muestre lo que se dice en esa escena. De 2 a 4 palabras, algo filmable y concreto. La cuenta es argentina, así que:
+  - Priorizá planos de manos y objetos, que se ven igual en todos lados: "hands paying with card", "hand holding phone", "wallet with cash", "calculator on desk", "receipt printer", "laptop typing", "mate gourd".
+  - Si hay plata: "argentine pesos" o "us dollar bills". Nunca otras monedas.
+  - Si hay una calle o una ciudad: "Buenos Aires street" o "Buenos Aires city".
+  - Sin marcas, logos, texto ni ideas abstractas. Si la frase es abstracta, buscá la acción concreta que la acompaña (alguien mirando el celular preocupado, papeles sobre un escritorio, manos contando plata).
+  - Podés poner dos búsquedas en una lista: primero la más precisa y después una más general. Ejemplo: ["hands paying with card", "card payment terminal"].
 - Para cada escena agregá también: emoji (UN solo emoji común de un objeto o símbolo, sin banderas) y prompt (descripción en inglés de una ilustración simple estilo dibujo animado, sin texto ni números), por si no aparece un video que sirva.
 
 Formato: CARRUSEL de 6 a 8 placas.
@@ -35,6 +40,6 @@ Respondé SOLO con un JSON válido con esta forma exacta:
   "descripcion": "...",
   "hashtags": ["#...", "#..."],
   "miniatura": { "linea1": "...", "linea2": "...", "emoji": "...", "prompt": "..." },
-  "escenas": [ { "texto_voz": "...", "texto_pantalla": "...", "broll": "...", "emoji": "...", "prompt": "..." } ],
+  "escenas": [ { "texto_voz": "...", "texto_pantalla": "...", "broll": ["...", "..."], "emoji": "...", "prompt": "..." } ],
   "carrusel": [ { "titulo": "...", "texto": "...", "emoji": "..." } ]
 }
