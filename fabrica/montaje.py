@@ -125,14 +125,15 @@ Mirá la imagen de cada opción y poné un puntaje:
 3 = muestra justo lo que se dice: la acción, el objeto o el lugar.
 2 = muestra plata, pagos, un celular, una compu, papeles, trabajo o compras, y acompaña bien la frase.
 1 = neutro: no molesta pero no aporta.
-0 = no tiene nada que ver (un cielo, flores, alguien en la cama, paisajes), o no puede pasar por Argentina:
+0 = tiene texto agregado encima (títulos, letras grandes, marcas de agua, logos), o no tiene nada que ver
+    (un cielo, flores, alguien en la cama, paisajes), o no puede pasar por Argentina:
     carteles en otros idiomas o alfabetos, lugares reconocibles de otros países, billetes que no sean pesos
     argentinos o dólares.
 Las opciones marcadas PROPIA son videos grabados en Argentina.
 Para los COMODINES puntuá en general: ¿sirven para acompañar un video de plata e impuestos en Argentina?
 Las POSTALES son tomas de Argentina para enganchar la vista (paisajes, drones, ciudades, cosas típicas):
 3 = hermosa y claramente argentina (Buenos Aires, Patagonia, Iguazú, glaciares, cordillera, mar, mate, asado);
-2 = linda y puede pasar por Argentina; 0 = fea, borrosa o de otro país.
+2 = linda y puede pasar por Argentina; 0 = fea, borrosa, de otro país o con texto, títulos o marcas de agua encima.
 Respondé solo con JSON: {"escenas": [{"escena": 1, "puntajes": [3, 0, 2]}], "comodines": [2, 0, 3], "postales": [3, 0]}"""
 
 
@@ -191,6 +192,52 @@ def _puntuar_con_ia(escenas, candidatos, comodines, trabajo, postales=()):
         return defecto
 
 
+CON_TEXTO = """Te paso fotogramas de los clips de fondo de un video (dos cuadros de cada clip, uno al lado del otro).
+Decime qué clips tienen TEXTO AGREGADO ENCIMA del video: títulos, letras grandes, nombres de lugares escritos,
+marcas de agua, logos, créditos o subtítulos. No cuenta un cartel chico que es parte natural de la escena
+(el letrero de un negocio a lo lejos) ni el texto de una pantalla de celular o de compu.
+Respondé solo con JSON: {"con_texto": [números de los clips con texto agregado]} (lista vacía si ninguno)."""
+
+
+def _con_texto(lista, trabajo, ronda):
+    """Devuelve los índices (de `lista`) de los fondos que tienen texto sobreimpreso."""
+    from . import escritor
+    partes = []
+    for k, x in enumerate(lista):
+        cuadros = []
+        for j, frac in enumerate((0.3, 0.75)):
+            f = trabajo / f"control_{ronda}_{k}_{j}.jpg"
+            try:
+                _run(["ffmpeg", "-y", "-v", "error", "-ss", f"{x['largo'] * frac:.2f}", "-i", str(x["dest"]),
+                      "-frames:v", "1", "-vf", "scale=200:-1", str(f)])
+                cuadros.append(Image.open(f).convert("RGB"))
+            except Exception:  # noqa
+                pass
+        if not cuadros:
+            continue
+        hoja = Image.new("RGB", (sum(c.width for c in cuadros) + 8, max(c.height for c in cuadros)), (0, 0, 0))
+        xx = 0
+        for c in cuadros:
+            hoja.paste(c, (xx, 0))
+            xx += c.width + 8
+        ruta = trabajo / f"control_{ronda}_{k}.jpg"
+        hoja.save(ruta, "JPEG", quality=70)
+        import base64
+        partes += [{"text": f"Clip {k}:"},
+                   {"inlineData": {"mimeType": "image/jpeg", "data": base64.b64encode(ruta.read_bytes()).decode()}}]
+    if not partes:
+        return []
+    try:
+        r = escritor.gemini(CON_TEXTO, partes, temperatura=0.2)
+        idx = [int(v) for v in r.get("con_texto", []) if str(v).lstrip("-").isdigit()]
+        if idx:
+            util.log("Fondos con texto encima:", idx)
+        return idx
+    except Exception as e:  # noqa
+        util.log("No pude revisar si los fondos tienen texto:", util.ocultar(e))
+        return []
+
+
 def _fondos(escenas, tiempos, trabajo, seed):
     """Un clip cada ~2.3 s. Siempre video: primero lo que muestra justo lo que se dice, si no un comodín
     de plata y trámites; nunca algo de otro país ni sin relación. Devuelve (segmentos, de stock, banco, propios)."""
@@ -238,6 +285,7 @@ def _fondos(escenas, tiempos, trabajo, seed):
     puntajes, p_comodin, p_postal = _puntuar_con_ia(escenas, candidatos, comodines, trabajo, lindas)
     # 3) armado
     usados, segmentos, de_video, de_propios, n = set(), [], 0, 0, 0
+    colocados = []  # cada fondo puesto: para revisar después que no tenga texto encima
     con_ia_de_imagen = bool(util.secreto("CF_ACCOUNT_ID") and util.secreto("CF_API_TOKEN"))
 
     def mejores(lista, pts, minimo):
@@ -266,14 +314,14 @@ def _fondos(escenas, tiempos, trabajo, seed):
         cortes = max(1, min(round(dur / CORTE), len(buenos))) if buenos else 1
         for largo in [dur / cortes] * cortes:
             destino = trabajo / f"fondo{n:03d}.mp4"
-            hecho = False
+            hecho, puesto = False, None
             while buenos and not hecho:
                 c = buenos.pop(0)
                 try:
                     crudo = broll.bajar(c["link"], trabajo / f"stock_{c['id']}.mp4")
                     broll.recortar(crudo, largo, destino)
                     usados.add(c["id"])
-                    hecho = True
+                    hecho, puesto = True, c
                     postales_usadas += 1 if c.get("postal") else 0
                     anterior_postal = bool(c.get("postal"))
                     if c.get("propio"):
@@ -291,7 +339,43 @@ def _fondos(escenas, tiempos, trabajo, seed):
                 else:
                     broll.clip_tarjeta(esc.get("emoji") or "💡", largo, destino, acercar=(n % 2 == 0))
             segmentos.append(destino)
+            colocados.append({"dest": destino, "largo": largo, "i": i, "clip": puesto, "n": n})
             n += 1
+
+    # 4) control final: ningún fondo con títulos, letras o marcas de agua encima
+    def alternativas(i):
+        lista = mejores(candidatos[i], puntajes[i], 2) + mejores(comodines, p_comodin, 2)
+        if lindas and postales_usadas < tope_postales:
+            lista += mejores(lindas, p_postal, 2)
+        return lista
+
+    revisar = [k for k, x in enumerate(colocados) if x["clip"] and not x["clip"].get("propio")]
+    for ronda in range(2):
+        if not revisar:
+            break
+        con_texto = _con_texto([colocados[k] for k in revisar], trabajo, ronda)
+        nuevos = []
+        for idx in con_texto:
+            if not 0 <= idx < len(revisar):
+                continue
+            x = colocados[revisar[idx]]
+            util.log("Fondo con texto encima, lo cambio:", x["clip"].get("id"))
+            hecho = False
+            for c in alternativas(x["i"]):
+                try:
+                    crudo = broll.bajar(c["link"], trabajo / f"stock_{c['id']}.mp4")
+                    broll.recortar(crudo, x["largo"], x["dest"])
+                    usados.add(c["id"])
+                    postales_usadas += 1 if c.get("postal") else 0
+                    x["clip"], hecho = c, True
+                    nuevos.append(revisar[idx])
+                    break
+                except Exception as e:  # noqa
+                    util.log("Clip descartado:", util.ocultar(e))
+            if not hecho:
+                broll.clip_tarjeta(escenas[x["i"]].get("emoji") or "💡", x["largo"], x["dest"])
+                x["clip"] = None
+        revisar = nuevos
     return segmentos, de_video, banco, de_propios, postales_usadas
 
 

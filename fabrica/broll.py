@@ -129,8 +129,10 @@ def recortar(origen, dur, destino, desde=None):
     except Exception:  # noqa
         pass
     if desde is None:
-        margen = max(0.0, total - dur - 0.3)
-        desde = round(random.uniform(0.2, margen), 2) if margen > 0.4 else 0.0
+        # Muchos clips traen un título al principio o un cartel al final: se toma un tramo del medio.
+        ini = min(max(1.5, total * 0.2), max(0.0, total - dur - 1.0))
+        fin = total - dur - 1.0
+        desde = round(random.uniform(ini, fin), 2) if fin > ini else round(max(0.0, min(ini, total - dur)), 2)
     flt = (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1,fps={FPS},"
            "eq=brightness=-0.05:saturation=1.08,format=yuv420p")
     entrada = ["-stream_loop", "-1"] if total and total < dur + desde else []
