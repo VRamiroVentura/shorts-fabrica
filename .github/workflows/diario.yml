@@ -2,10 +2,11 @@ name: Publicación diaria
 
 on:
   schedule:
-    # Cada 30 minutos, de 11:07 a 21:37 (hora de Argentina), se fija si toca publicar.
+    # Cada 30 minutos, de 11:07 a 23:37 (hora de Argentina), se fija si toca publicar.
     # El horario de cada día se cambia en config.json → "horarios".
+    # Si GitHub se atrasa y se pasa la hora, publica igual apenas pueda (hasta 3 horas después).
     - cron: "7,37 14-23 * * *"
-    - cron: "7,37 0 * * *"
+    - cron: "7,37 0-2 * * *"
   workflow_dispatch:
     inputs:
       serie:
@@ -34,6 +35,8 @@ jobs:
       si: ${{ steps.toca.outputs.si }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}  # siempre la última versión (con el historial de hoy al día)
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
@@ -75,6 +78,8 @@ jobs:
       GH_PAT: ${{ secrets.GH_PAT }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}  # siempre la última versión (con el historial de hoy al día)
 
       - uses: actions/setup-python@v6
         with:
