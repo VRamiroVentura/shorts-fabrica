@@ -54,7 +54,7 @@
     "instagram_carrusel": true,
     "youtube": true,
     "tiktok": false,
-    "facebook": false
+    "facebook": true
   },
   "youtube_privacidad": "public",
   "tiktok_privacidad": "SELF_ONLY",
