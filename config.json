@@ -52,7 +52,7 @@
   "publicar": {
     "instagram_reel": true,
     "instagram_carrusel": true,
-    "youtube": false,
+    "youtube": true,
     "tiktok": false,
     "facebook": false
   },
