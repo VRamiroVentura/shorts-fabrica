@@ -50,8 +50,8 @@
     5
   ],
   "publicar": {
-    "instagram_reel": false,
-    "instagram_carrusel": false,
+    "instagram_reel": true,
+    "instagram_carrusel": true,
     "youtube": false,
     "tiktok": false,
     "facebook": false
