@@ -26,6 +26,8 @@ def generar(simulado=False):
     os.environ.setdefault("TTS_MAX_PAUSA", str(cfg.get("voz_pausa_maxima", 0.28)))
     from . import carrusel, escritor, investigar, montaje  # importa después de fijar la voz
 
+    if not simulado:
+        _sumar_intento()
     clave_serie = _serie_del_dia(cfg)
     serie = cfg["series"][clave_serie]
     fecha = util.ahora().strftime("%Y-%m-%d")
@@ -246,6 +248,24 @@ def _rendimiento(cfg, clave_yt, dias=30):
 
 # ---------------------------------------------------------------- horarios
 VENTANA = (30, 60)  # se arranca entre 60 y 30 minutos antes del horario (el reloj corre cada 30 min)
+TARDE_MAX = 180     # si el reloj de GitHub se atrasa, publica igual hasta 3 horas después del horario
+INTENTOS_MAX = 2    # si falla, lo reintenta una vez más ese día (no más, para no llenarte de avisos)
+
+
+def _intentos(fecha):
+    return int((util.leer_json("data/estado.json", {}).get("intentos") or {}).get(fecha, 0))
+
+
+def _sumar_intento():
+    """Anota que el reloj arrancó a fabricar hoy (se guarda aunque la corrida falle)."""
+    if os.getenv("GITHUB_EVENT_NAME") != "schedule":
+        return
+    estado = util.leer_json("data/estado.json", {})
+    hoy = util.ahora().strftime("%Y-%m-%d")
+    intentos = {k: v for k, v in (estado.get("intentos") or {}).items() if k >= hoy}  # solo el de hoy
+    intentos[hoy] = intentos.get(hoy, 0) + 1
+    estado["intentos"] = intentos
+    util.guardar_json("data/estado.json", estado)
 
 
 def _objetivo(cfg, momento=None):
@@ -269,10 +289,18 @@ def toca():
             si, motivo = False, "hoy no tiene horario"
         elif any(h.get("fecha") == hoy for h in util.leer_json("data/historial.json", [])):
             si, motivo = False, "hoy ya se publicó"
+        elif _intentos(hoy) >= INTENTOS_MAX:
+            si, motivo = False, f"hoy ya se intentó {INTENTOS_MAX} veces y falló; mañana sigue normal"
         else:
             faltan = (objetivo - ahora).total_seconds() / 60
-            si = VENTANA[0] <= faltan < VENTANA[1]
-            motivo = f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
+            if VENTANA[0] <= faltan < VENTANA[1]:
+                si, motivo = True, f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
+            elif -TARDE_MAX <= faltan <= 0:
+                si = True
+                motivo = (f"ya pasaron {-faltan:.0f} minutos de las {objetivo:%H:%M} y hoy no salió nada "
+                          f"(el reloj se atrasó o falló): publico apenas esté listo")
+            else:
+                si, motivo = False, f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
     util.log("¿Toca publicar?", "sí" if si else "no", "·", motivo)
     salida = os.getenv("GITHUB_OUTPUT")
     if salida:

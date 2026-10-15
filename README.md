@@ -79,20 +79,21 @@ La API de Meta solo publica en **páginas**, no en perfiles personales.
 5. Hacelo durar: https://developers.facebook.com/tools/debug/accesstoken → pegá el token → **Extend Access Token** y copiá el nuevo.
 6. En el Explorer, con ese token largo, consultá `me/accounts`. De tu página copiá `access_token` (este no vence) e `id`.
 7. Guardá los secretos `FB_PAGE_TOKEN` y `FB_PAGE_ID`, y en `config.json` poné `"facebook": true`.
-8. (Opcional) Consultá `{id de la página}?fields=instagram_business_account` y guardá ese id como `IG_FB_ID`: con eso la serie de impuestos también mira qué les funciona en Instagram a los contadores de referencia.
+8. **Publicá la app de Meta** (si no, los Reels de Facebook solo los ves vos): en *Configuración de la app → Básica* completá la URL de la política de privacidad y la de eliminación de datos (sirve el link a `PRIVACIDAD.md`), un ícono de 1024×1024 y la categoría; después tocá **Publicar** en el menú izquierdo.
+9. (Opcional) Consultá `{id de la página}?fields=instagram_business_account` y guardá ese id como `IG_FB_ID`: con eso la serie de impuestos también mira qué les funciona en Instagram a los contadores de referencia.
 
-### YouTube (se sube solo, pero queda privado hasta que Google apruebe la app)
+### YouTube (se publica solo desde el primer día)
 
 1. En el mismo proyecto de Google Cloud, habilitá **YouTube Data API v3** (ya lo hiciste en el paso 3).
-2. **Pantalla de consentimiento de OAuth**: elegí tipo **Externo**, completá nombre y mail, y en **Estado de publicación** tocá **Publicar app (En producción)**. Si queda en "Prueba", el permiso vence cada 7 días y se corta todo.
-3. **Credenciales → Crear credenciales → ID de cliente de OAuth → Aplicación web**. En *URI de redireccionamiento autorizados* poné `https://developers.google.com/oauthplayground`. Copiá el **ID de cliente** y el **secreto**.
+2. **Google Auth Platform** (https://console.cloud.google.com/auth/overview): elegí tipo **Externo** y completá nombre y mail. En **Información de la marca** poné como página principal `https://github.com/VRamiroVentura/shorts-fabrica`, como política de privacidad el link a `PRIVACIDAD.md` de este repo y como dominio autorizado `github.com`. Después, en **Público**, tocá **Publicar app** (tiene que quedar **En producción**). Si queda en "Prueba", el permiso vence cada 7 días y se corta todo. El aviso de "requiere verificación" se ignora: no hace falta para usarla vos.
+3. **Clientes → Crear cliente → Aplicación web**. En *URI de redireccionamiento autorizados* poné `https://developers.google.com/oauthplayground`. Copiá el **ID de cliente** y el **secreto**.
 4. Entrá a https://developers.google.com/oauthplayground:
    1. Tocá el engranaje, tildá **Use your own OAuth credentials** y pegá el ID y el secreto.
    2. A la izquierda escribí `https://www.googleapis.com/auth/youtube.upload` y tocá **Authorize APIs**. Entrá con la cuenta del canal; si aparece "app no verificada", tocá **Avanzado → Ir a la app**.
    3. Tocá **Exchange authorization code for tokens** y copiá el **Refresh token**.
 5. Guardá los secretos `YT_CLIENT_ID`, `YT_CLIENT_SECRET` y `YT_REFRESH_TOKEN`.
 6. En `config.json` poné `"youtube": true`.
-7. Pedí la auditoría gratis en el formulario **"YouTube API Services - Audit and Quota Extension Form"** de Google. Hasta que la aprueben, los videos quedan privados y los pasás a público desde YouTube Studio con dos toques.
+7. Listo: los videos salen públicos. (Desde 2026 Google ya no deja en privado lo que suben las apps sin verificar. Si algún día un video aparece como privado con un aviso, hay que pedir la auditoría en el formulario "YouTube API Services - Audit and Quota Extension Form".)
 
 ### TikTok (más adelante)
 
@@ -145,7 +146,7 @@ Cada día sale a la hora que figura en `config.json` → `horarios` (hora de Arg
 | Sábado | Historias de plata | 18:30 | Sábado a la tarde, entretenimiento |
 | Domingo | Viral en el mundo | 21:00 | Domingo a la noche, todos en casa con el celu |
 
-Cómo funciona: un "reloj" corre cada 30 minutos; entre 60 y 30 minutos antes del horario arranca a fabricar y, con el video listo, espera al minuto exacto para publicar. Los horarios se pueden poner entre las 12:10 y las 22:30. Si un día publicás a mano (Run workflow con "publicar" tildado), ese día no vuelve a publicar solo.
+Cómo funciona: un "reloj" corre cada 30 minutos; entre 60 y 30 minutos antes del horario arranca a fabricar y, con el video listo, espera al minuto exacto para publicar. Si GitHub se atrasa (pasa a veces) o la corrida falla, el reloj lo vuelve a intentar apenas pasa el horario, hasta 3 horas después y como mucho 2 intentos por día. Los horarios se pueden poner entre las 12:10 y las 22:30. Si un día publicás a mano (Run workflow con "publicar" tildado), ese día no vuelve a publicar solo.
 
 El reporte de los lunes muestra las vistas promedio por franja horaria; cuando la cuenta pase los 100 seguidores, Instagram también muestra en *Panel profesional → Seguidores* las horas en que tu público está más activo. Con eso ajustamos.
 
