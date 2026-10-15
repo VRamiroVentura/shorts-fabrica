@@ -39,5 +39,29 @@
       "s9FSP0_A2_E"
     ],
     "resultados": {}
+  },
+  {
+    "fecha": "2026-10-15",
+    "hora": "19:30",
+    "serie": "autor",
+    "titulo": "El error de pensar que lo barato conviene siempre",
+    "fuentes": [
+      "37HErhv0PDw",
+      "WqeL_edDZqc"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": false,
+        "error": "API access blocked."
+      },
+      "youtube": {
+        "ok": false,
+        "error": "YouTube rechazó la subida: {\n  \"error\": {\n    \"code\": 401,\n    \"message\": \"Unauthorized\",\n    \"errors\": [\n      {\n        \"message\": \"Unauthorized\",\n        \"domain\": \"youtube.header\",\n        \"reason\": \"youtubeSignupRequired\",\n        \"location\": \"Authorization\",\n        \"locationType\": \"header\"\n  "
+      },
+      "facebook": {
+        "ok": false,
+        "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page."
+      }
+    }
   }
 ]
