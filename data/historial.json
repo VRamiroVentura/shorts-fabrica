@@ -63,5 +63,38 @@
         "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page."
       }
     }
+  },
+  {
+    "fecha": "2026-10-16",
+    "hora": "15:10",
+    "serie": "monotributo",
+    "titulo": "Si tenés deuda de Patentes o ABL mirá esto",
+    "fuentes": [
+      "009dxxxWn7E",
+      "https://blogdelcontador.com.ar/news-46497-casas-particulares-como-funciona-el-nuevo-recibo-asistido-de-arca-y-que-debe-controlar-el-empleador",
+      "https://blogdelcontador.com.ar/news-46452-ganancias-2026-nuevos-valores-de-deducciones-escala-y-piso-salarial-para-el-primer-semestre",
+      "https://blogdelcontador.com.ar/news-46495-arca-habilito-el-plan-de-ganancias-2025-por-que-su-adhesion-puede-resultar-clave-para-el-regimen-simplificado",
+      "https://blogdelcontador.com.ar/news-46494-nuevo-recibo-de-sueldo-el-dato-obligatorio-que-quedo-afuera-y-las-dudas-que-debera-aclarar-el-gobierno",
+      "https://www.ignacioonline.com.ar/agip-nuevo-plan-para-deudas-de-abl-y-patentes-con-quita-de-intereses-y-hasta-12-cuotas/",
+      "https://www.ignacioonline.com.ar/anses-acreditacion-automatica-para-cobrar-el-20-de-la-asignacion-por-embarazo/"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": false,
+        "error": "API access blocked."
+      },
+      "instagram_carrusel": {
+        "ok": false,
+        "error": "API access blocked."
+      },
+      "youtube": {
+        "ok": true,
+        "id": "kS5EKODjSJQ"
+      },
+      "facebook": {
+        "ok": false,
+        "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page."
+      }
+    }
   }
 ]
