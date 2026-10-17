@@ -96,5 +96,29 @@
         "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page."
       }
     }
+  },
+  {
+    "fecha": "2026-10-17",
+    "hora": "18:43",
+    "serie": "historias",
+    "titulo": "El negocio de moda que te funde sin avisar",
+    "fuentes": [
+      "fNh_GyRbJDA",
+      "Ha2oNXDZuSg"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": false,
+        "error": "API access blocked."
+      },
+      "youtube": {
+        "ok": true,
+        "id": "cHKKCJP8ETM"
+      },
+      "facebook": {
+        "ok": false,
+        "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page."
+      }
+    }
   }
 ]

@@ -46,5 +46,17 @@
   "Investors Archive": {
     "id": "UCW9ENAWv7Gjpj5miQcvr-1Q",
     "nombre": "Investor Archive"
+  },
+  "MagnatesMedia": {
+    "id": "UCE4Gn00XZbpWvGUfIslT-tA",
+    "nombre": "MagnatesMedia"
+  },
+  "Wall Street Millennial": {
+    "id": "UCUyH4QfXX-5NOT0bULqG6lQ",
+    "nombre": "Wall Street Millennial"
+  },
+  "Modern MBA": {
+    "id": "UCbzVRTkX3bzNZuBd9In4XyA",
+    "nombre": "Modern MBA"
   }
 }
