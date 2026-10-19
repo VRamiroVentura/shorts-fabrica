@@ -120,5 +120,29 @@
         "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page."
       }
     }
+  },
+  {
+    "fecha": "2026-10-18",
+    "hora": "21:09",
+    "serie": "viral",
+    "titulo": "El método viral de ahorro que acá no camina",
+    "fuentes": [
+      "juljdFO5DGw",
+      "JE_FJewpPb4"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": false,
+        "error": "API access blocked."
+      },
+      "youtube": {
+        "ok": true,
+        "id": "sGtxXpdAzXc"
+      },
+      "facebook": {
+        "ok": false,
+        "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page."
+      }
+    }
   }
 ]
