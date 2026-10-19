@@ -319,8 +319,11 @@ def _rendimiento(cfg, clave_yt, dias=30):
 
 
 # ---------------------------------------------------------------- horarios
-VENTANA = (30, 60)  # se arranca entre 60 y 30 minutos antes del horario (el reloj corre cada 30 min)
-TARDE_MAX = 180     # si el reloj de GitHub se atrasa, publica igual hasta 3 horas después del horario
+# GitHub no respeta el reloj: en la práctica dispara cada 2 o 3 horas y con atraso. Por eso la fábrica
+# arranca con el primer aviso que llega dentro de las 5 horas previas al horario, arma el video y
+# espera hasta el minuto exacto para publicar.
+ANTICIPO_MAX = 300  # minutos antes del horario en que ya puede arrancar (el trabajo de GitHub dura hasta 6 h)
+TARDE_MAX = 180     # si el aviso llega tarde, publica igual hasta 3 horas después del horario
 INTENTOS_MAX = 2    # si falla, lo reintenta una vez más ese día (no más, para no llenarte de avisos)
 
 
@@ -360,31 +363,28 @@ def _ya_salio(hoy, turno):
 
 
 def _toca_turno(cfg, ahora, turno):
-    """(sí/no, motivo) para un turno a esta hora."""
+    """(sí/no, motivo, horario objetivo) para un turno a esta hora."""
     objetivo = _objetivo(cfg, ahora, turno)
     hoy = ahora.strftime("%Y-%m-%d")
     if objetivo is None:
-        return False, "hoy no tiene horario"
+        return False, "hoy no tiene horario", None
     if _ya_salio(hoy, turno):
-        return False, "hoy ya se publicó"
+        return False, "hoy ya se publicó", objetivo
     if _intentos(hoy, turno) >= INTENTOS_MAX:
-        return False, f"hoy ya se intentó {INTENTOS_MAX} veces y falló; mañana sigue normal"
+        return False, f"hoy ya se intentó {INTENTOS_MAX} veces y falló; mañana sigue normal", objetivo
     faltan = (objetivo - ahora).total_seconds() / 60
-    if VENTANA[0] <= faltan < VENTANA[1]:
-        return True, f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
-    if 0 < faltan < VENTANA[0]:
-        # el aviso de GitHub llegó tarde: arranco igual (si ya hay otra corrida en marcha, esta queda
-        # en espera y, cuando le toca, ve en el historial que ya se publicó y no hace nada)
-        return True, (f"el reloj llegó tarde (faltan {faltan:.0f} minutos para las {objetivo:%H:%M}): "
-                      f"arranco ya y publico a horario o apenas esté listo")
+    if 0 < faltan <= ANTICIPO_MAX:
+        return True, (f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}: lo armo ahora y espero "
+                      f"hasta esa hora para publicar"), objetivo
     if -TARDE_MAX <= faltan <= 0:
         return True, (f"ya pasaron {-faltan:.0f} minutos de las {objetivo:%H:%M} y no salió "
-                      f"(el reloj se atrasó o falló): publico apenas esté listo")
-    return False, f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
+                      f"(el aviso de GitHub llegó tarde o falló): publico apenas esté listo"), objetivo
+    return False, f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}", objetivo
 
 
 def toca():
-    """Lo usa el reloj de GitHub cada 30 minutos: ¿hay que fabricar y publicar ahora? ¿Qué turno?"""
+    """Lo usa el reloj de GitHub: ¿hay que fabricar y publicar ahora? ¿Qué turno?
+    Si tocan los dos, va primero el de horario más temprano (el otro arranca con el aviso siguiente)."""
     cfg = util.config()
     try:
         turno = 2 if int(os.getenv("TURNO_MANUAL") or 1) == 2 else 1
@@ -393,13 +393,15 @@ def toca():
     si, motivos = True, ["ejecución manual"]
     if os.getenv("GITHUB_EVENT_NAME") == "schedule":
         ahora = util.ahora()
-        si, motivos = False, []
+        si, motivos, candidatos = False, [], []
         for t in _turnos(cfg):
-            ok, motivo = _toca_turno(cfg, ahora, t)
+            ok, motivo, objetivo = _toca_turno(cfg, ahora, t)
             motivos.append(f"turno {t}: {motivo}")
             if ok:
-                si, turno = True, t
-                break
+                candidatos.append((objetivo, t))
+        if candidatos:
+            si, turno = True, min(candidatos)[1]
+            motivos.append(f"→ arranca el turno {turno}")
     util.log("¿Toca publicar?", "sí" if si else "no", "·", " | ".join(motivos))
     salida = os.getenv("GITHUB_OUTPUT")
     if salida:
@@ -416,8 +418,11 @@ def esperar():
     if not objetivo:
         return
     segundos = (objetivo - util.ahora()).total_seconds()
-    if 0 < segundos < 70 * 60:
+    if 0 < segundos <= (ANTICIPO_MAX + 10) * 60:
         util.log(f"Video listo. Espero {segundos / 60:.0f} minutos para publicar a las {objetivo:%H:%M}.")
+        util.avisar("Esperando la hora de publicar",
+                    f"El video ya está listo. Esta corrida queda en marcha (amarilla) hasta las {objetivo:%H:%M} "
+                    f"y ahí publica. Es normal.")
         time.sleep(segundos)
 
 
