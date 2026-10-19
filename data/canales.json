@@ -58,5 +58,45 @@
   "Modern MBA": {
     "id": "UCbzVRTkX3bzNZuBd9In4XyA",
     "nombre": "Modern MBA"
+  },
+  "Libros para Emprendedores Luis Ramos": {
+    "id": "UCdBV7AnmVsrdwTFlZvB4lrw",
+    "nombre": "Libros para Emprendedores con Luis Ramos"
+  },
+  "Productivity Game": {
+    "id": "UC02x9yG9ZFF_VZp1VnMoptg",
+    "nombre": "Productivity Game"
+  },
+  "Value School": {
+    "id": "UCpLie5obXFdf8T0NG-IRHsA",
+    "nombre": "El podcast de Value School"
+  },
+  "Memorias de Tiburón": {
+    "id": "UC3bRVqfLpexxvzmoIyYc-KQ",
+    "nombre": "Memorias de Tiburón"
+  },
+  "VisualEconomik": {
+    "id": "UC5HdVtarytnZi4eLogHAfoQ",
+    "nombre": "VisualEconomik"
+  },
+  "Economics Explained": {
+    "id": "UCZ4AMrDcNrfy3X6nsU8-rPg",
+    "nombre": "Economics Explained"
+  },
+  "How Money Works": {
+    "id": "UCkCGANrihzExmu9QiqZpPlQ",
+    "nombre": "How Money Works"
+  },
+  "Lord Draugr": {
+    "id": "UCtIdb7KRqOTcOogKsos_QRw",
+    "nombre": "Lord Draugr"
+  },
+  "Finanzas para Todos": {
+    "id": "UCysHQr5Pnvlv4Nka5jBQDKQ",
+    "nombre": "Finanzas para todos"
+  },
+  "Zack D. Films": {
+    "id": "UCvz84_Q0BbvZThy75mbd-Dg",
+    "nombre": "Zack D. Films"
   }
 }
