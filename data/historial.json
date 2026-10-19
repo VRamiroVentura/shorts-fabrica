@@ -166,5 +166,30 @@
         "id": "3400874703430654"
       }
     }
+  },
+  {
+    "fecha": "2026-10-19",
+    "turno": 1,
+    "hora": "19:31",
+    "serie": "libro",
+    "titulo": "Dejá de recortar el café",
+    "fuentes": [
+      "GLuNZwfff6w",
+      "GHE7G7O4lQU"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18118193276105413"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "3rXinYMuwfs"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1889045622259973"
+      }
+    }
   }
 ]
