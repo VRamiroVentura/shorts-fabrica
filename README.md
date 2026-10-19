@@ -146,7 +146,7 @@ Cada día sale a la hora que figura en `config.json` → `horarios` (hora de Arg
 | Sábado | Historias de plata | 18:30 | Sábado a la tarde, entretenimiento |
 | Domingo | Viral en el mundo | 21:00 | Domingo a la noche, todos en casa con el celu |
 
-Cómo funciona: un "reloj" corre cada 30 minutos; entre 60 y 30 minutos antes del horario arranca a fabricar y, con el video listo, espera al minuto exacto para publicar. Si GitHub se atrasa (pasa a veces) o la corrida falla, el reloj lo vuelve a intentar apenas pasa el horario, hasta 3 horas después y como mucho 2 intentos por día. Los horarios se pueden poner entre las 12:10 y las 22:30. Si un día publicás a mano (Run workflow con "publicar" tildado), ese día no vuelve a publicar solo.
+Cómo funciona: un "reloj" corre cada 30 minutos; entre 60 y 30 minutos antes del horario arranca a fabricar y, con el video listo, espera al minuto exacto para publicar. Si el aviso de GitHub llega tarde (pasa seguido), arranca igual en ese momento; y si la corrida falla, lo vuelve a intentar hasta 3 horas después del horario, como mucho 2 intentos por día. Los horarios se pueden poner entre las 12:10 y las 22:30. Si un día publicás a mano (Run workflow con "publicar" tildado), ese día no vuelve a publicar solo.
 
 El reporte de los lunes muestra las vistas promedio por franja horaria; cuando la cuenta pase los 100 seguidores, Instagram también muestra en *Panel profesional → Seguidores* las horas en que tu público está más activo. Con eso ajustamos.
 

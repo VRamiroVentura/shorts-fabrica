@@ -29,7 +29,10 @@ def generar(simulado=False):
     if not simulado:
         _sumar_intento()
     clave_serie = _serie_del_dia(cfg)
-    serie = cfg["series"][clave_serie]
+    serie = dict(cfg["series"][clave_serie])
+    propio = util.RAIZ / "prompts" / "series" / f"{clave_serie}.md"
+    if propio.exists():  # instrucciones de la serie mejoradas, sin tocar config.json
+        serie["prompt"] = propio.read_text(encoding="utf-8").strip()
     fecha = util.ahora().strftime("%Y-%m-%d")
     util.log("Serie de hoy:", serie["nombre"])
 
@@ -295,6 +298,11 @@ def toca():
             faltan = (objetivo - ahora).total_seconds() / 60
             if VENTANA[0] <= faltan < VENTANA[1]:
                 si, motivo = True, f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
+            elif 0 < faltan < VENTANA[0]:
+                # el aviso de GitHub llegó tarde: arranco igual (si ya hay otra corrida en marcha, esta queda
+                # en espera y, cuando le toca, ve en el historial que ya se publicó y no hace nada)
+                si, motivo = True, (f"el reloj llegó tarde (faltan {faltan:.0f} minutos para las {objetivo:%H:%M}): "
+                                    f"arranco ya y publico a horario o apenas esté listo")
             elif -TARDE_MAX <= faltan <= 0:
                 si = True
                 motivo = (f"ya pasaron {-faltan:.0f} minutos de las {objetivo:%H:%M} y hoy no salió nada "

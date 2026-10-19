@@ -1,11 +1,12 @@
 Formato: VIDEO CORTO (Reel, Short o TikTok) con voz en off y videos de fondo.
-- Entre 8 y 13 escenas. Cada escena es UNA sola frase de 4 a 12 palabras (se dice en 2 a 3 segundos). En total, entre 70 y 110 palabras (25 a 40 segundos). Más corto retiene más.
+- Entre 6 y 9 escenas. Cada escena es UNA sola frase de 4 a 11 palabras (se dice en 2 a 3 segundos). En total, entre 55 y 80 palabras (20 a 28 segundos). Nuestros números dicen que la gente se va entre el segundo 7 y el 12: lo más fuerte va adelante y no hay relleno.
 - Estructura, en este orden:
-  1. Gancho (escena 1, máximo 9 palabras): una situación concreta, un dato que sorprenda o una pregunta que le toque a quien mira. Tiene que frenar el scroll en el primer segundo. Nunca una presentación.
-  2. Intriga (escena 2): abrí una pregunta que se responde recién al final ("y lo mejor es que se puede recuperar", "pero hay un detalle que casi nadie mira").
-  3. Desarrollo: un ejemplo concreto, una idea por escena, y que cada frase empuje a la siguiente ("y ahí", "el tema es que", "pero ojo").
-  4. Remate: la respuesta o el dato útil, dicho clarísimo.
-  5. Cierre (última escena): invitá a mandárselo a alguien puntual o a guardarlo, con una frase distinta cada vez.
+  1. Gancho (escena 1, máximo 9 palabras): arrancá con lo más fuerte que tenga el tema: un nombre conocido, una cifra concreta en pesos o un dato que sorprenda, dicho de frente a quien mira (afirmación o pregunta). Nada de contexto, presentación ni "hoy te cuento". Ejemplos de tono (no los copies): "Warren Buffett dice que lo barato te sale carísimo." / "¿Pagás el mínimo de la tarjeta? Mirá cuánto te cuesta."
+  2. Lo prometido (escenas 2 y 3): la idea principal o el dato útil, ya, sin vueltas. Antes del segundo 10 quien mira tiene que haber recibido algo. Tiene que ser concreto (qué pasa, cuánto, qué hacer); nada de frases vagas como "ponerla a rendir en algo".
+  3. Ejemplo (2 o 3 escenas): un caso argentino cotidiano que lo haga visual. Cada frase empuja a la siguiente ("y ahí", "el tema es que", "pero ojo").
+  4. Giro (1 escena): un detalle que casi nadie sabe o una consecuencia que sorprenda, para que valga la pena quedarse hasta el final.
+  5. Cierre (última escena, máximo 8 palabras): invitá a mandárselo a alguien puntual o a guardarlo, con una frase distinta cada vez.
+- Si el tema es un impuesto, un trámite o un beneficio: el gancho dice primero la plata que la persona gana, ahorra o pierde, y recién después el trámite. Si solo vale en un lugar (CABA, una provincia, un municipio), decilo en el gancho y en el título. Los topes y requisitos clave van solo si están en el material.
 - texto_voz: lo que se dice, escrito para el oído, como se habla.
 - texto_pantalla: solo en la escena 1, el gancho escrito para leer sin sonido (máximo 7 palabras). En las demás escenas dejalo vacío.
 - broll: búsqueda en inglés para encontrar un video de stock que muestre lo que se dice en esa escena. De 2 a 4 palabras, algo filmable y concreto. La cuenta es argentina, así que:
@@ -25,7 +26,7 @@ Formato: CARRUSEL de 6 a 8 placas.
 - Para cada placa, un emoji (UN solo emoji común de un objeto o símbolo, sin banderas) para ilustrarla.
 
 TEXTOS PARA PUBLICAR (los mismos en las 3 redes):
-- titulo: máximo 55 caracteres, escrito como una oración normal: mayúscula solo al principio y en las siglas (ARCA, IVA, CUIT, ANSES), nunca Título En Mayúsculas. Con curiosidad real y sin mentir. Sin emojis.
+- titulo: máximo 40 caracteres, corto y picante: una pregunta o una afirmación fuerte que den ganas de mirar. El que mejor nos funcionó: "¿Lo barato sale caro?". Tiene que hablar de la plata o la vida de quien mira, no de "un video" ni de "una noticia". Si hay un nombre conocido, usalo. Si el tema es de un solo lugar, nombralo ("ABL en CABA: ..."). Mayúscula solo al principio y en las siglas (ARCA, IVA, CUIT, ANSES), nunca Título En Mayúsculas. Con curiosidad real y sin mentir. Sin emojis.
 - descripcion: 2 o 3 frases como si le escribieras a alguien por WhatsApp. La última invita a comentar con una pregunta concreta ("¿Vos en qué gastás el aguinaldo?").
 - hashtags: 5 a 7, en minúscula, sin tildes, siempre #argentina más los de la serie (#finanzaspersonales, #ahorro, #economia, #monotributo, #libros, #plata).
 - miniatura: linea1 (máximo 4 palabras) y linea2 (máximo 3), pensadas para que alguien frene el scroll.

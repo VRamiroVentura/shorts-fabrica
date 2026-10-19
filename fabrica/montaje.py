@@ -388,7 +388,7 @@ def _musica(cfg):
     return random.choice(temas) if temas else None
 
 
-def _portada(segmentos, contenido, destino, trabajo):
+def _portada(segmentos, contenido, destino, trabajo, serie_nombre=""):
     from . import video
     cuadro = trabajo / "cuadro_portada.jpg"
     try:
@@ -400,7 +400,8 @@ def _portada(segmentos, contenido, destino, trabajo):
     except Exception:  # noqa
         video.fallback_card("", cuadro, contenido.get("miniatura", {}).get("emoji", "💡"))
     mini = contenido.get("miniatura", {})
-    video.make_thumbnail(cuadro, mini.get("linea1") or contenido["titulo"], mini.get("linea2", ""), destino)
+    video.make_thumbnail(cuadro, mini.get("linea1") or contenido["titulo"], mini.get("linea2", ""), destino,
+                         arriba=serie_nombre)
 
 
 # ---------------------------------------------------------------- todo junto
@@ -454,7 +455,7 @@ def generar(contenido, serie_nombre, usuario, carpeta):
     _run(cmd)
 
     # 5) portada
-    _portada(segmentos, contenido, salida / "thumb.jpg", trabajo)
+    _portada(segmentos, contenido, salida / "thumb.jpg", trabajo, serie_nombre)
 
     meta = {"duracion": round(voz.duracion(salida / "video.mp4"), 2), "voz": motor, "clips": len(segmentos),
             "clips_stock": de_pexels, "banco": banco, "clips_propios": de_propios, "postales": de_postales, "musica": musica.name if musica else None, "voz_seg": round(dur_voz, 2)}

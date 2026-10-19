@@ -181,6 +181,20 @@ def _broll(b):
     return [x for x in limpias if len(x) > 2][:2]
 
 
+def _titulo_corto(t, maximo=60):
+    """Red de seguridad: si la IA se pasa de largo, corta en la última palabra entera (sin dejar puntuación colgando)."""
+    if len(t) <= maximo:
+        return t
+    corto = t[:maximo].rsplit(" ", 1)[0].rstrip(" ,;:.-—")
+    sueltas = {"y", "o", "de", "del", "que", "para", "en", "a", "al", "con", "el", "la", "los", "las", "un", "una",
+               "por", "sin", "tu", "tus", "su", "sus", "es", "se", "lo", "le", "mi", "mis"}
+    while " " in corto and corto.rsplit(" ", 1)[1].lower() in sueltas:
+        corto = corto.rsplit(" ", 1)[0].rstrip(" ,;:.-—")
+    if corto.startswith("¿") and not corto.endswith("?"):
+        corto += "?"
+    return corto
+
+
 def validar(d):
     escenas = []
     for e in d.get("escenas", []):
@@ -212,7 +226,7 @@ def validar(d):
         tags.append("#argentina")
     mini = d.get("miniatura") or {}
     return {
-        "titulo": _siglas(_limpiar(d.get("titulo")), True)[:95],
+        "titulo": _titulo_corto(_siglas(_limpiar(d.get("titulo")), True)),
         "descripcion": _siglas(_limpiar(d.get("descripcion")), True),
         "hashtags": tags[:8],
         "miniatura": {"linea1": _siglas(_limpiar(mini.get("linea1") or d.get("titulo")), True),
@@ -289,6 +303,36 @@ def _diagnostico(sistema, serie):
     util.avisar("Diagnóstico del bloqueo de Google", " | ".join(resultado))
 
 
+LARGO_MAX = 85  # palabras: más que esto ya pasa de ~30 segundos
+
+
+def _para_ia(d):
+    """El JSON del guion como lo espera la IA (sin campos internos)."""
+    x = {k: v for k, v in d.items() if k != "palabras"}
+    x["carrusel"] = [{"titulo": c["titulo"], "texto": c["cuerpo"], "emoji": c["emoji"]} for c in d["carrusel"]]
+    return x
+
+
+def _ajustar_largo(sistema, d):
+    """Si el guion se pasó de largo, le pide a la IA que lo recorte sin tocar el gancho."""
+    if d["palabras"] <= LARGO_MAX and len(d["escenas"]) <= 9:
+        return d
+    util.log(f'Guion largo ({d["palabras"]} palabras, {len(d["escenas"])} escenas): lo acorto')
+    pedido = (f'Este guion de video corto se pasa de largo: tiene {d["palabras"]} palabras y {len(d["escenas"])} '
+              "escenas. Dejalo en 6 a 9 escenas y entre 60 y 78 palabras en total. Mantené la escena 1 (el gancho) "
+              "y el dato principal tal cual; recortá del ejemplo y las frases que repiten una idea. No cambies nada "
+              "más (ni título, ni descripción, ni carrusel, ni hashtags). Devolvé el JSON completo con la misma forma."
+              "\n\nJSON:\n" + json.dumps(_para_ia(d), ensure_ascii=False))
+    try:
+        nuevo = validar(gemini(sistema, pedido, temperatura=0.4))
+        if nuevo["palabras"] < d["palabras"]:
+            util.log(f'Acortado a {nuevo["palabras"]} palabras')
+            return nuevo
+    except Exception as e:  # noqa
+        util.log("No pude acortarlo, sigo con el que tengo:", util.ocultar(e))
+    return d
+
+
 def escribir(serie, fuentes, titulos_previos):
     sistema = _prompt("maestro.md")
     borrador, material = None, ""
@@ -316,14 +360,11 @@ def escribir(serie, fuentes, titulos_previos):
     try:
         chequeo = ("\n\nMATERIAL DE REFERENCIA (solo para chequear que cada dato del guion exista acá):\n" +
                    material[:9000]) if material else ""
-        para_revisar = {k: v for k, v in borrador.items() if k != "palabras"}
-        para_revisar["carrusel"] = [{"titulo": c["titulo"], "texto": c["cuerpo"], "emoji": c["emoji"]}
-                                    for c in borrador["carrusel"]]
         revisado = gemini(sistema, _prompt("revision.md") + "\n\nJSON A REVISAR:\n" +
-                          json.dumps(para_revisar, ensure_ascii=False) + chequeo, temperatura=0.6)
+                          json.dumps(_para_ia(borrador), ensure_ascii=False) + chequeo, temperatura=0.6)
         final = validar(revisado)
-        util.log("Revisado:", final["titulo"])
-        return final
+        util.log("Revisado:", final["titulo"], f'({final["palabras"]} palabras)')
     except Exception as e:  # noqa
         util.log("La revisión falló, uso el borrador:", util.ocultar(e))
-        return borrador
+        final = borrador
+    return _ajustar_largo(sistema, final)

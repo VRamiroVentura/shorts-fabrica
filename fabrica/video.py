@@ -341,28 +341,39 @@ def make_canvas(header, path, usuario=""):
     im.save(path)
 
 
-def make_thumbnail(img_path, l1, l2, path):
+def make_thumbnail(img_path, l1, l2, path, arriba=""):
+    """Portada 9:16. El título va dentro del cuadrado central (y 420..1500): así no se corta ni en la
+    grilla 3:4 del perfil de Instagram, ni en las tarjetas de estadísticas, ni en recortes cuadrados.
+    Arriba, fuera de esa zona, va el nombre de la serie (si se recorta, no se pierde nada importante)."""
     im = Image.new("RGB", (W, H), ACCENT)
     d = ImageDraw.Draw(im)
-    # texto grande dentro del recorte 4:5 del perfil de Instagram (y 285..1635)
-    fnt1, lines1 = fit_text(d, l1.upper(), W - 110, 2, 190, 90)
-    y = 330
+    if arriba:
+        fnt0 = mk.fuente("bold", 50)
+        txt = arriba.upper()
+        tw0 = d.textlength(txt, font=fnt0)
+        d.rounded_rectangle([W / 2 - tw0 / 2 - 34, 300, W / 2 + tw0 / 2 + 34, 380], 40, fill=DARK)
+        d.text((W // 2, 340), txt, font=fnt0, fill=ACCENT, anchor="mm")
+    fnt1, lines1 = fit_text(d, l1.upper(), W - 130, 2, 180, 90)
+    y = 470
     for ln in lines1:
         d.text((W // 2, y), ln, font=fnt1, fill=DARK, anchor="ma",
                stroke_width=3, stroke_fill=DARK)
         y += fnt1.size * 1.02
     if l2:
-        fnt2, lines2 = fit_text(d, l2.upper(), W - 200, 1, 130, 70)
+        fnt2, lines2 = fit_text(d, l2.upper(), W - 220, 1, 120, 64)
         tw = d.textlength(lines2[0], font=fnt2)
         box_h = fnt2.size * 1.25
         y += 18
         d.rounded_rectangle([W / 2 - tw / 2 - 40, y, W / 2 + tw / 2 + 40, y + box_h], 24, fill=DARK)
         d.text((W // 2, y + box_h / 2), lines2[0], font=fnt2, fill=ACCENT, anchor="mm")
         y += box_h
-    # imagen
-    y = int(y + 50)
-    size = min(900, 1600 - y)
-    pic = Image.open(img_path).convert("RGB").resize((size, size), Image.LANCZOS)
+    # imagen: arranca dentro de la zona segura y puede seguir hacia abajo (si se recorta, se recorta la foto)
+    y = int(y + 45)
+    size = max(360, min(860, 1820 - y))
+    pic = Image.open(img_path).convert("RGB")
+    lado = min(pic.size)
+    pic = pic.crop(((pic.width - lado) // 2, (pic.height - lado) // 2,
+                    (pic.width + lado) // 2, (pic.height + lado) // 2)).resize((size, size), Image.LANCZOS)
     mask = Image.new("L", (size, size), 0)
     ImageDraw.Draw(mask).rounded_rectangle([0, 0, size, size], 48, fill=255)
     shadow = Image.new("RGBA", (size + 60, size + 60), (0, 0, 0, 0))
