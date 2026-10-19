@@ -1,11 +1,14 @@
 Formato: VIDEO CORTO (Reel, Short o TikTok) con voz en off y videos de fondo.
-- Entre 6 y 9 escenas. Cada escena es UNA sola frase de 4 a 11 palabras (se dice en 2 a 3 segundos). En total, entre 55 y 80 palabras (20 a 28 segundos). Nuestros números dicen que la gente se va entre el segundo 7 y el 12: lo más fuerte va adelante y no hay relleno.
+- Cada escena es UNA sola frase de 4 a 12 palabras (se dice en 2 a 3 segundos).
+- Largo: priorizá lo más corto que cuente bien el tema; para la mayoría alcanza con 20 a 35 segundos (55 a 100 palabras). Pero si suma a la historia y hace falta para que se entienda y tenga sentido, podés extenderte hasta casi un minuto (unas 150 palabras, hasta 16 escenas), que es el tope del Short. Ponderá: ¿esta frase vale los segundos que cuesta? Lo largo se gana: cada frase extra tiene que dar un dato nuevo o mantener la intriga; nunca relleno ni repetir una idea. Nuestros números dicen que la gente se va entre el segundo 7 y el 12 si el arranque no engancha: lo más fuerte va adelante.
 - Estructura, en este orden:
   1. Gancho (escena 1, máximo 9 palabras): arrancá con lo más fuerte que tenga el tema: un nombre conocido, una cifra concreta en pesos o un dato que sorprenda, dicho de frente a quien mira (afirmación o pregunta). Nada de contexto, presentación ni "hoy te cuento". Ejemplos de tono (no los copies): "Warren Buffett dice que lo barato te sale carísimo." / "¿Pagás el mínimo de la tarjeta? Mirá cuánto te cuesta."
   2. Lo prometido (escenas 2 y 3): la idea principal o el dato útil, ya, sin vueltas. Antes del segundo 10 quien mira tiene que haber recibido algo. Tiene que ser concreto (qué pasa, cuánto, qué hacer); nada de frases vagas como "ponerla a rendir en algo".
   3. Ejemplo (2 o 3 escenas): un caso argentino cotidiano que lo haga visual. Cada frase empuja a la siguiente ("y ahí", "el tema es que", "pero ojo").
   4. Giro (1 escena): un detalle que casi nadie sabe o una consecuencia que sorprenda, para que valga la pena quedarse hasta el final.
   5. Cierre (última escena, máximo 8 palabras): invitá a mandárselo a alguien puntual o a guardarlo, con una frase distinta cada vez.
+- Claridad: cada frase se tiene que entender sola, sin saber nada antes. Si un dato necesita contexto para entenderse (por ejemplo, por qué algo servía en los aviones), explicalo en la misma frase o no lo pongas. Mejor dos datos bien contados que cinco a medias.
+- El final cumple lo que prometió el gancho con algo concreto: quién, cuánto, qué pasó. Nada de "otros se llenaron los bolsillos": decí quiénes.
 - Si el tema es un impuesto, un trámite o un beneficio: el gancho dice primero la plata que la persona gana, ahorra o pierde, y recién después el trámite. Si solo vale en un lugar (CABA, una provincia, un municipio), decilo en el gancho y en el título. Los topes y requisitos clave van solo si están en el material.
 - texto_voz: lo que se dice, escrito para el oído, como se habla.
 - texto_pantalla: solo en la escena 1, el gancho escrito para leer sin sonido (máximo 7 palabras). En las demás escenas dejalo vacío.

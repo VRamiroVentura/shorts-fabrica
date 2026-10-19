@@ -303,7 +303,7 @@ def _diagnostico(sistema, serie):
     util.avisar("Diagnóstico del bloqueo de Google", " | ".join(resultado))
 
 
-LARGO_MAX = 85  # palabras: más que esto ya pasa de ~30 segundos
+LARGO_MAX = 160  # palabras (casi un minuto): tope de cualquier serie; cada serie puede tener su propio "palabras_max"
 
 
 def _para_ia(d):
@@ -313,14 +313,16 @@ def _para_ia(d):
     return x
 
 
-def _ajustar_largo(sistema, d):
+def _ajustar_largo(sistema, d, maximo=LARGO_MAX):
     """Si el guion se pasó de largo, le pide a la IA que lo recorte sin tocar el gancho."""
-    if d["palabras"] <= LARGO_MAX and len(d["escenas"]) <= 9:
+    max_escenas = max(10, maximo // 9)
+    if d["palabras"] <= maximo and len(d["escenas"]) <= max_escenas:
         return d
     util.log(f'Guion largo ({d["palabras"]} palabras, {len(d["escenas"])} escenas): lo acorto')
     pedido = (f'Este guion de video corto se pasa de largo: tiene {d["palabras"]} palabras y {len(d["escenas"])} '
-              "escenas. Dejalo en 6 a 9 escenas y entre 60 y 78 palabras en total. Mantené la escena 1 (el gancho) "
-              "y el dato principal tal cual; recortá del ejemplo y las frases que repiten una idea. No cambies nada "
+              f"escenas. Dejalo en {max_escenas} escenas como mucho y en no más de {maximo - 10} palabras en total. "
+              "Mantené la escena 1 (el gancho) "
+              "y el dato principal tal cual; recortá del ejemplo y las frases que repiten una idea; si sacás un dato, sacalo entero (no dejes frases que no se entiendan) y mantené el final concreto. No cambies nada "
               "más (ni título, ni descripción, ni carrusel, ni hashtags). Devolvé el JSON completo con la misma forma."
               "\n\nJSON:\n" + json.dumps(_para_ia(d), ensure_ascii=False))
     try:
@@ -367,4 +369,4 @@ def escribir(serie, fuentes, titulos_previos):
     except Exception as e:  # noqa
         util.log("La revisión falló, uso el borrador:", util.ocultar(e))
         final = borrador
-    return _ajustar_largo(sistema, final)
+    return _ajustar_largo(sistema, final, int(serie.get("palabras_max") or LARGO_MAX))

@@ -3,6 +3,8 @@ Historias reales y poco conocidas de la ciudad de La Plata: su fundación planif
 - Escena 1: el dato que sorprende sobre la ciudad, dicho de frente. Ejemplo de tono (no lo copies): "En La Plata hay una casa de Le Corbusier, y es una de dos en toda América."
 - Escenas 2 y 3: dónde queda o de qué se trata, y el momento clave de la historia.
 - Después: un detalle concreto que se pueda imaginar (la calle, el año, quién lo hizo, qué se ve hoy).
+- Desenlace: cerrá lo que prometió el gancho con nombres y datos concretos (quién se quedó con la plata, cuánto, cómo terminó). Después, una frase corta con la lección para la plata de quien mira, si la historia la tiene.
+- Largo: apuntá a 30 a 35 segundos (unas 95 palabras). Si la historia lo necesita para entenderse completa, podés llegar hasta casi un minuto (unas 150 palabras), que es el tope del Short. Lo largo tiene que sentirse como un cuento que atrapa: cada escena da un dato nuevo o abre una pregunta que se responde más adelante.
 - Giro: lo que casi nadie sabe, o si es un mito, decí claramente que es un mito y qué es lo cierto.
 - Si hay un costado de plata o de negocio (cuánto costó, quién lo pagó, un comercio que sobrevivió), contalo solo si estás seguro.
 - Cierre: invitá a mandárselo a alguien de La Plata o a contar en comentarios si lo conocía.

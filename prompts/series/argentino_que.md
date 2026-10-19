@@ -3,6 +3,8 @@ Un argentino real con una historia increíble, sobre todo de negocios, plata o e
 - Escena 1: "El argentino que..." más el hecho más fuerte, en una sola frase. Ejemplo de tono (no lo copies): "El argentino que vendía por internet cuando acá nadie compraba por internet."
 - Escenas 2 y 3: quién es y el momento clave de su historia.
 - Después: cómo lo hizo, con un detalle concreto, y qué le enseña a la plata de quien mira.
+- Desenlace: cerrá lo que prometió el gancho con nombres y datos concretos (quién se quedó con la plata, cuánto, cómo terminó). Después, una frase corta con la lección para la plata de quien mira, si la historia la tiene.
+- Largo: apuntá a 30 a 35 segundos (unas 95 palabras). Si la historia lo necesita para entenderse completa, podés llegar hasta casi un minuto (unas 150 palabras), que es el tope del Short. Lo largo tiene que sentirse como un cuento que atrapa: cada escena da un dato nuevo o abre una pregunta que se responde más adelante.
 - Giro: el detalle que casi nadie conoce de su historia.
 - Cierre: invitá a mandárselo a alguien que está por arrancar un proyecto.
 Ideas posibles (usalas solo si estás seguro de cada dato): Marcos Galperin y Mercado Libre; Wenceslao Casares; los fundadores de Globant; Amalia Lacroze de Fortabat. Podés elegir otros.

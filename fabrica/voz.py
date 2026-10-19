@@ -255,6 +255,15 @@ def sintetizar(textos, carpeta, cfg=None):
     else:
         raise RuntimeError(f"No hubo voz: {error}")
     dur = duracion(wav)
+    tope = float(cfg.get("duracion_maxima", 58))
+    if dur > tope:
+        # que entre en el minuto del Short: acelero apenas la voz (hasta un 20 %) y corro los tiempos
+        factor = min(dur / tope, 1.20)
+        rapido = Path(carpeta) / "voz_al_minuto.wav"
+        _run(["ffmpeg", "-y", "-v", "error", "-i", str(wav), "-filter:a", f"atempo={factor:.4f}", str(rapido)])
+        palabras = [[p[0] / factor, p[1] / factor] + list(p[2:]) for p in palabras]
+        util.log(f"La voz duraba {dur:.1f} s: la acelero x{factor:.2f} para que entre en {tope:.0f} s")
+        wav, dur = rapido, duracion(rapido)
     # tiempos de cada escena: desde su primera palabra hasta la primera de la siguiente
     inicios = []
     for i in range(len(textos)):
