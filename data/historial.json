@@ -144,5 +144,27 @@
         "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page."
       }
     }
+  },
+  {
+    "fecha": "2026-10-19",
+    "turno": 2,
+    "hora": "14:26",
+    "serie": "inventos",
+    "titulo": "Biro y los millones que perdió",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18132378178797683"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "qC5a3YTM6zM"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "3400874703430654"
+      }
+    }
   }
 ]
