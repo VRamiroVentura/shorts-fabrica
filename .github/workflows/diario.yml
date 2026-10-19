@@ -2,8 +2,8 @@ name: Publicación diaria
 
 on:
   schedule:
-    # Cada 30 minutos, de 11:07 a 23:37 (hora de Argentina), se fija si toca publicar.
-    # El horario de cada día se cambia en config.json → "horarios".
+    # Cada 30 minutos, de 11:07 a 23:37 (hora de Argentina), se fija si toca publicar (y qué turno).
+    # El horario de cada día se cambia en config.json → "horarios" (y el del 2º video en turnos.json).
     # Si GitHub se atrasa y se pasa la hora, publica igual apenas pueda (hasta 3 horas después).
     - cron: "7,37 14-23 * * *"
     - cron: "7,37 0-2 * * *"
@@ -17,6 +17,11 @@ on:
         description: "¿Publicar en las redes? (si no, solo genera y lo podés ver acá)"
         type: boolean
         default: true
+      turno:
+        description: "Turno: 1 = el video de siempre, 2 = el segundo del día (series de turnos.json)"
+        type: choice
+        options: ["1", "2"]
+        default: "1"
 
 permissions:
   contents: write
@@ -33,6 +38,9 @@ jobs:
     timeout-minutes: 5
     outputs:
       si: ${{ steps.toca.outputs.si }}
+      turno: ${{ steps.toca.outputs.turno }}
+    env:
+      TURNO_MANUAL: ${{ inputs.turno }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -55,6 +63,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     env:
       SERIE: ${{ inputs.serie }}
+      TURNO: ${{ needs.reloj.outputs.turno }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       YT_API_KEY: ${{ secrets.YT_API_KEY }}
       SUPADATA_KEY: ${{ secrets.SUPADATA_KEY }}
