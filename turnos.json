@@ -5,7 +5,7 @@
     "1": "inventos",
     "2": "autor",
     "3": "laplata",
-    "4": "historias",
+    "4": "estafas",
     "5": "argentino_que",
     "6": "paso_de_verdad",
     "7": "negocios_virales"
@@ -37,7 +37,9 @@
     },
     "paso_de_verdad": {
       "nombre": "Esto pasó de verdad",
-      "canales": ["Zack D. Films"],
+      "canales": [
+        "Zack D. Films"
+      ],
       "prompt": "Las instrucciones están en prompts/series/paso_de_verdad.md"
     },
     "negocios_virales": {
@@ -45,16 +47,61 @@
       "modo": "virales",
       "canales": [],
       "busquedas": [
-        {"q": "viral business idea", "idioma": "en", "region": "US", "pais": "Estados Unidos"},
-        {"q": "negocio viral", "idioma": "es", "region": "ES", "pais": "España"},
-        {"q": "negócio viral", "idioma": "pt", "region": "BR", "pais": "Brasil"},
-        {"q": "行列 人気店 ビジネス", "idioma": "ja", "region": "JP", "pais": "Japón"},
-        {"q": "business went viral", "idioma": "en", "region": "GB", "pais": "Reino Unido"},
-        {"q": "대박 가게 창업", "idioma": "ko", "region": "KR", "pais": "Corea del Sur"},
-        {"q": "idée business qui cartonne", "idioma": "fr", "region": "FR", "pais": "Francia"},
-        {"q": "negocio viral", "idioma": "es", "region": "MX", "pais": "México"}
+        {
+          "q": "viral business idea",
+          "idioma": "en",
+          "region": "US",
+          "pais": "Estados Unidos"
+        },
+        {
+          "q": "negocio viral",
+          "idioma": "es",
+          "region": "ES",
+          "pais": "España"
+        },
+        {
+          "q": "negócio viral",
+          "idioma": "pt",
+          "region": "BR",
+          "pais": "Brasil"
+        },
+        {
+          "q": "行列 人気店 ビジネス",
+          "idioma": "ja",
+          "region": "JP",
+          "pais": "Japón"
+        },
+        {
+          "q": "business went viral",
+          "idioma": "en",
+          "region": "GB",
+          "pais": "Reino Unido"
+        },
+        {
+          "q": "대박 가게 창업",
+          "idioma": "ko",
+          "region": "KR",
+          "pais": "Corea del Sur"
+        },
+        {
+          "q": "idée business qui cartonne",
+          "idioma": "fr",
+          "region": "FR",
+          "pais": "Francia"
+        },
+        {
+          "q": "negocio viral",
+          "idioma": "es",
+          "region": "MX",
+          "pais": "México"
+        }
       ],
       "prompt": "Las instrucciones están en prompts/series/negocios_virales.md"
+    },
+    "estafas": {
+      "nombre": "Grandes estafas",
+      "canales": [],
+      "prompt": "Las instrucciones están en prompts/series/estafas.md"
     }
   }
 }

@@ -159,7 +159,7 @@ El archivo `turnos.json` agrega un **segundo video por día** con sus propias se
 | Lunes | Lo hizo un argentino | 12:30 |
 | Martes | La idea de... | 20:30 |
 | Miércoles | La Plata secreta | 13:00 |
-| Jueves | Historias de plata | 12:30 |
+| Jueves | Grandes estafas | 12:30 |
 | Viernes | El argentino que... | 20:00 |
 | Sábado | Esto pasó de verdad | 13:00 |
 | Domingo | Negocios virales del mundo | 13:00 |
