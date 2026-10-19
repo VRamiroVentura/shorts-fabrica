@@ -30,7 +30,18 @@ def guardar_json(ruta, datos):
 
 
 def config():
-    return leer_json("config.json", {})
+    """config.json + turnos.json (series y horarios del 2º video del día). Lo que esté en config.json manda."""
+    c = dict(leer_json("config.json", {}) or {})
+    extra = leer_json("turnos.json", {}) or {}
+    if extra:
+        series = dict(c.get("series") or {})
+        for k, v in (extra.get("series") or {}).items():
+            series.setdefault(k, v)
+        c["series"] = series
+        for k, v in extra.items():
+            if k not in ("series", "_ayuda"):
+                c.setdefault(k, v)
+    return c
 
 
 def secreto(nombre):

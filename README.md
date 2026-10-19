@@ -150,6 +150,25 @@ Cómo funciona: un "reloj" corre cada 30 minutos; entre 60 y 30 minutos antes de
 
 El reporte de los lunes muestra las vistas promedio por franja horaria; cuando la cuenta pase los 100 seguidores, Instagram también muestra en *Panel profesional → Seguidores* las horas en que tu público está más activo. Con eso ajustamos.
 
+## Dos videos por día
+
+El archivo `turnos.json` agrega un **segundo video por día** con sus propias series y horarios:
+
+| Día | 2º video | Hora |
+|---|---|---|
+| Lunes | Lo hizo un argentino | 12:30 |
+| Martes | La idea de... | 20:30 |
+| Miércoles | La Plata secreta | 13:00 |
+| Jueves | Historias de plata | 12:30 |
+| Viernes | El argentino que... | 20:00 |
+| Sábado | Esto pasó de verdad | 13:00 |
+| Domingo | Negocios virales del mundo | 13:00 |
+
+- Para volver a **un solo video por día**, en `turnos.json` poné `"segundo_turno": false`.
+- Las instrucciones de cada serie nueva están en `prompts/series/` (un archivo por serie).
+- Para probar el 2º video a mano: *Actions → Publicación diaria → Run workflow → Turno: 2*.
+- La página de los videos guarda los de los últimos 2 días, así los links de los mails siguen andando.
+
 ## Voz y música
 
 - **Voz:** en `config.json`, `voz_motor` es `gemini` (más natural, usa la misma clave) o `edge` (Microsoft). `voz_gemini` en `auto` busca una voz argentina en la biblioteca de Google; si no hay, usa `Puck`. Podés probar otras: `Orus`, `Charon`, `Fenrir` (hombre) o `Kore`, `Aoede`, `Leda` (mujer). `voz_tempo` en `1.1` la hace un poco más rápida. Si la voz de Gemini falla un día, el video sale igual con la de Microsoft y queda un aviso amarillo en la ejecución.

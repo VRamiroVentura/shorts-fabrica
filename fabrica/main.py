@@ -12,11 +12,70 @@ SALIDA = util.RAIZ / "out"
 SITIO = SALIDA / "sitio"
 
 
-def _serie_del_dia(cfg):
+def _turno():
+    """1 = el video de siempre; 2 = el segundo video del día (turnos.json)."""
+    try:
+        return 2 if int(os.getenv("TURNO") or 1) == 2 else 1
+    except ValueError:
+        return 1
+
+
+def _turnos(cfg):
+    """Turnos activos: el 1 siempre; el 2 si turnos.json tiene segundo_turno en true."""
+    lista = [1]
+    if cfg.get("segundo_turno") and cfg.get("plan_semanal_2") and cfg.get("horarios_2"):
+        lista.append(2)
+    return lista
+
+
+def _horarios(cfg, turno):
+    return (cfg.get("horarios_2") if turno == 2 else cfg.get("horarios")) or {}
+
+
+def _carpeta(fecha, turno):
+    return fecha if turno == 1 else f"{fecha}-t{turno}"
+
+
+def _serie_del_dia(cfg, turno=None):
     forzada = (os.getenv("SERIE") or "").strip().lower()
     if forzada in cfg["series"]:
         return forzada
-    return cfg["plan_semanal"][str(util.ahora().isoweekday())]
+    dia = str(util.ahora().isoweekday())
+    if (turno or _turno()) == 2:
+        clave = (cfg.get("plan_semanal_2") or {}).get(dia)
+        if clave in cfg["series"]:
+            return clave
+    return cfg["plan_semanal"][dia]
+
+
+def _base_paginas():
+    repo = os.getenv("GITHUB_REPOSITORY", "")
+    if "/" not in repo:
+        return None
+    duenio, nombre = repo.split("/", 1)
+    return f"https://{duenio.lower()}.github.io/{nombre}/"
+
+
+def _traer_anteriores(actual):
+    """La página de GitHub se reemplaza entera en cada corrida. Traigo los videos de los últimos 2 días
+    para que los links de los mails (y el video para TikTok) sigan andando."""
+    base = _base_paginas()
+    desde = (util.ahora() - util.timedelta(days=2)).strftime("%Y-%m-%d")
+    quedan = [x for x in util.leer_json("data/sitio.json", []) or []
+              if x.get("fecha", "") >= desde and x.get("carpeta") != actual]
+    if not base:
+        return quedan
+    for x in quedan:
+        for rel in x.get("archivos", []):
+            try:
+                r = util.pedir("GET", base + rel, intentos=2, timeout=120)
+                if r is not None and r.status_code == 200:
+                    destino = SITIO / rel
+                    destino.parent.mkdir(parents=True, exist_ok=True)
+                    destino.write_bytes(r.content)
+            except Exception as e:  # noqa
+                util.log("No pude traer", rel, util.ocultar(e))
+    return quedan
 
 
 def generar(simulado=False):
@@ -26,15 +85,16 @@ def generar(simulado=False):
     os.environ.setdefault("TTS_MAX_PAUSA", str(cfg.get("voz_pausa_maxima", 0.28)))
     from . import carrusel, escritor, investigar, montaje  # importa después de fijar la voz
 
+    turno = _turno()
     if not simulado:
-        _sumar_intento()
-    clave_serie = _serie_del_dia(cfg)
+        _sumar_intento(turno)
+    clave_serie = _serie_del_dia(cfg, turno)
     serie = dict(cfg["series"][clave_serie])
     propio = util.RAIZ / "prompts" / "series" / f"{clave_serie}.md"
     if propio.exists():  # instrucciones de la serie mejoradas, sin tocar config.json
         serie["prompt"] = propio.read_text(encoding="utf-8").strip()
     fecha = util.ahora().strftime("%Y-%m-%d")
-    util.log("Serie de hoy:", serie["nombre"])
+    util.log("Serie de hoy:", serie["nombre"], f"(turno {turno})")
 
     historial = util.leer_json("data/historial.json", [])
     usados = {f for h in historial for f in h.get("fuentes", [])}
@@ -71,10 +131,12 @@ def generar(simulado=False):
     else:
         contenido = escritor.escribir(serie, fuentes, titulos)
 
-    carpeta = SITIO / fecha
+    nombre_carpeta = _carpeta(fecha, turno)
+    carpeta = SITIO / nombre_carpeta
     if SALIDA.exists():
         shutil.rmtree(SALIDA)
     carpeta.mkdir(parents=True)
+    anteriores = [] if simulado else _traer_anteriores(nombre_carpeta)
     placas = carrusel.generar(contenido, serie["nombre"], cfg["usuario"], carpeta)
     video_path, thumb_path = montaje.generar(contenido, serie["nombre"], cfg["usuario"], carpeta)
     shutil.rmtree(carpeta / "_trabajo", ignore_errors=True)
@@ -102,12 +164,18 @@ def generar(simulado=False):
         "fuentes": [f["id"] for f in fuentes],
         "fuentes_detalle": [{"canal": f["canal"], "titulo": f["titulo"], "score": f.get("score") or f.get("pais", "")}
                             for f in fuentes],
-        "archivos": {"video": f"{fecha}/video.mp4", "portada": f"{fecha}/thumb.jpg",
-                     "placas": [f"{fecha}/{p.name}" for p in placas]},
+        "archivos": {"video": f"{nombre_carpeta}/video.mp4", "portada": f"{nombre_carpeta}/thumb.jpg",
+                     "placas": [f"{nombre_carpeta}/{p.name}" for p in placas]},
         "contenido": contenido,
         "video": meta_video,
+        "turno": turno,
+        "carpeta": nombre_carpeta,
     }
     util.guardar_json("out/publicacion.json", publicacion)
+    if not simulado:
+        a = publicacion["archivos"]
+        util.guardar_json("data/sitio.json", anteriores + [
+            {"fecha": fecha, "carpeta": nombre_carpeta, "archivos": [a["video"], a["portada"]] + a["placas"]}])
     util.log("Listo:", contenido["titulo"])
 
 
@@ -118,7 +186,7 @@ def publicar(base_url):
     base = base_url.rstrip("/") + "/"
     url = lambda rel: base + rel  # noqa
     video_local = SITIO / p["archivos"]["video"]
-    hoy_carrusel = util.ahora().isoweekday() in cfg.get("carrusel_dias", [])
+    hoy_carrusel = util.ahora().isoweekday() in cfg.get("carrusel_dias", []) and p.get("turno", 1) == 1
     quiere = cfg.get("publicar", {})
     resultados = {}
 
@@ -144,8 +212,8 @@ def publicar(base_url):
         intentar("facebook", lambda: pub.facebook_reel(video_local, p["caption"], p["titulo"]))
 
     historial = util.leer_json("data/historial.json", [])
-    historial.append({"fecha": p["fecha"], "hora": util.ahora().strftime("%H:%M"), "serie": p["serie"],
-                      "titulo": p["titulo"], "fuentes": p["fuentes"], "resultados": resultados})
+    historial.append({"fecha": p["fecha"], "turno": p.get("turno", 1), "hora": util.ahora().strftime("%H:%M"),
+                      "serie": p["serie"], "titulo": p["titulo"], "fuentes": p["fuentes"], "resultados": resultados})
     util.guardar_json("data/historial.json", historial[-400:])
     _registro(p, resultados, base)
     _mail_diario(p, resultados, base)
@@ -185,7 +253,7 @@ def _registro(p, res, base):
     lineas += ["", "Basado en: " + ("; ".join(f'{f["canal"]} - {f["titulo"]} (x{f["score"]})'
                                               for f in p["fuentes_detalle"]) or "tema propio"),
                "", "## Texto", "", p["caption"], "", "## Guion", "", p["guion"]]
-    ruta = util.RAIZ / "publicaciones" / f'{p["fecha"]}.md'
+    ruta = util.RAIZ / "publicaciones" / f'{p.get("carpeta") or p["fecha"]}.md'
     ruta.parent.mkdir(exist_ok=True)
     ruta.write_text("\n".join(lineas) + "\n", encoding="utf-8")
 
@@ -200,11 +268,12 @@ def _mail_diario(p, res, base):
     cuerpo = (f'<h2>{e(p["serie_nombre"])}: {e(p["titulo"])}</h2><ul>{filas}</ul>{aviso}'
               f'<p><a href="{base}{p["archivos"]["video"]}">Video</a> · '
               f'<a href="{base}{p["archivos"]["portada"]}">Portada</a> · '
-              f'<a href="{base}{p["archivos"]["placas"][0]}">Carrusel</a> (los links duran hasta mañana)</p>'
+              f'<a href="{base}{p["archivos"]["placas"][0]}">Carrusel</a> (los links duran 2 días)</p>'
               f'<p><b>Texto:</b><br>{e(p["caption"]).replace(chr(10), "<br>")}</p>'
               f'<hr><p style="color:#666">{e(p["guion"])}</p>')
     try:
-        pub.mail(f'Short del día: {p["titulo"]}', cuerpo)
+        segundo = " (2º del día)" if p.get("turno", 1) == 2 else ""
+        pub.mail(f'Short del día{segundo}: {p["titulo"]}', cuerpo)
     except Exception as ex:  # noqa
         util.log("No pude mandar el mail:", ex)
 
@@ -255,65 +324,87 @@ TARDE_MAX = 180     # si el reloj de GitHub se atrasa, publica igual hasta 3 hor
 INTENTOS_MAX = 2    # si falla, lo reintenta una vez más ese día (no más, para no llenarte de avisos)
 
 
-def _intentos(fecha):
-    return int((util.leer_json("data/estado.json", {}).get("intentos") or {}).get(fecha, 0))
+def _clave_intento(fecha, turno):
+    return fecha if turno == 1 else f"{fecha}#{turno}"
 
 
-def _sumar_intento():
-    """Anota que el reloj arrancó a fabricar hoy (se guarda aunque la corrida falle)."""
+def _intentos(fecha, turno=1):
+    return int((util.leer_json("data/estado.json", {}).get("intentos") or {}).get(_clave_intento(fecha, turno), 0))
+
+
+def _sumar_intento(turno=1):
+    """Anota que el reloj arrancó a fabricar este turno hoy (se guarda aunque la corrida falle)."""
     if os.getenv("GITHUB_EVENT_NAME") != "schedule":
         return
     estado = util.leer_json("data/estado.json", {})
     hoy = util.ahora().strftime("%Y-%m-%d")
-    intentos = {k: v for k, v in (estado.get("intentos") or {}).items() if k >= hoy}  # solo el de hoy
-    intentos[hoy] = intentos.get(hoy, 0) + 1
+    intentos = {k: v for k, v in (estado.get("intentos") or {}).items() if k[:10] >= hoy}  # solo los de hoy
+    clave = _clave_intento(hoy, turno)
+    intentos[clave] = intentos.get(clave, 0) + 1
     estado["intentos"] = intentos
     util.guardar_json("data/estado.json", estado)
 
 
-def _objetivo(cfg, momento=None):
+def _objetivo(cfg, momento=None, turno=1):
     momento = momento or util.ahora()
-    h = (cfg.get("horarios") or {}).get(str(momento.isoweekday()))
+    h = _horarios(cfg, turno).get(str(momento.isoweekday()))
     if not h:
         return None
     hh, mm = (int(x) for x in str(h).split(":")[:2])
     return momento.replace(hour=hh, minute=mm, second=0, microsecond=0)
 
 
+def _ya_salio(hoy, turno):
+    return any(h.get("fecha") == hoy and int(h.get("turno", 1) or 1) == turno
+               for h in util.leer_json("data/historial.json", []) or [])
+
+
+def _toca_turno(cfg, ahora, turno):
+    """(sí/no, motivo) para un turno a esta hora."""
+    objetivo = _objetivo(cfg, ahora, turno)
+    hoy = ahora.strftime("%Y-%m-%d")
+    if objetivo is None:
+        return False, "hoy no tiene horario"
+    if _ya_salio(hoy, turno):
+        return False, "hoy ya se publicó"
+    if _intentos(hoy, turno) >= INTENTOS_MAX:
+        return False, f"hoy ya se intentó {INTENTOS_MAX} veces y falló; mañana sigue normal"
+    faltan = (objetivo - ahora).total_seconds() / 60
+    if VENTANA[0] <= faltan < VENTANA[1]:
+        return True, f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
+    if 0 < faltan < VENTANA[0]:
+        # el aviso de GitHub llegó tarde: arranco igual (si ya hay otra corrida en marcha, esta queda
+        # en espera y, cuando le toca, ve en el historial que ya se publicó y no hace nada)
+        return True, (f"el reloj llegó tarde (faltan {faltan:.0f} minutos para las {objetivo:%H:%M}): "
+                      f"arranco ya y publico a horario o apenas esté listo")
+    if -TARDE_MAX <= faltan <= 0:
+        return True, (f"ya pasaron {-faltan:.0f} minutos de las {objetivo:%H:%M} y no salió "
+                      f"(el reloj se atrasó o falló): publico apenas esté listo")
+    return False, f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
+
+
 def toca():
-    """Lo usa el reloj de GitHub cada 30 minutos: ¿hay que fabricar y publicar ahora?"""
+    """Lo usa el reloj de GitHub cada 30 minutos: ¿hay que fabricar y publicar ahora? ¿Qué turno?"""
     cfg = util.config()
-    si, motivo = True, "ejecución manual"
+    try:
+        turno = 2 if int(os.getenv("TURNO_MANUAL") or 1) == 2 else 1
+    except ValueError:
+        turno = 1
+    si, motivos = True, ["ejecución manual"]
     if os.getenv("GITHUB_EVENT_NAME") == "schedule":
         ahora = util.ahora()
-        objetivo = _objetivo(cfg, ahora)
-        hoy = ahora.strftime("%Y-%m-%d")
-        if objetivo is None:
-            si, motivo = False, "hoy no tiene horario"
-        elif any(h.get("fecha") == hoy for h in util.leer_json("data/historial.json", [])):
-            si, motivo = False, "hoy ya se publicó"
-        elif _intentos(hoy) >= INTENTOS_MAX:
-            si, motivo = False, f"hoy ya se intentó {INTENTOS_MAX} veces y falló; mañana sigue normal"
-        else:
-            faltan = (objetivo - ahora).total_seconds() / 60
-            if VENTANA[0] <= faltan < VENTANA[1]:
-                si, motivo = True, f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
-            elif 0 < faltan < VENTANA[0]:
-                # el aviso de GitHub llegó tarde: arranco igual (si ya hay otra corrida en marcha, esta queda
-                # en espera y, cuando le toca, ve en el historial que ya se publicó y no hace nada)
-                si, motivo = True, (f"el reloj llegó tarde (faltan {faltan:.0f} minutos para las {objetivo:%H:%M}): "
-                                    f"arranco ya y publico a horario o apenas esté listo")
-            elif -TARDE_MAX <= faltan <= 0:
-                si = True
-                motivo = (f"ya pasaron {-faltan:.0f} minutos de las {objetivo:%H:%M} y hoy no salió nada "
-                          f"(el reloj se atrasó o falló): publico apenas esté listo")
-            else:
-                si, motivo = False, f"faltan {faltan:.0f} minutos para las {objetivo:%H:%M}"
-    util.log("¿Toca publicar?", "sí" if si else "no", "·", motivo)
+        si, motivos = False, []
+        for t in _turnos(cfg):
+            ok, motivo = _toca_turno(cfg, ahora, t)
+            motivos.append(f"turno {t}: {motivo}")
+            if ok:
+                si, turno = True, t
+                break
+    util.log("¿Toca publicar?", "sí" if si else "no", "·", " | ".join(motivos))
     salida = os.getenv("GITHUB_OUTPUT")
     if salida:
         with open(salida, "a", encoding="utf-8") as f:
-            f.write(f"si={'true' if si else 'false'}\n")
+            f.write(f"si={'true' if si else 'false'}\nturno={turno}\n")
 
 
 def esperar():
@@ -321,7 +412,7 @@ def esperar():
     import time
     if os.getenv("GITHUB_EVENT_NAME") != "schedule":
         return
-    objetivo = _objetivo(util.config())
+    objetivo = _objetivo(util.config(), turno=_turno())
     if not objetivo:
         return
     segundos = (objetivo - util.ahora()).total_seconds()
