@@ -2,10 +2,10 @@ name: Publicación diaria
 
 on:
   schedule:
-    # Cada 30 minutos, de 11:07 a 23:37 (hora de Argentina), se fija si toca publicar (y qué turno).
+    # Pide un aviso cada 30 minutos, de 7:07 a 23:37 (hora de Argentina). GitHub en la práctica avisa cada
+    # 2 o 3 horas: con el primer aviso de las 5 horas previas al horario arma el video y espera hasta la hora.
     # El horario de cada día se cambia en config.json → "horarios" (y el del 2º video en turnos.json).
-    # Si GitHub se atrasa y se pasa la hora, publica igual apenas pueda (hasta 3 horas después).
-    - cron: "7,37 14-23 * * *"
+    - cron: "7,37 10-23 * * *"
     - cron: "7,37 0-2 * * *"
   workflow_dispatch:
     inputs:
@@ -57,7 +57,7 @@ jobs:
     needs: reloj
     if: needs.reloj.outputs.si == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 350   # puede quedar esperando hasta 5 horas la hora exacta de publicar
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -132,7 +132,7 @@ jobs:
           done
           echo "Los archivos no aparecieron online"; exit 1
 
-      - name: Esperar al horario exacto
+      - name: Esperar al horario exacto (puede tardar unas horas, es normal)
         if: ${{ github.event_name == 'schedule' }}
         run: python -m fabrica.main esperar
 
