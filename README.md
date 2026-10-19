@@ -167,3 +167,4 @@ El reporte de los lunes muestra las vistas promedio por franja horaria; cuando l
 - GitHub te manda un mail automático cuando una ejecución falla.
 - El mail diario dice qué se publicó y qué no, con el motivo.
 - Todo queda registrado en `publicaciones/` (un archivo por día) y en `data/historial.json`.
+- **Botón "Probar conexiones"** (*Actions → Probar conexiones → Run workflow*): en un minuto revisa si las llaves de Instagram, Facebook y YouTube andan, **sin publicar nada**. Te dice qué falla (por ejemplo, si la llave de Facebook es la de tu perfil en vez de la de la página, o si le faltan permisos). Usalo cada vez que cambies una llave.

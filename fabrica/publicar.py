@@ -25,11 +25,31 @@ def actualizar_secreto(nombre, valor):
 
 
 # ------------------------------------------------------------------ Instagram
-def _ig_error(r):
+def _meta_error(r):
+    """Mensaje de error de Meta (Instagram o Facebook) con sus códigos, para poder diagnosticarlo."""
+    if r is None:
+        return "sin respuesta de Meta"
     try:
-        return r.json().get("error", {}).get("message", r.text[:300])
+        e = r.json().get("error") or {}
     except Exception:  # noqa
-        return r.text[:300]
+        return f"HTTP {r.status_code}: {r.text[:300]}"
+    if not e:
+        return f"HTTP {r.status_code}: {r.text[:300]}"
+    msg = e.get("message", "") if isinstance(e, dict) else str(e)
+    if isinstance(e, dict):
+        if e.get("error_user_msg"):
+            msg += " · " + e["error_user_msg"]
+        codigos = [f"código {e['code']}" if e.get("code") is not None else "",
+                   f"subcódigo {e['error_subcode']}" if e.get("error_subcode") else "",
+                   e.get("type", "")]
+        codigos = [c for c in codigos if c]
+        if codigos:
+            msg += " (" + ", ".join(codigos) + ")"
+    return util.ocultar(msg)[:500]
+
+
+def _ig_error(r):
+    return _meta_error(r)
 
 
 def ig_token():
@@ -182,10 +202,7 @@ FB = "https://graph.facebook.com/v25.0/"
 
 
 def _fb_error(r):
-    try:
-        return r.json().get("error", {}).get("message", r.text[:300])
-    except Exception:  # noqa
-        return getattr(r, "text", "")[:300]
+    return _meta_error(r)
 
 
 def facebook_reel(video_path, descripcion, titulo=""):

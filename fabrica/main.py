@@ -425,7 +425,7 @@ def reporte():
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("accion", choices=["generar", "publicar", "resumen", "reporte", "toca", "esperar"])
+    ap.add_argument("accion", choices=["generar", "publicar", "resumen", "reporte", "toca", "esperar", "probar"])
     ap.add_argument("--base-url", default="")
     ap.add_argument("--simulado", action="store_true")
     a = ap.parse_args()
@@ -440,6 +440,9 @@ if __name__ == "__main__":
             publicar(a.base_url)
         elif a.accion == "resumen":
             resumen(a.base_url)
+        elif a.accion == "probar":
+            from . import probar
+            probar.probar()
         else:
             reporte()
     except Exception as error:  # noqa
