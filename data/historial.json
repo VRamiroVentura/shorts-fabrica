@@ -220,5 +220,30 @@
         "id": "2190748945122539"
       }
     }
+  },
+  {
+    "fecha": "2026-10-20",
+    "turno": 2,
+    "hora": "20:32",
+    "serie": "autor",
+    "titulo": "La regla de Warren Buffett",
+    "fuentes": [
+      "5mrNgHFY-cE",
+      "v-KwURYzPvA"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18115096256276242"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "RGgbob_DXIc"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1149551527405180"
+      }
+    }
   }
 ]
