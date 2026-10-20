@@ -191,5 +191,34 @@
         "id": "1889045622259973"
       }
     }
+  },
+  {
+    "fecha": "2026-10-20",
+    "turno": 1,
+    "hora": "13:02",
+    "serie": "plata",
+    "titulo": "El truco para no patinarte el sueldo",
+    "fuentes": [
+      "uoEH2vfUAt4",
+      "KUu4fahAg7M"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18108048509257269"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "18114889583138659"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "sJo1SG-wnxA"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "2190748945122539"
+      }
+    }
   }
 ]
