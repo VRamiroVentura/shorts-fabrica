@@ -322,7 +322,7 @@ def _ajustar_largo(sistema, d, maximo=LARGO_MAX):
     pedido = (f'Este guion de video corto se pasa de largo: tiene {d["palabras"]} palabras y {len(d["escenas"])} '
               f"escenas. Dejalo en {max_escenas} escenas como mucho y en no más de {maximo - 10} palabras en total. "
               "Mantené la escena 1 (el gancho) "
-              "y el dato principal tal cual; recortá del ejemplo y las frases que repiten una idea; si sacás un dato, sacalo entero (no dejes frases que no se entiendan) y mantené el final concreto. No cambies nada "
+              "y el dato principal tal cual; sacá primero el relleno y las frases que repiten una idea; no saques ideas importantes ni lo que hace falta para entender; si sacás un dato, sacalo entero (no dejes frases que no se entiendan) y mantené el final concreto. No cambies nada "
               "más (ni título, ni descripción, ni carrusel, ni hashtags). Devolvé el JSON completo con la misma forma."
               "\n\nJSON:\n" + json.dumps(_para_ia(d), ensure_ascii=False))
     try:

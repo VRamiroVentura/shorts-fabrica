@@ -4,7 +4,7 @@ Un invento, un descubrimiento o un "primero del mundo" hecho por un argentino (d
 - Escenas 2 y 3: quién, dónde y cuándo, al pasar, y el momento clave de la historia.
 - Después: cómo pasó, con un detalle concreto que se pueda imaginar, y qué cambió en el mundo.
 - Desenlace: cerrá lo que prometió el gancho con nombres y datos concretos (quién se quedó con la plata, cuánto, cómo terminó). Después, una frase corta con la lección para la plata de quien mira, si la historia la tiene.
-- Largo: apuntá a 30 a 35 segundos (unas 95 palabras). Si la historia lo necesita para entenderse completa, podés llegar hasta casi un minuto (unas 150 palabras), que es el tope del Short. Lo largo tiene que sentirse como un cuento que atrapa: cada escena da un dato nuevo o abre una pregunta que se responde más adelante.
+- Largo: el que la historia necesite para contarse completa, normalmente 40 a 55 segundos (unas 110 a 150 palabras). Que no quede nada en el aire. Lo largo tiene que sentirse como un cuento que atrapa: cada escena da un dato nuevo o abre una pregunta que se responde más adelante.
 - Giro: algo que casi nadie sabe (que no lo patentó, que se lo atribuyen a otro, cuánto valía o qué pasó después).
 - Si la historia tiene un costado de plata o de negocio (patentes, quién se hizo rico, quién se quedó sin nada), contalo; si no lo tiene, no lo fuerces.
 - Cierre: invitá a mandárselo a alguien que no lo sabía.
