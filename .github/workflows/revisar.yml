@@ -1,0 +1,60 @@
+name: Revisar video
+
+# Formulario para el video que está esperando la hora de salir:
+# pedir cambios (se rehace y te llega la versión nueva por mail), publicarlo ya, o que hoy no salga.
+# Si no usás este formulario, el video sale solo a la hora.
+on:
+  workflow_dispatch:
+    inputs:
+      accion:
+        description: "¿Qué querés hacer?"
+        type: choice
+        options: ["Pedir cambios", "Publicar ya", "No publicar hoy"]
+        default: "Pedir cambios"
+      cambios:
+        description: "Qué cambiar (ej.: «explicá mejor X», «título: ...», «más largo», «cambiá los clips»)"
+        type: string
+        default: ""
+      turno:
+        description: "¿Cuál video? (normalmente el que está esperando)"
+        type: choice
+        options: ["El que está esperando", "1", "2"]
+        default: "El que está esperando"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: revisar
+  cancel-in-progress: false
+
+jobs:
+  revisar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      ACCION: ${{ inputs.accion }}
+      CAMBIOS: ${{ inputs.cambios }}
+      TURNO_PEDIDO: ${{ inputs.turno }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -q requests
+      - name: Anotar tu pedido
+        run: python -m fabrica.main revisar
+      - name: Guardarlo para que lo vea la fábrica
+        run: |
+          git config user.name "fabrica-bot"
+          git config user.email "fabrica-bot@users.noreply.github.com"
+          git add data/pedidos.json
+          git commit -m "Pedido de revisión [skip ci]"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            git pull --rebase -q && continue
+            sleep 5
+          done
+          exit 1

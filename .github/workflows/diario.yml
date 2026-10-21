@@ -124,19 +124,78 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Esperar a que los archivos estén online
-        run: |
-          URL="${{ steps.deployment.outputs.page_url }}$(python -c "import json;print(json.load(open('out/publicacion.json'))['archivos']['video'])")"
-          for i in $(seq 1 30); do
-            if curl -sfI "$URL" > /dev/null; then echo "Online: $URL"; exit 0; fi
-            sleep 10
-          done
-          echo "Los archivos no aparecieron online"; exit 1
+        run: python -m fabrica.main online --base-url "${{ steps.deployment.outputs.page_url }}"
 
-      - name: Esperar al horario exacto (puede tardar unas horas, es normal)
+      - name: Mandarte el video para revisar
+        if: ${{ github.event_name == 'schedule' }}
+        run: python -m fabrica.main listo --base-url "${{ steps.deployment.outputs.page_url }}"
+
+      - name: Esperar la hora o tu respuesta (puede tardar unas horas, es normal)
+        id: espera1
         if: ${{ github.event_name == 'schedule' }}
         run: python -m fabrica.main esperar
 
-      - name: Publicar en las redes
+      # ---- Vuelta 2: rehacer con tus cambios (si los pediste desde «Revisar video») ----
+      - name: Rehacer con tus cambios (versión 2)
+        if: ${{ steps.espera1.outputs.decision == 'cambios' }}
+        run: python -m fabrica.main rehacer
+
+      - if: ${{ steps.espera1.outputs.decision == 'cambios' }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out/sitio
+          name: github-pages-2
+
+      - id: deployment2
+        if: ${{ steps.espera1.outputs.decision == 'cambios' }}
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-2
+
+      - name: Esperar a que la versión 2 esté online
+        if: ${{ steps.espera1.outputs.decision == 'cambios' }}
+        run: python -m fabrica.main online --base-url "${{ steps.deployment.outputs.page_url }}"
+
+      - name: Mandarte la versión 2 para revisar
+        if: ${{ steps.espera1.outputs.decision == 'cambios' }}
+        run: python -m fabrica.main listo --base-url "${{ steps.deployment.outputs.page_url }}"
+
+      - name: Esperar la hora o tu respuesta (versión 2)
+        id: espera2
+        if: ${{ steps.espera1.outputs.decision == 'cambios' }}
+        run: python -m fabrica.main esperar
+
+      # ---- Vuelta 3: rehacer con tus cambios (si los pediste desde «Revisar video») ----
+      - name: Rehacer con tus cambios (versión 3)
+        if: ${{ steps.espera2.outputs.decision == 'cambios' }}
+        run: python -m fabrica.main rehacer
+
+      - if: ${{ steps.espera2.outputs.decision == 'cambios' }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out/sitio
+          name: github-pages-3
+
+      - id: deployment3
+        if: ${{ steps.espera2.outputs.decision == 'cambios' }}
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-3
+
+      - name: Esperar a que la versión 3 esté online
+        if: ${{ steps.espera2.outputs.decision == 'cambios' }}
+        run: python -m fabrica.main online --base-url "${{ steps.deployment.outputs.page_url }}"
+
+      - name: Mandarte la versión 3 para revisar
+        if: ${{ steps.espera2.outputs.decision == 'cambios' }}
+        run: python -m fabrica.main listo --base-url "${{ steps.deployment.outputs.page_url }}"
+
+      - name: Esperar la hora o tu respuesta (versión 3)
+        id: espera3
+        if: ${{ steps.espera2.outputs.decision == 'cambios' }}
+        run: python -m fabrica.main esperar --ultima
+
+      - name: Publicar en las redes (o no, si pediste que hoy no salga)
         if: ${{ github.event_name == 'schedule' || inputs.publicar }}
         run: python -m fabrica.main publicar --base-url "${{ steps.deployment.outputs.page_url }}"
 
