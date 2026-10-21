@@ -245,5 +245,27 @@
         "id": "1149551527405180"
       }
     }
+  },
+  {
+    "fecha": "2026-10-21",
+    "turno": 2,
+    "hora": "13:01",
+    "serie": "laplata",
+    "titulo": "El mito de Disney en La Plata",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": false,
+        "error": "Instagram no pudo procesar el archivo: {'status_code': 'ERROR', 'status': 'ERROR', 'id': '17932198155179917'}"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "ZtqBS9sNZkA"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "2233879100489709"
+      }
+    }
   }
 ]
