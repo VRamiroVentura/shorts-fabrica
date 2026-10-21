@@ -169,6 +169,20 @@ El archivo `turnos.json` agrega un **segundo video por día** con sus propias se
 - Para probar el 2º video a mano: *Actions → Publicación diaria → Run workflow → Turno: 2*.
 - La página de los videos guarda los de los últimos 2 días, así los links de los mails siguen andando.
 
+## Revisar el video antes de que salga
+
+Apenas el video está listo te llega un mail **"Listo para revisar"** con el video, el texto y la hora a la que sale.
+**Si no hacés nada, se publica solo a esa hora.** Si querés cambiar algo:
+
+1. Tocá el link **Revisar video** del mail (o *Actions → Revisar video*) → **Run workflow**.
+2. Elegí qué hacer:
+   - **Pedir cambios** y escribí qué querés, por ejemplo: "explicá mejor lo de los pilotos", "título: ¿Por qué Biro no se hizo rico?", "hacelo más largo", "cambiá los clips". En unos 10 minutos te llega la versión nueva y sale a la hora (o enseguida, si la hora ya pasó). Se puede pedir cambios hasta dos veces por video.
+   - **Publicar ya**: sale en el próximo minuto.
+   - **No publicar hoy**: no sale; el mail te deja el link para bajarlo y subirlo a mano si querés.
+3. **Run workflow**.
+
+Cada pedido de cambios usa unas 5 consultas de Gemini (sigue siendo gratis).
+
 ## Voz y música
 
 - **Voz:** en `config.json`, `voz_motor` es `gemini` (más natural, usa la misma clave) o `edge` (Microsoft). `voz_gemini` en `auto` busca una voz argentina en la biblioteca de Google; si no hay, usa `Puck`. Podés probar otras: `Orus`, `Charon`, `Fenrir` (hombre) o `Kore`, `Aoede`, `Leda` (mujer). `voz_tempo` en `1.1` la hace un poco más rápida. Si la voz de Gemini falla un día, el video sale igual con la de Microsoft y queda un aviso amarillo en la ejecución.

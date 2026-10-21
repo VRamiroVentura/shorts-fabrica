@@ -238,7 +238,7 @@ def _con_texto(lista, trabajo, ronda):
         return []
 
 
-def _fondos(escenas, tiempos, trabajo, seed):
+def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
     """Un clip cada ~2.3 s. Siempre video: primero lo que muestra justo lo que se dice, si no un comodín
     de plata y trámites; nunca algo de otro país ni sin relación. Devuelve (segmentos, de stock, banco, propios)."""
     from . import video
@@ -284,7 +284,7 @@ def _fondos(escenas, tiempos, trabajo, seed):
     # 2) la IA puntúa
     puntajes, p_comodin, p_postal = _puntuar_con_ia(escenas, candidatos, comodines, trabajo, lindas)
     # 3) armado
-    usados, segmentos, de_video, de_propios, n = set(), [], 0, 0, 0
+    usados, segmentos, de_video, de_propios, n = set(evitar), [], 0, 0, 0  # evitar: clips de la versión anterior
     colocados = []  # cada fondo puesto: para revisar después que no tenga texto encima
     con_ia_de_imagen = bool(util.secreto("CF_ACCOUNT_ID") and util.secreto("CF_API_TOKEN"))
 
@@ -376,6 +376,7 @@ def _fondos(escenas, tiempos, trabajo, seed):
                 broll.clip_tarjeta(escenas[x["i"]].get("emoji") or "💡", x["largo"], x["dest"])
                 x["clip"] = None
         revisar = nuevos
+    _fondos.ids = [x["clip"]["id"] for x in colocados if x.get("clip") and x["clip"].get("id")]
     return segmentos, de_video, banco, de_propios, postales_usadas
 
 
@@ -405,7 +406,7 @@ def _portada(segmentos, contenido, destino, trabajo, serie_nombre=""):
 
 
 # ---------------------------------------------------------------- todo junto
-def generar(contenido, serie_nombre, usuario, carpeta):
+def generar(contenido, serie_nombre, usuario, carpeta, evitar=()):
     cfg = util.config()
     salida = Path(carpeta)
     trabajo = salida / "_trabajo"
@@ -420,7 +421,8 @@ def generar(contenido, serie_nombre, usuario, carpeta):
     total = round(tiempos[-1][1], 3)
 
     # 2) fondos
-    segmentos, de_pexels, banco, de_propios, de_postales = _fondos(escenas, tiempos, trabajo, seed)
+    _fondos.ids = []
+    segmentos, de_pexels, banco, de_propios, de_postales = _fondos(escenas, tiempos, trabajo, seed, evitar)
     (trabajo / "lista.txt").write_text("".join(f"file '{p.resolve()}'\n" for p in segmentos))
     _run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(trabajo / "lista.txt"),
           "-c", "copy", str(trabajo / "fondo.mp4")])
@@ -458,7 +460,8 @@ def generar(contenido, serie_nombre, usuario, carpeta):
     _portada(segmentos, contenido, salida / "thumb.jpg", trabajo, serie_nombre)
 
     meta = {"duracion": round(voz.duracion(salida / "video.mp4"), 2), "voz": motor, "clips": len(segmentos),
-            "clips_stock": de_pexels, "banco": banco, "clips_propios": de_propios, "postales": de_postales, "musica": musica.name if musica else None, "voz_seg": round(dur_voz, 2)}
+            "clips_stock": de_pexels, "banco": banco, "clips_propios": de_propios, "postales": de_postales, "musica": musica.name if musica else None, "voz_seg": round(dur_voz, 2),
+            "clips_ids": list(getattr(_fondos, "ids", []))}
     (salida / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
     util.log("Video:", json.dumps(meta, ensure_ascii=False))
     shutil.rmtree(trabajo, ignore_errors=True)

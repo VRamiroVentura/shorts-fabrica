@@ -370,3 +370,20 @@ def escribir(serie, fuentes, titulos_previos):
         util.log("La revisión falló, uso el borrador:", util.ocultar(e))
         final = borrador
     return _ajustar_largo(sistema, final, int(serie.get("palabras_max") or LARGO_MAX))
+
+
+def aplicar_cambios(serie, contenido, cambios):
+    """El dueño de la cuenta vio el video y pidió cambios: se rehace el guion respetando lo que pidió."""
+    sistema = _prompt("maestro.md")
+    pedido = ("Este es el guion de un video corto (JSON). El dueño de la cuenta lo vio antes de publicarlo y pidió "
+              f"estos cambios:\n«{cambios.strip()}»\n\n"
+              "Aplicá lo que pidió al pie de la letra: si da un título o una frase, usalos textuales; si pide explicar "
+              "mejor algo, agregá lo que haga falta; si pide más largo o más corto, ajustalo; si pide otro gancho o otro "
+              "final, cambialos. Todo lo demás dejalo como está, salvo que el cambio lo requiera. Seguí respetando las "
+              "reglas de formato y de precisión de siempre (ningún dato inventado). Si el pedido es solo sobre las "
+              "imágenes o los clips, devolvé el guion igual. Devolvé el JSON completo, con la misma forma.\n\n"
+              + serie.get("prompt", "") + "\n\n" + _prompt("formato.md") + "\n\nJSON:\n"
+              + json.dumps(_para_ia(contenido), ensure_ascii=False))
+    nuevo = validar(gemini(sistema, pedido, temperatura=0.5))
+    util.log("Guion con tus cambios:", nuevo["titulo"], f'({nuevo["palabras"]} palabras)')
+    return _ajustar_largo(sistema, nuevo, int(serie.get("palabras_max") or LARGO_MAX))

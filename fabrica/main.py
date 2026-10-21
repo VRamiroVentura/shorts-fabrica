@@ -78,21 +78,75 @@ def _traer_anteriores(actual):
     return quedan
 
 
+def _serie(cfg, clave_serie):
+    serie = dict(cfg["series"][clave_serie])
+    propio = util.RAIZ / "prompts" / "series" / f"{clave_serie}.md"
+    if propio.exists():  # instrucciones de la serie mejoradas, sin tocar config.json
+        serie["prompt"] = propio.read_text(encoding="utf-8").strip()
+    return serie
+
+
+def _producir(cfg, clave_serie, serie, contenido, fuentes, fuentes_detalle, firma_base, fecha, turno, nombre_carpeta,
+              evitar=(), version=1):
+    """Arma placas, video y portada en out/sitio/<nombre_carpeta> y devuelve la publicación."""
+    from . import carrusel, montaje
+    carpeta = SITIO / nombre_carpeta
+    if carpeta.exists():
+        shutil.rmtree(carpeta)
+    carpeta.mkdir(parents=True)
+    placas = carrusel.generar(contenido, serie["nombre"], cfg["usuario"], carpeta)
+    montaje.generar(contenido, serie["nombre"], cfg["usuario"], carpeta, evitar=evitar)
+    shutil.rmtree(carpeta / "_trabajo", ignore_errors=True)
+    (carpeta / "spec.json").unlink(missing_ok=True)
+    meta_video = util.leer_json(str((carpeta / "meta.json").relative_to(util.RAIZ)), {}) or {}
+    (carpeta / "meta.json").unlink(missing_ok=True)
+    (SITIO / "index.html").write_text("<meta charset='utf-8'><p>Fábrica de Shorts</p>", encoding="utf-8")
+    firma = firma_base
+    if meta_video.get("clips_stock"):
+        firma = firma + f'\nVideos de stock: {meta_video.get("banco")}.'
+    tags = " ".join(contenido["hashtags"])
+    return {
+        "fecha": fecha,
+        "serie": clave_serie,
+        "serie_nombre": serie["nombre"],
+        "titulo": contenido["titulo"],
+        "caption": f'{contenido["titulo"]}\n\n{contenido["descripcion"]}\n\n{firma}\n\n{tags}'.strip(),
+        "descripcion_youtube": f'{contenido["descripcion"]}\n\n{firma}\n\n{tags} #shorts'.strip(),
+        "tags": [t.lstrip("#") for t in contenido["hashtags"]],
+        "guion": " ".join(e["texto_voz"] for e in contenido["escenas"]),
+        "fuentes": fuentes,
+        "fuentes_detalle": fuentes_detalle,
+        "archivos": {"video": f"{nombre_carpeta}/video.mp4", "portada": f"{nombre_carpeta}/thumb.jpg",
+                     "placas": [f"{nombre_carpeta}/{x.name}" for x in placas]},
+        "contenido": contenido,
+        "video": meta_video,
+        "turno": turno,
+        "carpeta": nombre_carpeta,
+        "base": _carpeta(fecha, turno),
+        "firma_base": firma_base,
+        "version": version,
+    }
+
+
+def _anotar_sitio(anteriores, p):
+    a = p["archivos"]
+    util.guardar_json("data/sitio.json", anteriores + [
+        {"fecha": p["fecha"], "carpeta": p["carpeta"], "archivos": [a["video"], a["portada"]] + a["placas"]}])
+
+
 def generar(simulado=False):
     cfg = util.config()
     os.environ.setdefault("TTS_VOICE", cfg.get("voz", "es-AR-TomasNeural"))
     os.environ.setdefault("TTS_RATE", str(cfg.get("voz_velocidad", "+15%")))
     os.environ.setdefault("TTS_MAX_PAUSA", str(cfg.get("voz_pausa_maxima", 0.28)))
-    from . import carrusel, escritor, investigar, montaje  # importa después de fijar la voz
+    from . import escritor, investigar  # importa después de fijar la voz
 
     turno = _turno()
     if not simulado:
         _sumar_intento(turno)
+    inicio = util.datetime.now(util.ZoneInfo("UTC")).isoformat()
     clave_serie = _serie_del_dia(cfg, turno)
-    serie = dict(cfg["series"][clave_serie])
-    propio = util.RAIZ / "prompts" / "series" / f"{clave_serie}.md"
-    if propio.exists():  # instrucciones de la serie mejoradas, sin tocar config.json
-        serie["prompt"] = propio.read_text(encoding="utf-8").strip()
+    serie = _serie(cfg, clave_serie)
     fecha = util.ahora().strftime("%Y-%m-%d")
     util.log("Serie de hoy:", serie["nombre"], f"(turno {turno})")
 
@@ -116,7 +170,7 @@ def generar(simulado=False):
                 rotadas = [lista[(semana * 2 + k) % len(lista)] for k in range(len(lista))]
                 fuentes = investigar.virales_mundo(rotadas, clave_yt, usados, cfg.get("fuentes_por_video", 2))
             else:
-                fuentes = investigar.fuera_de_serie(serie["canales"], clave_yt, usados,
+                fuentes = investigar.fuera_de_serie(serie.get("canales", []), clave_yt, usados,
                                                     cfg.get("fuentes_por_video", 2))
             for f in fuentes:
                 f["transcripcion"] = investigar.transcripcion(f["id"])
@@ -132,51 +186,59 @@ def generar(simulado=False):
         contenido = escritor.escribir(serie, fuentes, titulos)
 
     nombre_carpeta = _carpeta(fecha, turno)
-    carpeta = SITIO / nombre_carpeta
     if SALIDA.exists():
         shutil.rmtree(SALIDA)
-    carpeta.mkdir(parents=True)
+    SITIO.mkdir(parents=True)
+    util.guardar_json("out/inicio.json", {"inicio": inicio})
     anteriores = [] if simulado else _traer_anteriores(nombre_carpeta)
-    placas = carrusel.generar(contenido, serie["nombre"], cfg["usuario"], carpeta)
-    video_path, thumb_path = montaje.generar(contenido, serie["nombre"], cfg["usuario"], carpeta)
-    shutil.rmtree(carpeta / "_trabajo", ignore_errors=True)
-    (carpeta / "spec.json").unlink(missing_ok=True)
-    meta_video = util.leer_json(str((carpeta / "meta.json").relative_to(util.RAIZ)), {}) or {}
-    (carpeta / "meta.json").unlink(missing_ok=True)
-    (SITIO / "index.html").write_text("<meta charset='utf-8'><p>Fábrica de Shorts</p>", encoding="utf-8")
-
     firma = cfg.get("firma", "")
     if serie.get("modo") == "virales" and fuentes:
         firma = ("Inspirado en videos virales de " +
                  ", ".join(f'{f["canal"]} ({f["pais"]})' for f in fuentes) + ".\n" + firma)
-    if meta_video.get("clips_stock"):
-        firma = firma + f'\nVideos de stock: {meta_video.get("banco")}.'
-    tags = " ".join(contenido["hashtags"])
-    publicacion = {
-        "fecha": fecha,
-        "serie": clave_serie,
-        "serie_nombre": serie["nombre"],
-        "titulo": contenido["titulo"],
-        "caption": f'{contenido["titulo"]}\n\n{contenido["descripcion"]}\n\n{firma}\n\n{tags}'.strip(),
-        "descripcion_youtube": f'{contenido["descripcion"]}\n\n{firma}\n\n{tags} #shorts'.strip(),
-        "tags": [t.lstrip("#") for t in contenido["hashtags"]],
-        "guion": " ".join(e["texto_voz"] for e in contenido["escenas"]),
-        "fuentes": [f["id"] for f in fuentes],
-        "fuentes_detalle": [{"canal": f["canal"], "titulo": f["titulo"], "score": f.get("score") or f.get("pais", "")}
-                            for f in fuentes],
-        "archivos": {"video": f"{nombre_carpeta}/video.mp4", "portada": f"{nombre_carpeta}/thumb.jpg",
-                     "placas": [f"{nombre_carpeta}/{p.name}" for p in placas]},
-        "contenido": contenido,
-        "video": meta_video,
-        "turno": turno,
-        "carpeta": nombre_carpeta,
-    }
+    detalle = [{"canal": f["canal"], "titulo": f["titulo"], "score": f.get("score") or f.get("pais", "")}
+               for f in fuentes]
+    publicacion = _producir(cfg, clave_serie, serie, contenido, [f["id"] for f in fuentes], detalle, firma,
+                            fecha, turno, nombre_carpeta)
     util.guardar_json("out/publicacion.json", publicacion)
     if not simulado:
-        a = publicacion["archivos"]
-        util.guardar_json("data/sitio.json", anteriores + [
-            {"fecha": fecha, "carpeta": nombre_carpeta, "archivos": [a["video"], a["portada"]] + a["placas"]}])
+        _anotar_sitio(anteriores, publicacion)
     util.log("Listo:", contenido["titulo"])
+
+
+def rehacer():
+    """Rehace el video con los cambios que pediste (el pedido lo dejó «esperar» en out/pedido.json)."""
+    from . import escritor
+    cfg = util.config()
+    os.environ.setdefault("TTS_VOICE", cfg.get("voz", "es-AR-TomasNeural"))
+    os.environ.setdefault("TTS_RATE", str(cfg.get("voz_velocidad", "+15%")))
+    p = util.leer_json("out/publicacion.json")
+    pedido = util.leer_json("out/pedido.json", {}) or {}
+    cambios = (pedido.get("cambios") or "").strip()
+    serie = _serie(cfg, p["serie"])
+    version = int(p.get("version", 1)) + 1
+    util.log(f"Rehago el video (versión {version}) con tus cambios:", cambios)
+    try:
+        contenido = escritor.aplicar_cambios(serie, p["contenido"], cambios) if cambios else p["contenido"]
+    except Exception as e:  # noqa
+        util.avisar("No pude aplicar los cambios al guion", f"Sigo con el guion anterior. Motivo: {util.ocultar(e)}")
+        contenido = p["contenido"]
+    otros_clips = any(x in cambios.lower() for x in ("clip", "imagen", "imágen", "fondo", "toma", "visual", "video de fondo"))
+    evitar = set((p.get("video") or {}).get("clips_ids") or []) if otros_clips else set()
+    nombre = f'{p.get("base") or p["carpeta"]}-v{version}'
+    try:
+        nueva = _producir(cfg, p["serie"], serie, contenido, p.get("fuentes", []), p.get("fuentes_detalle", []),
+                          p.get("firma_base", cfg.get("firma", "")), p["fecha"], p.get("turno", 1), nombre,
+                          evitar=evitar, version=version)
+    except Exception as e:  # noqa
+        # si algo falla, no se pierde el día: sale la versión anterior
+        util.avisar("No pude rehacer el video", f"Sale la versión anterior. Motivo: {util.ocultar(e)}")
+        return
+    nueva["cambios_pedidos"] = (p.get("cambios_pedidos") or []) + [cambios]
+    nueva["pedido_creado"] = pedido.get("creado", "")
+    util.guardar_json("out/publicacion.json", nueva)
+    anteriores = [x for x in (util.leer_json("data/sitio.json", []) or []) if x.get("carpeta") != nombre]
+    _anotar_sitio(anteriores, nueva)
+    util.log("Versión nueva lista:", nueva["titulo"])
 
 
 def publicar(base_url):
@@ -184,6 +246,21 @@ def publicar(base_url):
     cfg = util.config()
     p = util.leer_json("out/publicacion.json")
     base = base_url.rstrip("/") + "/"
+    decision = (util.leer_json("out/decision.json", {}) or {}).get("decision", "publicar")
+    if decision == "cancelar":
+        historial = util.leer_json("data/historial.json", []) or []
+        historial.append({"fecha": p["fecha"], "turno": p.get("turno", 1), "hora": util.ahora().strftime("%H:%M"),
+                          "serie": p["serie"], "titulo": p["titulo"], "fuentes": p["fuentes"], "resultados": {},
+                          "cancelado": True})
+        util.guardar_json("data/historial.json", historial[-400:])
+        util.avisar("No se publicó", "Pediste que este video no salga hoy.")
+        try:
+            pub.mail(f'No se publicó (lo pediste): {p["titulo"]}',
+                     f'<p>Como pediste, <b>{html.escape(p["titulo"])}</b> no se publicó. Si lo querés subir a mano, '
+                     f'acá está el <a href="{base}{p["archivos"]["video"]}">video</a> (el link dura 2 días).</p>')
+        except Exception as ex:  # noqa
+            util.log("No pude mandar el mail:", ex)
+        return
     url = lambda rel: base + rel  # noqa
     video_local = SITIO / p["archivos"]["video"]
     hoy_carrusel = util.ahora().isoweekday() in cfg.get("carrusel_dias", []) and p.get("turno", 1) == 1
@@ -253,7 +330,7 @@ def _registro(p, res, base):
     lineas += ["", "Basado en: " + ("; ".join(f'{f["canal"]} - {f["titulo"]} (x{f["score"]})'
                                               for f in p["fuentes_detalle"]) or "tema propio"),
                "", "## Texto", "", p["caption"], "", "## Guion", "", p["guion"]]
-    ruta = util.RAIZ / "publicaciones" / f'{p.get("carpeta") or p["fecha"]}.md'
+    ruta = util.RAIZ / "publicaciones" / f'{p.get("base") or p.get("carpeta") or p["fecha"]}.md'
     ruta.parent.mkdir(exist_ok=True)
     ruta.write_text("\n".join(lineas) + "\n", encoding="utf-8")
 
@@ -268,8 +345,11 @@ def _mail_diario(p, res, base):
     cuerpo = (f'<h2>{e(p["serie_nombre"])}: {e(p["titulo"])}</h2><ul>{filas}</ul>{aviso}'
               f'<p><a href="{base}{p["archivos"]["video"]}">Video</a> · '
               f'<a href="{base}{p["archivos"]["portada"]}">Portada</a> · '
-              f'<a href="{base}{p["archivos"]["placas"][0]}">Carrusel</a> (los links duran 2 días)</p>'
+              + (f'<a href="{base}{p["archivos"]["placas"][0]}">Carrusel</a>' if p["archivos"].get("placas") else "")
+              + ' (los links duran 2 días)</p>'
               f'<p><b>Texto:</b><br>{e(p["caption"]).replace(chr(10), "<br>")}</p>'
+              f'<p><b>Para TikTok:</b> bajá el video y, antes de publicar, tocá <b>Más opciones</b> y activá '
+              f'<b>«Contenido generado por IA»</b> (la voz es de IA).</p>'
               f'<hr><p style="color:#666">{e(p["guion"])}</p>')
     try:
         segundo = " (2º del día)" if p.get("turno", 1) == 2 else ""
@@ -370,6 +450,9 @@ def _toca_turno(cfg, ahora, turno):
         return False, "hoy no tiene horario", None
     if _ya_salio(hoy, turno):
         return False, "hoy ya se publicó", objetivo
+    from . import revision
+    if revision.cancelado(hoy, turno):
+        return False, "pediste que hoy no salga", objetivo
     if _intentos(hoy, turno) >= INTENTOS_MAX:
         return False, f"hoy ya se intentó {INTENTOS_MAX} veces y falló; mañana sigue normal", objetivo
     faltan = (objetivo - ahora).total_seconds() / 60
@@ -409,21 +492,113 @@ def toca():
             f.write(f"si={'true' if si else 'false'}\nturno={turno}\n")
 
 
-def esperar():
-    """Con el video listo, espera al minuto exacto del horario antes de publicar."""
+def esperar(ultima=False):
+    """Espera la hora de publicar mirando cada minuto si mandaste un pedido desde «Revisar video».
+    Deja la decisión en out/decision.json y en la salida del paso: publicar, cancelar o cambios."""
     import time
-    if os.getenv("GITHUB_EVENT_NAME") != "schedule":
-        return
-    objetivo = _objetivo(util.config(), turno=_turno())
-    if not objetivo:
-        return
-    segundos = (objetivo - util.ahora()).total_seconds()
-    if 0 < segundos <= (ANTICIPO_MAX + 10) * 60:
-        util.log(f"Video listo. Espero {segundos / 60:.0f} minutos para publicar a las {objetivo:%H:%M}.")
+    from . import revision
+    cfg = util.config()
+    turno = _turno()
+    p = util.leer_json("out/publicacion.json", {}) or {}
+    desde = max((util.leer_json("out/inicio.json", {}) or {}).get("inicio", ""), p.get("pedido_creado", ""))
+    objetivo = _objetivo(cfg, turno=turno)
+    decision, pedido = "publicar", {}
+    if objetivo and (objetivo - util.ahora()).total_seconds() > 0:
+        util.log(f"Video listo. Espero hasta las {objetivo:%H:%M} y mientras miro si pedís cambios.")
         util.avisar("Esperando la hora de publicar",
-                    f"El video ya está listo. Esta corrida queda en marcha (amarilla) hasta las {objetivo:%H:%M} "
-                    f"y ahí publica. Es normal.")
-        time.sleep(segundos)
+                    f"El video ya está listo y se mandó por mail para que lo revises. Esta corrida queda en marcha "
+                    f"(amarilla) hasta las {objetivo:%H:%M} y ahí publica. Es normal.")
+    while True:
+        for x in revision.nuevos(revision.leer_remotos(), p.get("fecha", ""), turno, desde):
+            desde = x.get("creado", desde)
+            if x.get("accion") == "cambios" and ultima:
+                util.avisar("Ya no se aceptan más cambios", "Este video ya se rehízo dos veces: sale esta versión.")
+                continue
+            decision, pedido = x.get("accion", "publicar"), x
+            break
+        if pedido:
+            break
+        if not objetivo or (objetivo - util.ahora()).total_seconds() <= 0:
+            break
+        time.sleep(min(60, max(1, (objetivo - util.ahora()).total_seconds())))
+    util.log("Decisión:", decision, pedido.get("cambios", ""))
+    util.guardar_json("out/decision.json", {"decision": decision, "pedido": pedido})
+    util.guardar_json("out/pedido.json", pedido)
+    salida = os.getenv("GITHUB_OUTPUT")
+    if salida:
+        with open(salida, "a", encoding="utf-8") as f:
+            f.write(f"decision={decision}\n")
+
+
+def online(base_url):
+    """Espera a que el video nuevo se pueda ver en la página (Instagram lo baja de ahí)."""
+    import time
+    p = util.leer_json("out/publicacion.json")
+    url = base_url.rstrip("/") + "/" + p["archivos"]["video"]
+    for _ in range(36):
+        try:
+            r = util.pedir("HEAD", url, intentos=1, timeout=30)
+            if r is not None and r.status_code == 200:
+                util.log("Online:", url)
+                return
+        except Exception:  # noqa
+            pass
+        time.sleep(10)
+    raise RuntimeError("Los archivos no aparecieron online: " + url)
+
+
+def listo(base_url):
+    """Te manda el video apenas está listo, con la hora a la que sale y cómo pedir cambios."""
+    from . import publicar as pub
+    from . import revision
+    e = html.escape
+    cfg = util.config()
+    p = util.leer_json("out/publicacion.json")
+    base = base_url.rstrip("/") + "/"
+    objetivo = _objetivo(cfg, turno=_turno())
+    cuando = (f"hoy a las {objetivo:%H:%M}" if objetivo and objetivo > util.ahora()
+              else "en unos minutos (ya es la hora)")
+    v = p.get("version", 1)
+    version = f" · versión {v} con tus cambios" if v > 1 else ""
+    link = revision.link_formulario()
+    cuerpo = (f'<h2>{e(p["serie_nombre"])}: {e(p["titulo"])}</h2>'
+              f'<p><b>Sale {cuando}</b> en Instagram, YouTube y Facebook{version}. '
+              f'Si no hacés nada, se publica solo.</p>'
+              f'<p><a href="{base}{p["archivos"]["video"]}">▶️ Ver el video</a> · '
+              f'<a href="{base}{p["archivos"]["portada"]}">Portada</a></p>'
+              f'<p><b>¿Querés cambiar algo?</b> Entrá a <a href="{link}">Revisar video</a> → <b>Run workflow</b>, '
+              f'elegí qué hacer (pedir cambios, publicar ya o no publicar hoy), escribí qué cambiar y tocá '
+              f'<b>Run workflow</b>. En unos 10 minutos te llega la versión nueva.</p>'
+              f'<p><b>Texto:</b><br>{e(p["caption"]).replace(chr(10), "<br>")}</p>'
+              f'<hr><p style="color:#666"><b>Guion:</b> {e(p["guion"])}</p>'
+              f'<p style="color:#666">Al subirlo a TikTok, activá «Contenido generado por IA» en Más opciones.</p>')
+    try:
+        segundo = " (2º del día)" if p.get("turno", 1) == 2 else ""
+        pub.mail(f'Listo para revisar{segundo}: {p["titulo"]}', cuerpo)
+    except Exception as ex:  # noqa
+        util.log("No pude mandar el mail:", ex)
+
+
+def revisar():
+    """Lo usa el formulario «Revisar video»: anota tu pedido para la corrida que está esperando."""
+    from . import revision
+    destino = os.getenv("GITHUB_STEP_SUMMARY")
+    try:
+        x = revision.registrar(os.getenv("ACCION", ""), os.getenv("TURNO_PEDIDO", ""), os.getenv("CAMBIOS", ""))
+        texto = {"cambios": "Listo: la fábrica rehace el video con tus cambios y te manda la versión nueva por mail "
+                            "en unos 10 minutos. Si para entonces ya pasó la hora, se publica apenas esté.",
+                 "publicar": "Listo: se publica en el próximo minuto.",
+                 "cancelar": "Listo: hoy no se publica. Te llega un mail con el link por si lo querés subir a mano."}
+        msg = texto[x["accion"]]
+    except ValueError as e:
+        msg = f"❌ {e}"
+        if destino:
+            open(destino, "a", encoding="utf-8").write(f"## Revisar video\n\n{msg}\n")
+        util.log(msg)
+        sys.exit(1)
+    util.log(msg)
+    if destino:
+        open(destino, "a", encoding="utf-8").write(f"## Revisar video\n\n{msg}\n")
 
 
 def reporte():
@@ -529,7 +704,9 @@ def reporte():
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("accion", choices=["generar", "publicar", "resumen", "reporte", "toca", "esperar", "probar"])
+    ap.add_argument("accion", choices=["generar", "publicar", "resumen", "reporte", "toca", "esperar", "probar",
+                                       "rehacer", "listo", "revisar", "online"])
+    ap.add_argument("--ultima", action="store_true")
     ap.add_argument("--base-url", default="")
     ap.add_argument("--simulado", action="store_true")
     a = ap.parse_args()
@@ -537,7 +714,15 @@ if __name__ == "__main__":
         if a.accion == "toca":
             toca()
         elif a.accion == "esperar":
-            esperar()
+            esperar(a.ultima)
+        elif a.accion == "rehacer":
+            rehacer()
+        elif a.accion == "listo":
+            listo(a.base_url)
+        elif a.accion == "online":
+            online(a.base_url)
+        elif a.accion == "revisar":
+            revisar()
         elif a.accion == "generar":
             generar(a.simulado)
         elif a.accion == "publicar":
