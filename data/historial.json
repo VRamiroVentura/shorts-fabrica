@@ -292,5 +292,27 @@
         "id": "1423420253318440"
       }
     }
+  },
+  {
+    "fecha": "2026-10-22",
+    "turno": 2,
+    "hora": "13:01",
+    "serie": "estafas",
+    "titulo": "El tipo que vendió la Torre Eiffel",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17989438443072189"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "fxvizXoy-og"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "4908561719370757"
+      }
+    }
   }
 ]
