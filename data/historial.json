@@ -267,5 +267,30 @@
         "id": "2233879100489709"
       }
     }
+  },
+  {
+    "fecha": "2026-10-21",
+    "turno": 1,
+    "hora": "21:31",
+    "serie": "economia",
+    "titulo": "¿Por qué la ropa acá sale el triple?",
+    "fuentes": [
+      "F_VUBpALcVE",
+      "3fnZkfU5Wgg"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17925954369204971"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "7SeLMmkV6_g"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1423420253318440"
+      }
+    }
   }
 ]
