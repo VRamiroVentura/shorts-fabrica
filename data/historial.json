@@ -314,5 +314,30 @@
         "id": "4908561719370757"
       }
     }
+  },
+  {
+    "fecha": "2026-10-22",
+    "turno": 1,
+    "hora": "19:31",
+    "serie": "autor",
+    "titulo": "El truco de los ricos con la deuda",
+    "fuentes": [
+      "i_h_H59GhBo",
+      "dfyaeZAicXE"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18431865625149747"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "vFMc5BFWJw8"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1109406191503445"
+      }
+    }
   }
 ]
