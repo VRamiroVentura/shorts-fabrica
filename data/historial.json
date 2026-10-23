@@ -339,5 +339,39 @@
         "id": "1109406191503445"
       }
     }
+  },
+  {
+    "fecha": "2026-10-23",
+    "turno": 1,
+    "hora": "12:32",
+    "serie": "monotributo",
+    "titulo": "Cambia tu recibo de sueldo",
+    "fuentes": [
+      "uTqbrib-c9g",
+      "https://www.ignacioonline.com.ar/ganancias-personas-juridicas-arca-servicio-web-habilitado/",
+      "https://blogdelcontador.com.ar/news-46490-el-gobierno-reglamento-el-nuevo-recibo-de-sueldo-que-datos-deberan-incluir-las-empresas",
+      "https://blogdelcontador.com.ar/news-46483-declaracion-jurada-simplificada-de-ganancias-arca-aclara-puntos-controvertidos",
+      "https://blogdelcontador.com.ar/news-46473-reforma-laboral-que-cambia-en-los-recibos-de-sueldo-y-como-impacta-en-la-liquidacion",
+      "https://blogdelcontador.com.ar/news-46457-declaracion-jurada-simplificada-de-ganancias-como-funciona-el-nuevo-sistema-reglamentado-por-arca",
+      "https://www.ignacioonline.com.ar/ganancias-personas-juridicas-web-arca-publico-el-manual-y-los-disenos-de-archivos-csv/"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18106289333367644"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "18186576142424636"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "-T3Em_qepjg"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1796578924881521"
+      }
+    }
   }
 ]
