@@ -373,5 +373,27 @@
         "id": "1796578924881521"
       }
     }
+  },
+  {
+    "fecha": "2026-10-23",
+    "turno": 2,
+    "hora": "20:02",
+    "serie": "argentino_que",
+    "titulo": "Vendió su web en 540 millones",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18144182392590298"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "5NCYK7eY0JY"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1106979202262338"
+      }
+    }
   }
 ]
