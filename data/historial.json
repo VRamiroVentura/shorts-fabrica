@@ -419,5 +419,30 @@
         "id": "28980934131587152"
       }
     }
+  },
+  {
+    "fecha": "2026-10-24",
+    "turno": 1,
+    "hora": "18:31",
+    "serie": "historias",
+    "titulo": "El negocio oculto de McDonald's",
+    "fuentes": [
+      "MhspjNiER9Q",
+      "f8kUx5_1cWc"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18247311742313901"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "Yg_ch-KcTn8"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "39418444441104334"
+      }
+    }
   }
 ]
