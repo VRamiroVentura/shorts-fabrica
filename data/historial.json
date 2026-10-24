@@ -395,5 +395,29 @@
         "id": "1106979202262338"
       }
     }
+  },
+  {
+    "fecha": "2026-10-24",
+    "turno": 2,
+    "hora": "13:01",
+    "serie": "paso_de_verdad",
+    "titulo": "El enchufe que burló a Edison",
+    "fuentes": [
+      "0BZ1C83I2R4"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18084645560333442"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "DD0TFXZ1VWM"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "28980934131587152"
+      }
+    }
   }
 ]
