@@ -48,6 +48,70 @@ def _serie_del_dia(cfg, turno=None):
     return cfg["plan_semanal"][dia]
 
 
+def _temas():
+    return (util.leer_json("temas.json", {}) or {}).get("temas", [])
+
+
+def _tema_pedido(turno):
+    """Un tema puntual que pediste (temas.json) y todavía no salió. Va en lugar del tema del día."""
+    if (os.getenv("SERIE") or "").strip():
+        return None  # si elegiste una serie a mano, manda esa
+    hechos = set((util.leer_json("data/estado.json", {}) or {}).get("temas_hechos", []))
+    hoy = util.ahora().strftime("%Y-%m-%d")
+    for t in _temas():
+        if not t.get("id") or t["id"] in hechos or str(t.get("turno", 1)) != str(turno):
+            continue
+        if t.get("desde", "") > hoy or (t.get("hasta") and t["hasta"] < hoy):
+            continue
+        return t
+    return None
+
+
+def _tema_por_id(tema_id):
+    return next((t for t in _temas() if tema_id and t.get("id") == tema_id), None)
+
+
+def _serie_con_tema(serie, tema):
+    s = dict(serie)
+    s["prompt"] = (f'TEMA OBLIGATORIO DE HOY (lo pidió el dueño de la cuenta): {tema["titulo"]}.\n'
+                   + tema.get("prompt", "").strip() + "\n"
+                   "- Usá SOLO los datos del MATERIAL DE REFERENCIA, que están chequeados a mano. No agregues montos, "
+                   "fechas, porcentajes ni requisitos que no estén ahí.")
+    if tema.get("palabras_max"):
+        s["palabras_max"] = tema["palabras_max"]
+    return s
+
+
+def _carrusel_tema(tema):
+    """Placas fijas del tema (escritas y chequeadas a mano). Se respetan los % tal cual."""
+    from . import escritor
+    placas = []
+    for x in tema.get("carrusel") or []:
+        titulo = " ".join(str(x.get("titulo") or "").split())
+        if titulo:
+            placas.append({"titulo": escritor._siglas(titulo, True),
+                           "cuerpo": escritor._siglas("\n".join(" ".join(ln.split()) for ln in
+                                                                str(x.get("cuerpo") or "").split("\n") if ln.strip())),
+                           "emoji": escritor._emoji(x.get("emoji"), "💡")})
+    return placas[:10] if len(placas) >= 3 else []
+
+
+def _fuente_tema(tema):
+    return {"id": "tema:" + tema["id"], "tipo": "noticia", "canal": tema.get("fuente", "normativa oficial"),
+            "titulo": tema["titulo"], "publicado": tema.get("fecha_datos", ""), "transcripcion": tema["datos"]}
+
+
+def _marcar_tema(p, resultados):
+    """El tema pedido ya salió en alguna red: no se repite."""
+    if not p.get("tema_id") or not any(r.get("ok") for r in resultados.values()):
+        return
+    estado = util.leer_json("data/estado.json", {}) or {}
+    hechos = estado.get("temas_hechos", [])
+    if p["tema_id"] not in hechos:
+        estado["temas_hechos"] = hechos + [p["tema_id"]]
+        util.guardar_json("data/estado.json", estado)
+
+
 def _base_paginas():
     repo = os.getenv("GITHUB_REPOSITORY", "")
     if "/" not in repo:
@@ -146,7 +210,12 @@ def generar(simulado=False):
         _sumar_intento(turno)
     inicio = util.datetime.now(util.ZoneInfo("UTC")).isoformat()
     clave_serie = _serie_del_dia(cfg, turno)
-    serie = _serie(cfg, clave_serie)
+    tema = None if simulado else _tema_pedido(turno)
+    if tema:
+        clave_serie = tema.get("serie") if tema.get("serie") in cfg["series"] else clave_serie
+        serie = _serie_con_tema(_serie(cfg, clave_serie), tema)
+    else:
+        serie = _serie(cfg, clave_serie)
     fecha = util.ahora().strftime("%Y-%m-%d")
     util.log("Serie de hoy:", serie["nombre"], f"(turno {turno})")
 
@@ -156,7 +225,10 @@ def generar(simulado=False):
 
     fuentes = []
     clave_yt = util.secreto("YT_API_KEY")
-    if serie.get("modo") == "contable" and not simulado:
+    if tema:
+        fuentes = [_fuente_tema(tema)]
+        util.log("Tema pedido:", tema["titulo"], "(en lugar del tema del día)")
+    elif serie.get("modo") == "contable" and not simulado:
         from . import contable
         fuentes = contable.buscar(cfg.get("referentes_contables", {}), clave_yt, usados,
                                   cfg.get("fuentes_por_video", 2))
@@ -184,6 +256,8 @@ def generar(simulado=False):
         contenido = escritor.validar(json.loads((util.RAIZ / "data" / "ejemplo_contenido.json").read_text(encoding="utf-8")))
     else:
         contenido = escritor.escribir(serie, fuentes, titulos)
+    if tema and _carrusel_tema(tema):
+        contenido["carrusel"] = _carrusel_tema(tema)
 
     nombre_carpeta = _carpeta(fecha, turno)
     if SALIDA.exists():
@@ -199,6 +273,8 @@ def generar(simulado=False):
                for f in fuentes]
     publicacion = _producir(cfg, clave_serie, serie, contenido, [f["id"] for f in fuentes], detalle, firma,
                             fecha, turno, nombre_carpeta)
+    if tema:
+        publicacion["tema_id"] = tema["id"]
     util.guardar_json("out/publicacion.json", publicacion)
     if not simulado:
         _anotar_sitio(anteriores, publicacion)
@@ -215,6 +291,9 @@ def rehacer():
     pedido = util.leer_json("out/pedido.json", {}) or {}
     cambios = (pedido.get("cambios") or "").strip()
     serie = _serie(cfg, p["serie"])
+    tema = _tema_por_id(p.get("tema_id"))
+    if tema:
+        serie = _serie_con_tema(serie, tema)
     version = int(p.get("version", 1)) + 1
     util.log(f"Rehago el video (versión {version}) con tus cambios:", cambios)
     try:
@@ -222,6 +301,8 @@ def rehacer():
     except Exception as e:  # noqa
         util.avisar("No pude aplicar los cambios al guion", f"Sigo con el guion anterior. Motivo: {util.ocultar(e)}")
         contenido = p["contenido"]
+    if tema and _carrusel_tema(tema) and "carrusel" not in cambios.lower() and "placa" not in cambios.lower():
+        contenido = dict(contenido, carrusel=_carrusel_tema(tema))  # las placas fijas no se tocan
     otros_clips = any(x in cambios.lower() for x in ("clip", "imagen", "imágen", "fondo", "toma", "visual", "video de fondo"))
     evitar = set((p.get("video") or {}).get("clips_ids") or []) if otros_clips else set()
     nombre = f'{p.get("base") or p["carpeta"]}-v{version}'
@@ -233,6 +314,8 @@ def rehacer():
         # si algo falla, no se pierde el día: sale la versión anterior
         util.avisar("No pude rehacer el video", f"Sale la versión anterior. Motivo: {util.ocultar(e)}")
         return
+    if p.get("tema_id"):
+        nueva["tema_id"] = p["tema_id"]
     nueva["cambios_pedidos"] = (p.get("cambios_pedidos") or []) + [cambios]
     nueva["pedido_creado"] = pedido.get("creado", "")
     util.guardar_json("out/publicacion.json", nueva)
@@ -264,6 +347,9 @@ def publicar(base_url):
     url = lambda rel: base + rel  # noqa
     video_local = SITIO / p["archivos"]["video"]
     hoy_carrusel = util.ahora().isoweekday() in cfg.get("carrusel_dias", []) and p.get("turno", 1) == 1
+    tema = _tema_por_id(p.get("tema_id"))
+    if tema and tema.get("carrusel_ig") and p["archivos"].get("placas"):
+        hoy_carrusel = True  # los temas que pediste van también como carrusel
     quiere = cfg.get("publicar", {})
     resultados = {}
 
@@ -292,6 +378,7 @@ def publicar(base_url):
     historial.append({"fecha": p["fecha"], "turno": p.get("turno", 1), "hora": util.ahora().strftime("%H:%M"),
                       "serie": p["serie"], "titulo": p["titulo"], "fuentes": p["fuentes"], "resultados": resultados})
     util.guardar_json("data/historial.json", historial[-400:])
+    _marcar_tema(p, resultados)
     _registro(p, resultados, base)
     _mail_diario(p, resultados, base)
     resumen(base_url, resultados)
@@ -342,6 +429,9 @@ def _mail_diario(p, res, base):
         f'<li><b>{e(red)}</b>: {"✅ publicado" if r["ok"] else "❌ " + e(r["error"])}</li>' for red, r in res.items())
     estado = util.leer_json("data/estado.json", {})
     aviso = f'<p style="color:#b00">⚠️ {e(estado["ig_aviso"])}</p>' if estado.get("ig_aviso") else ""
+    if res.get("instagram_reel") and not res["instagram_reel"]["ok"]:
+        aviso += ('<p style="color:#b00">⚠️ <b>No salió en Instagram.</b> Bajá el video del link de abajo y subilo '
+                  'a mano como Reel, con la portada y el texto de este mail.</p>')
     cuerpo = (f'<h2>{e(p["serie_nombre"])}: {e(p["titulo"])}</h2><ul>{filas}</ul>{aviso}'
               f'<p><a href="{base}{p["archivos"]["video"]}">Video</a> · '
               f'<a href="{base}{p["archivos"]["portada"]}">Portada</a> · '
@@ -561,7 +651,14 @@ def listo(base_url):
     v = p.get("version", 1)
     version = f" · versión {v} con tus cambios" if v > 1 else ""
     link = revision.link_formulario()
-    cuerpo = (f'<h2>{e(p["serie_nombre"])}: {e(p["titulo"])}</h2>'
+    tema = _tema_por_id(p.get("tema_id"))
+    pedido = (f'<p>📌 Es el tema que pediste: <b>{e(tema["titulo"])}</b>. Revisá bien los datos: si algo no '
+              f'cierra, pedí el cambio.</p>') if tema else ""
+    placas = p["archivos"].get("placas") or []
+    if tema and tema.get("carrusel_ig") and placas:
+        pedido += ('<p><b>En Instagram sale también como carrusel:</b> '
+                   + " · ".join(f'<a href="{base}{x}">{i}</a>' for i, x in enumerate(placas, 1)) + '</p>')
+    cuerpo = (f'<h2>{e(p["serie_nombre"])}: {e(p["titulo"])}</h2>{pedido}'
               f'<p><b>Sale {cuando}</b> en Instagram, YouTube y Facebook{version}. '
               f'Si no hacés nada, se publica solo.</p>'
               f'<p><a href="{base}{p["archivos"]["video"]}">▶️ Ver el video</a> · '

@@ -48,22 +48,37 @@ def es_anton():
 
 # ------------------------------------------------------------------ texto
 def partir(draw, texto, fnt, ancho):
-    palabras, lineas, actual = texto.split(), [], ""
-    for p in palabras:
-        prueba = (actual + " " + p).strip()
-        if draw.textlength(prueba, font=fnt) <= ancho:
-            actual = prueba
-        else:
-            if actual:
-                lineas.append(actual)
-            actual = p
-    if actual:
-        lineas.append(actual)
+    """Parte el texto en líneas que entran en `ancho`. Respeta los saltos de línea (listas con •)."""
+    lineas = []
+    for parrafo in str(texto).split("\n"):
+        sangria = ""
+        if parrafo.lstrip().startswith("•"):  # las líneas que siguen a una viñeta van corridas, alineadas al texto
+            sangria = " " * max(1, round(draw.textlength("• ", font=fnt) / max(draw.textlength(" ", font=fnt), 1)))
+        actual = ""
+        for p in parrafo.split():
+            prueba = f"{actual} {p}" if actual.strip() else actual + p
+            if draw.textlength(prueba, font=fnt) <= ancho:
+                actual = prueba
+            else:
+                if actual.strip():
+                    lineas.append(actual)
+                actual = sangria + p
+        if actual.strip():
+            lineas.append(actual)
     return lineas
 
 
 def ajustar(draw, texto, estilo, ancho, max_lineas, inicio, minimo=28):
     """Busca el tamaño de letra más grande que entra en max_lineas."""
+    items = [x for x in str(texto).split("\n") if x.strip()]
+    if len(items) > 1 and all(x.lstrip().startswith("•") for x in items) and len(items) <= max_lineas:
+        # en una lista, mejor una línea por viñeta si se puede con una letra que se lea bien
+        size = inicio
+        while size >= max(minimo, 40):
+            f = fuente(estilo, size)
+            if len(partir(draw, texto, f, ancho)) <= len(items):
+                return f, partir(draw, texto, f, ancho)
+            size -= 4
     size = inicio
     while size >= minimo:
         f = fuente(estilo, size)

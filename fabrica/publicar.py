@@ -77,6 +77,10 @@ def ig_token():
     return token, None
 
 
+class _ErrorProceso(RuntimeError):
+    """Instagram recibió el pedido pero falló al procesar el video (suele ser pasajero)."""
+
+
 def _ig_esperar(cid, token, minutos=6):
     fin = time.time() + minutos * 60
     while time.time() < fin:
@@ -85,7 +89,7 @@ def _ig_esperar(cid, token, minutos=6):
         if st == "FINISHED":
             return True
         if st == "ERROR":
-            raise RuntimeError("Instagram no pudo procesar el archivo: " + str(r.json()))
+            raise _ErrorProceso("Instagram no pudo procesar el archivo: " + str(r.json()))
         time.sleep(10)
     raise RuntimeError("Instagram tardó demasiado en procesar")
 
@@ -97,38 +101,69 @@ def _ig_publicar(cid, token):
     return r.json()["id"]
 
 
+IG_REINTENTOS = (True, True, False)   # con portada, con portada, sin portada
+IG_ESPERA_REINTENTO = 60
+
+
 def instagram_reel(video_url, cover_url, caption):
+    """Sube el Reel. Si Instagram falla al procesarlo (le pasa cada tanto sin motivo), lo vuelve a mandar
+    con un contenedor nuevo; la última vez sin portada, por si el problema era la portada."""
     token, err = ig_token()
     if err:
         raise RuntimeError(err)
-    r = util.pedir("POST", IG + "me/media", data={
-        "media_type": "REELS", "video_url": video_url, "cover_url": cover_url,
-        "caption": caption, "share_to_feed": "true", "access_token": token})
-    if r.status_code != 200:
-        raise RuntimeError(_ig_error(r))
-    cid = r.json()["id"]
-    _ig_esperar(cid, token)
-    return _ig_publicar(cid, token)
+    ultimo = ""
+    for n, con_portada in enumerate(IG_REINTENTOS, 1):
+        datos = {"media_type": "REELS", "video_url": video_url, "caption": caption,
+                 "share_to_feed": "true", "access_token": token}
+        if con_portada and cover_url:
+            datos["cover_url"] = cover_url
+        r = util.pedir("POST", IG + "me/media", data=datos)
+        if r is None or r.status_code != 200:
+            raise RuntimeError(_ig_error(r))
+        cid = r.json()["id"]
+        try:
+            _ig_esperar(cid, token)
+        except _ErrorProceso as e:
+            ultimo = str(e)
+            util.log(f"Instagram falló al procesar (intento {n} de {len(IG_REINTENTOS)}):", e)
+            if n < len(IG_REINTENTOS):
+                time.sleep(IG_ESPERA_REINTENTO)
+            continue
+        media_id = _ig_publicar(cid, token)
+        if n > 1:
+            util.avisar("Instagram", f"Salió al intento {n}" + ("" if con_portada else " (sin la portada)") + ".")
+        return media_id
+    raise RuntimeError(f"Falló {len(IG_REINTENTOS)} veces. " + ultimo)
 
 
 def instagram_carrusel(urls, caption):
     token, err = ig_token()
     if err:
         raise RuntimeError(err)
-    hijos = []
-    for u in urls[:10]:
-        r = util.pedir("POST", IG + "me/media", data={"image_url": u, "is_carousel_item": "true",
-                                                       "access_token": token})
-        if r.status_code != 200:
+    ultimo = ""
+    for n in (1, 2):  # si Instagram falla al procesarlo, se arma de nuevo una vez más
+        hijos = []
+        for u in urls[:10]:
+            r = util.pedir("POST", IG + "me/media", data={"image_url": u, "is_carousel_item": "true",
+                                                           "access_token": token})
+            if r is None or r.status_code != 200:
+                raise RuntimeError(_ig_error(r))
+            hijos.append(r.json()["id"])
+        r = util.pedir("POST", IG + "me/media", data={"media_type": "CAROUSEL", "children": ",".join(hijos),
+                                                       "caption": caption, "access_token": token})
+        if r is None or r.status_code != 200:
             raise RuntimeError(_ig_error(r))
-        hijos.append(r.json()["id"])
-    r = util.pedir("POST", IG + "me/media", data={"media_type": "CAROUSEL", "children": ",".join(hijos),
-                                                   "caption": caption, "access_token": token})
-    if r.status_code != 200:
-        raise RuntimeError(_ig_error(r))
-    cid = r.json()["id"]
-    _ig_esperar(cid, token, minutos=3)
-    return _ig_publicar(cid, token)
+        cid = r.json()["id"]
+        try:
+            _ig_esperar(cid, token, minutos=3)
+        except _ErrorProceso as e:
+            ultimo = str(e)
+            util.log(f"Instagram falló al procesar el carrusel (intento {n} de 2):", e)
+            if n == 1:
+                time.sleep(IG_ESPERA_REINTENTO)
+            continue
+        return _ig_publicar(cid, token)
+    raise RuntimeError("Falló 2 veces. " + ultimo)
 
 
 # ------------------------------------------------------------------ YouTube
