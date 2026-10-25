@@ -1,36 +1,5 @@
 [
   {
-    "fecha": "2026-10-22",
-    "carpeta": "2026-10-22-t2",
-    "archivos": [
-      "2026-10-22-t2/video.mp4",
-      "2026-10-22-t2/thumb.jpg",
-      "2026-10-22-t2/placa01.jpg",
-      "2026-10-22-t2/placa02.jpg",
-      "2026-10-22-t2/placa03.jpg",
-      "2026-10-22-t2/placa04.jpg",
-      "2026-10-22-t2/placa05.jpg",
-      "2026-10-22-t2/placa06.jpg",
-      "2026-10-22-t2/placa07.jpg",
-      "2026-10-22-t2/placa08.jpg"
-    ]
-  },
-  {
-    "fecha": "2026-10-22",
-    "carpeta": "2026-10-22",
-    "archivos": [
-      "2026-10-22/video.mp4",
-      "2026-10-22/thumb.jpg",
-      "2026-10-22/placa01.jpg",
-      "2026-10-22/placa02.jpg",
-      "2026-10-22/placa03.jpg",
-      "2026-10-22/placa04.jpg",
-      "2026-10-22/placa05.jpg",
-      "2026-10-22/placa06.jpg",
-      "2026-10-22/placa07.jpg"
-    ]
-  },
-  {
     "fecha": "2026-10-23",
     "carpeta": "2026-10-23",
     "archivos": [
@@ -90,6 +59,20 @@
       "2026-10-24/placa05.jpg",
       "2026-10-24/placa06.jpg",
       "2026-10-24/placa07.jpg"
+    ]
+  },
+  {
+    "fecha": "2026-10-25",
+    "carpeta": "2026-10-25-t2",
+    "archivos": [
+      "2026-10-25-t2/video.mp4",
+      "2026-10-25-t2/thumb.jpg",
+      "2026-10-25-t2/placa01.jpg",
+      "2026-10-25-t2/placa02.jpg",
+      "2026-10-25-t2/placa03.jpg",
+      "2026-10-25-t2/placa04.jpg",
+      "2026-10-25-t2/placa05.jpg",
+      "2026-10-25-t2/placa06.jpg"
     ]
   }
 ]

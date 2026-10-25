@@ -444,5 +444,30 @@
         "id": "39418444441104334"
       }
     }
+  },
+  {
+    "fecha": "2026-10-25",
+    "turno": 2,
+    "hora": "13:01",
+    "serie": "negocios_virales",
+    "titulo": "Hielo 24hs: el negocio automático",
+    "fuentes": [
+      "-0o2zXiIVUw",
+      "izQLsy81pZU"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18357426607169161"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "Dg_rd21ON3o"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "2002265117127381"
+      }
+    }
   }
 ]
