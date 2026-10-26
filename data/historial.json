@@ -469,5 +469,30 @@
         "id": "2002265117127381"
       }
     }
+  },
+  {
+    "fecha": "2026-10-25",
+    "turno": 1,
+    "hora": "21:01",
+    "serie": "viral",
+    "titulo": "¿Sirve guardar 100 dólares al mes?",
+    "fuentes": [
+      "NqKgm_s9NNk",
+      "QmKa42DgAgw"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17915002953492197"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "LynUxABDS3s"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1824754265198004"
+      }
+    }
   }
 ]
