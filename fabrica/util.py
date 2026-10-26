@@ -41,6 +41,20 @@ def config():
         for k, v in extra.items():
             if k not in ("series", "_ayuda"):
                 c.setdefault(k, v)
+    # cambios aprobados (o aplicados solos) desde las sugerencias de mejora: van encima de todo y se pueden deshacer
+    aj = leer_json("data/ajustes.json", {}) or {}
+    if aj:
+        series = dict(c.get("series") or {})
+        for k, v in (aj.get("series_nuevas") or {}).items():
+            series[k] = v
+        c["series"] = series
+        for k in ("plan_semanal", "plan_semanal_2", "horarios", "horarios_2"):
+            cambios = {d: v for d, v in (aj.get(k) or {}).items() if v}
+            if cambios:
+                c[k] = {**(c.get(k) or {}), **cambios}
+        if "carrusel_series" in aj:
+            c["carrusel_series"] = aj["carrusel_series"]
+        c["_prompts_extra"] = aj.get("prompts_extra") or {}
     return c
 
 

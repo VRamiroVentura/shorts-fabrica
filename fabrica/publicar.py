@@ -287,6 +287,23 @@ def mail(asunto, html):
     return True
 
 
+def facebook_metricas(video_id):
+    """Reproducciones de un Reel de la página (si Meta no las da, devuelve vacío y no corta nada)."""
+    token = util.secreto("FB_PAGE_TOKEN")
+    if not (token and video_id):
+        return {}
+    try:
+        for metrica in ("blue_reels_play_count", "total_video_views"):
+            r = util.pedir("GET", FB + f"{video_id}/video_insights", intentos=1,
+                           params={"metric": metrica, "access_token": token})
+            if r is not None and r.status_code == 200 and r.json().get("data"):
+                v = (r.json()["data"][0].get("values") or [{}])[0].get("value", 0)
+                return {"vistas": int(v or 0)}
+    except Exception as e:  # noqa
+        util.log("No pude leer las vistas de Facebook:", util.ocultar(e))
+    return {}
+
+
 def instagram_metricas(media_id):
     """Vistas, alcance, guardados, compartidos, comentarios y likes de una publicación nuestra."""
     token, err = ig_token()

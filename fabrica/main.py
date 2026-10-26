@@ -48,6 +48,11 @@ def _serie_del_dia(cfg, turno=None):
     return cfg["plan_semanal"][dia]
 
 
+def _series_con_carrusel(cfg):
+    """Series que en Instagram salen SIEMPRE también como carrusel (config: "carrusel_series")."""
+    return cfg.get("carrusel_series", ["monotributo"])
+
+
 def _temas():
     return (util.leer_json("temas.json", {}) or {}).get("temas", [])
 
@@ -141,12 +146,18 @@ def _datos_vivos(tema):
             continue
         leidas[d.get("yahoo") or d.get("awesome")] = res
         precio, previo = res
+        if d.get("referencia"):  # comparar contra un valor fijo (por ejemplo, el cierre antes de la elección)
+            previo = float(d["referencia"])
         dec, unidad, contra = int(d.get("decimales", 2)), d.get("unidad", ""), d.get("contra", "el cierre anterior")
         if d.get("moneda"):  # una moneda contra el dólar: se cuenta cuánto perdió o ganó la moneda, no el dólar
             var = (previo / precio - 1) * 100
             lineas.append(f'- {d["nombre"]}: {"perdió" if var < 0 else "ganó"} {_num(abs(var), 1)}% de su valor contra '
                           f'el dólar desde {contra}. Hoy 1 dólar cuesta {_num(precio, dec)} {unidad} (antes, '
                           f'{_num(previo, dec)}).')
+            for pr in d.get("precios") or []:  # ejemplos de gasto pasados a dólares, hechos acá (no por la IA)
+                monto = float(pr["monto"])
+                lineas.append(f'  · {pr["que"]}: {_num(monto, 0)} {unidad} = {_num(monto / precio, 0)} dólares hoy; '
+                              f'antes eran {_num(monto / previo, 0)} dólares.')
             continue
         var = (precio / previo - 1) * 100
         linea = (f'- {d["nombre"]}: {_num(precio, dec)} {unidad} ({signo(var)} contra {contra}, que fue de '
@@ -236,6 +247,9 @@ def _serie(cfg, clave_serie):
     propio = util.RAIZ / "prompts" / "series" / f"{clave_serie}.md"
     if propio.exists():  # instrucciones de la serie mejoradas, sin tocar config.json
         serie["prompt"] = propio.read_text(encoding="utf-8").strip()
+    extra = (cfg.get("_prompts_extra") or {}).get(clave_serie) or []
+    if extra:  # ajustes que salieron de las sugerencias de mejora
+        serie["prompt"] += "\nAjustes según lo que viene funcionando:\n" + "\n".join(f"- {x}" for x in extra)
     return serie
 
 
@@ -305,6 +319,8 @@ def generar(simulado=False):
         serie = _serie_con_tema(_serie(cfg, clave_serie), tema)
     else:
         serie = _serie(cfg, clave_serie)
+        from . import mejoras
+        serie["prompt"] += mejoras.bloque_aprendizajes()
     fecha = util.ahora().strftime("%Y-%m-%d")
     util.log("Serie de hoy:", serie["nombre"], f"(turno {turno})")
 
@@ -444,6 +460,8 @@ def publicar(base_url):
     url = lambda rel: base + rel  # noqa
     video_local = SITIO / p["archivos"]["video"]
     hoy_carrusel = util.ahora().isoweekday() in cfg.get("carrusel_dias", []) and p.get("turno", 1) == 1
+    if p.get("serie") in _series_con_carrusel(cfg) and p["archivos"].get("placas"):
+        hoy_carrusel = True  # el contenido contable va siempre también como carrusel (queda para el perfil del estudio)
     tema = _tema_por_id(p.get("tema_id"))
     if tema and tema.get("carrusel_ig") and p["archivos"].get("placas"):
         hoy_carrusel = True  # los temas que pediste van también como carrusel
@@ -545,21 +563,26 @@ def _mail_diario(p, res, base):
         util.log("No pude mandar el mail:", ex)
 
 
-def _rendimiento(cfg, clave_yt, dias=30):
-    """Cómo le fue a cada serie nuestra en los últimos días (YouTube + Instagram)."""
+def _rendimiento(cfg, clave_yt, dias=30, entradas=None):
+    """Cómo le fue a cada serie nuestra (YouTube + Instagram + Facebook + lo que cargaste de TikTok).
+    Por defecto, los últimos `dias`; o las publicaciones que le pases en `entradas`."""
     from . import investigar
     from . import publicar as pub
     hist = util.leer_json("data/historial.json", [])
     desde = (util.ahora() - util.timedelta(days=dias)).strftime("%Y-%m-%d")
-    recientes = [h for h in hist if h.get("fecha", "") >= desde]
+    recientes = entradas if entradas is not None else [h for h in hist if h.get("fecha", "") >= desde]
     yt_ids = [h["resultados"]["youtube"]["id"] for h in recientes
               if h.get("resultados", {}).get("youtube", {}).get("ok")]
     yt = investigar.estadisticas_youtube(yt_ids, clave_yt) if (clave_yt and yt_ids) else {}
+    tiktok = util.leer_json("data/tiktok_vistas.json", {}) or {}
     filas = []
     for h in recientes:
         res = h.get("resultados", {})
-        fila = {"fecha": h["fecha"], "hora": h.get("hora", ""), "serie": h["serie"], "titulo": h["titulo"],
-                "vistas": 0, "guardados": 0, "compartidos": 0, "comentarios": 0, "likes": 0}
+        fila = {"fecha": h["fecha"], "hora": h.get("hora", ""), "turno": h.get("turno", 1), "serie": h["serie"],
+                "titulo": h["titulo"], "vistas": 0, "guardados": 0, "compartidos": 0, "comentarios": 0, "likes": 0}
+        if res.get("facebook", {}).get("ok"):
+            fila["vistas"] += pub.facebook_metricas(res["facebook"]["id"]).get("vistas", 0)
+        fila["vistas"] += tiktok.get(f'{h["fecha"]}#{h.get("turno", 1)}', 0)
         if res.get("youtube", {}).get("ok"):
             m = yt.get(res["youtube"]["id"], {})
             fila["vistas"] += m.get("vistas", 0)
@@ -752,7 +775,7 @@ def listo(base_url):
     pedido = (f'<p>📌 Es el tema que pediste: <b>{e(tema["titulo"])}</b>. Revisá bien los datos: si algo no '
               f'cierra, pedí el cambio.</p>') if tema else ""
     placas = p["archivos"].get("placas") or []
-    if tema and tema.get("carrusel_ig") and placas:
+    if placas and ((tema and tema.get("carrusel_ig")) or p.get("serie") in _series_con_carrusel(cfg)):
         pedido += ('<p><b>En Instagram sale también como carrusel:</b> '
                    + " · ".join(f'<a href="{base}{x}">{i}</a>' for i, x in enumerate(placas, 1)) + '</p>')
     cuerpo = (f'<h2>{e(p["serie_nombre"])}: {e(p["titulo"])}</h2>{pedido}'
@@ -793,6 +816,77 @@ def revisar():
     util.log(msg)
     if destino:
         open(destino, "a", encoding="utf-8").write(f"## Revisar video\n\n{msg}\n")
+
+
+def _franjas(propias):
+    horas = {}
+    for f in propias:
+        if f.get("hora"):
+            x = horas.setdefault(f["hora"][:2] + " h", {"posts": 0, "vistas": 0})
+            x["posts"] += 1
+            x["vistas"] += f["vistas"]
+    return horas
+
+
+def _para_mejoras(cfg, por_serie_max=None, edad_min=None):
+    """Lo que se usa para sugerir cambios: los últimos 10 videos de cada serie que tengan 2 días o más
+    (así ya juntaron vistas), y los de los últimos 120 días para ver si los cambios funcionaron."""
+    n = int(por_serie_max or cfg.get("mejoras_videos_por_serie", 10))
+    edad = int(edad_min if edad_min is not None else cfg.get("mejoras_dias_minimos", 2))
+    hasta = (util.ahora() - util.timedelta(days=edad)).strftime("%Y-%m-%d")
+    desde = (util.ahora() - util.timedelta(days=120)).strftime("%Y-%m-%d")
+    hist = [h for h in util.leer_json("data/historial.json", []) or []
+            if desde <= h.get("fecha", "") <= hasta and not h.get("cancelado")
+            and any((r or {}).get("ok") for r in (h.get("resultados") or {}).values())]
+    elegidas, cuenta = [], {}
+    for h in sorted(hist, key=lambda x: (x["fecha"], x.get("hora", "")), reverse=True):
+        if cuenta.get(h["serie"], 0) < n:
+            cuenta[h["serie"]] = cuenta.get(h["serie"], 0) + 1
+            elegidas.append(h)
+    return _rendimiento(cfg, util.secreto("YT_API_KEY"), entradas=list(reversed(elegidas)))
+
+
+def _proponer_hoy(analisis=None, cfg=None, rendimiento=None):
+    """Arma sugerencias de mejora con los números de hoy (las usa el reporte y la corrida diaria de mejoras)."""
+    from . import mejoras
+    cfg = cfg or util.config()
+    propias, por_serie = _para_mejoras(cfg)
+    analisis = mejoras.guardar_aprendizajes(propias, analisis)
+    return mejoras.proponer(cfg, por_serie, propias, _franjas(propias), analisis)
+
+
+def cargar_tiktok():
+    """Formulario «Cargar vistas de TikTok»."""
+    from . import mejoras
+    destino = os.getenv("GITHUB_STEP_SUMMARY")
+    try:
+        n = mejoras.cargar_tiktok(os.getenv("VISTAS", ""))
+        msg = f"Listo: cargué las vistas de TikTok de {n} videos."
+    except ValueError as e:
+        msg = f"❌ {e}"
+    util.log(msg)
+    if destino:
+        open(destino, "a", encoding="utf-8").write(f"## Vistas de TikTok\n\n{msg}\n")
+    if msg.startswith("❌"):
+        sys.exit(1)
+
+
+def sugerencia():
+    """Tu respuesta a una sugerencia de mejora (formulario «Responder sugerencia»)."""
+    from . import mejoras
+    destino = os.getenv("GITHUB_STEP_SUMMARY")
+    try:
+        p = mejoras.responder(os.getenv("RESPUESTA", ""), os.getenv("CAMBIOS", ""), os.getenv("NUMERO", ""))
+        msg = f'Listo: #{p["id"]} {p["titulo"]} quedó {p["estado"]}.'
+    except ValueError as e:
+        msg = f"❌ {e}"
+        util.log(msg)
+        if destino:
+            open(destino, "a", encoding="utf-8").write(f"## Responder sugerencia\n\n{msg}\n")
+        sys.exit(1)
+    util.log(msg)
+    if destino:
+        open(destino, "a", encoding="utf-8").write(f"## Responder sugerencia\n\n{msg}\n")
 
 
 def reporte():
@@ -867,13 +961,7 @@ def reporte():
                "", "Lo que peor anduvo: " + "; ".join(f'{f["titulo"]} ({f["vistas"]:,})' for f in peores)]
     else:
         md += ["Todavía no hay publicaciones para medir."]
-    horas = {}
-    for f in propias:
-        if f.get("hora"):
-            franja = f["hora"][:2] + " h"
-            x = horas.setdefault(franja, {"posts": 0, "vistas": 0})
-            x["posts"] += 1
-            x["vistas"] += f["vistas"]
+    horas = _franjas(propias)
     if horas:
         md += ["", "## Por horario de publicación", "", "| Franja | Publicaciones | Vistas promedio |", "|---|---|---|"]
         md += [f'| {k} | {v["posts"]} | {v["vistas"] // max(v["posts"], 1):,} |' for k, v in
@@ -882,6 +970,15 @@ def reporte():
     md += [f"- Reforzar: {x}" for x in a.get("series_reforzar", [])]
     md += [f'- Cambiar **{x.get("serie", "")}**: {x.get("por_que", "")} → {x.get("propuesta", "")}'
            for x in a.get("series_cambiar", []) if isinstance(x, dict)]
+    try:
+        nuevas = _proponer_hoy(a, cfg, (propias, por_serie))
+    except Exception as ex:  # noqa
+        util.log("No pude armar las sugerencias:", util.ocultar(ex))
+        nuevas = []
+    if nuevas:
+        from . import mejoras
+        md += ["", "## Sugerencias de cambio (te llega una por día por mail; si no respondés, se aplica sola)", ""]
+        md += [f'- #{p["id"]} {p["titulo"]}: {mejoras.describir(cfg, p)}' for p in nuevas]
     md += ["", "## Ideas para las próximas semanas", ""]
     md += [f'- **{i.get("serie", "")}**: {i.get("titulo", "")} · miniatura: "{i.get("miniatura", "")}"'
            for i in a.get("ideas", [])]
@@ -899,7 +996,7 @@ def reporte():
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("accion", choices=["generar", "publicar", "resumen", "reporte", "toca", "esperar", "probar",
-                                       "rehacer", "listo", "revisar", "online"])
+                                       "rehacer", "listo", "revisar", "online", "mejoras", "sugerencia", "tiktok"])
     ap.add_argument("--ultima", action="store_true")
     ap.add_argument("--base-url", default="")
     ap.add_argument("--simulado", action="store_true")
@@ -907,6 +1004,13 @@ if __name__ == "__main__":
     try:
         if a.accion == "toca":
             toca()
+        elif a.accion == "mejoras":
+            from . import mejoras
+            mejoras.diario(regenerar=_proponer_hoy, medir=lambda: _para_mejoras(util.config())[0])
+        elif a.accion == "tiktok":
+            cargar_tiktok()
+        elif a.accion == "sugerencia":
+            sugerencia()
         elif a.accion == "esperar":
             esperar(a.ultima)
         elif a.accion == "rehacer":

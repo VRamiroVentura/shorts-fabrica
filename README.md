@@ -201,3 +201,19 @@ Cada pedido de cambios usa unas 5 consultas de Gemini (sigue siendo gratis).
 - El mail diario dice qué se publicó y qué no, con el motivo.
 - Todo queda registrado en `publicaciones/` (un archivo por día) y en `data/historial.json`.
 - **Botón "Probar conexiones"** (*Actions → Probar conexiones → Run workflow*): en un minuto revisa si las llaves de Instagram, Facebook y YouTube andan, **sin publicar nada**. Te dice qué falla (por ejemplo, si la llave de Facebook es la de tu perfil en vez de la de la página, o si le faltan permisos). Usalo cada vez que cambies una llave.
+
+## Mejora continua (sugerencias por mail)
+
+Todos los días a las 10:23 la fábrica mira cómo le va a cada serie y te manda **una** sugerencia de cambio por mail
+(cambiar la serie de un día, un horario, ajustar las instrucciones de una serie, crear una serie nueva o sacar siempre
+carrusel). La respondés en **Actions → Responder sugerencia → Run workflow**: «Sí, aplicala», «No, dejala», «Aplicala con
+cambios» (escribís cómo) o «Deshacer el último cambio». **Si no respondés, se aplica sola a los 2 días.**
+
+- Los cambios quedan en `data/ajustes.json` (no tocan `config.json` ni `turnos.json`) y se pueden deshacer.
+- Reglas de seguridad: no saca una serie con menos de 3 videos, nunca saca del todo «Impuestos sin vueltas», no toca lo
+  mismo dos veces en 7 días, horarios entre 12:10 y 22:30 y a 4 horas del otro video del día.
+- Mira los **últimos 10 videos de cada serie con 2 días o más** de publicados (YouTube, Instagram, Facebook y las vistas de TikTok que cargues), y hace el **balance de cada cambio**: vistas promedio antes y después. Si algo empeoró, puede sugerir deshacerlo; si mejoró, llevar la idea a otras series.
+- **TikTok:** los domingos te llega un mail con los videos de la semana; en **Actions → Cargar vistas de TikTok** escribís las vistas en ese orden, separadas por coma.
+- Cada guion además recibe lo aprendido: los títulos propios que mejor y peor anduvieron y lo que rinde en la competencia.
+- Ajustes en config: `mejoras_dias_para_aplicar` (2), `mejoras_min_posts` (3), `mejoras_dias_entre_cambios` (7), `mejoras_videos_por_serie` (10), `mejoras_dias_minimos` (2),
+  `series_protegidas` (["monotributo"]), `carrusel_series` (["monotributo"]).

@@ -142,7 +142,8 @@ def gemini(sistema, usuario, temperatura=0.9):
 
 def _limpiar(s, voz=False):
     s = str(s or "").replace("—", ", ").replace("–", ", ")
-    s = re.sub(r"(\d)\s?%", r"\1 por ciento", s)
+    if voz:  # la voz dice "por ciento"; en pantalla y en las placas queda el %
+        s = re.sub(r"(\d)\s?%", r"\1 por ciento", s)
     s = EMOJI_RE.sub("", s)
     return re.sub(r"\s+", " ", s).replace(" ,", ",").strip()
 
