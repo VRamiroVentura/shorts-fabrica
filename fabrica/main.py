@@ -96,9 +96,98 @@ def _carrusel_tema(tema):
     return placas[:10] if len(placas) >= 3 else []
 
 
+_DIAS = {1: "lunes", 2: "martes", 3: "miércoles", 4: "jueves", 5: "viernes", 6: "sábado", 7: "domingo"}
+
+
+def _num(x, decimales):
+    t = f"{x:,.{decimales}f}"
+    return t.replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def _cotizacion(d):
+    """(precio, cierre anterior) de una cotización: Yahoo y, para monedas, AwesomeAPI de respaldo. None si no hay."""
+    if d.get("yahoo"):
+        try:
+            from urllib.parse import quote
+            r = util.pedir("GET", "https://query1.finance.yahoo.com/v8/finance/chart/" + quote(d["yahoo"], safe=""),
+                           intentos=2, timeout=30, params={"range": "1d", "interval": "5m"},
+                           headers={"User-Agent": "Mozilla/5.0"})
+            if r is not None and r.status_code == 200:
+                meta = r.json()["chart"]["result"][0]["meta"]
+                precio, previo = meta.get("regularMarketPrice"), meta.get("chartPreviousClose") or meta.get("previousClose")
+                if precio and previo:
+                    return float(precio), float(previo)
+        except Exception as e:  # noqa
+            util.log("No pude leer", d["yahoo"], "de Yahoo:", util.ocultar(e))
+    if d.get("awesome"):
+        try:
+            r = util.pedir("GET", f'https://economia.awesomeapi.com.br/json/last/{d["awesome"]}', intentos=2, timeout=30)
+            if r is not None and r.status_code == 200:
+                x = next(iter(r.json().values()))
+                precio = float(x["bid"])
+                return precio, precio - float(x["varBid"])
+        except Exception as e:  # noqa
+            util.log("No pude leer", d["awesome"], "de AwesomeAPI:", util.ocultar(e))
+    return None
+
+
+def _datos_vivos(tema):
+    """Cotizaciones del momento en que se arma el video, para contar «cómo estamos ahora» (vacío si no hay)."""
+    lineas, leidas = [], {}
+    signo = lambda v: ("+" if v >= 0 else "−") + _num(abs(v), 1) + "%"  # noqa
+    for d in tema.get("datos_vivos") or []:
+        res = _cotizacion(d)
+        if not res:
+            continue
+        leidas[d.get("yahoo") or d.get("awesome")] = res
+        precio, previo = res
+        dec, unidad, contra = int(d.get("decimales", 2)), d.get("unidad", ""), d.get("contra", "el cierre anterior")
+        if d.get("moneda"):  # una moneda contra el dólar: se cuenta cuánto perdió o ganó la moneda, no el dólar
+            var = (previo / precio - 1) * 100
+            lineas.append(f'- {d["nombre"]}: {"perdió" if var < 0 else "ganó"} {_num(abs(var), 1)}% de su valor contra '
+                          f'el dólar desde {contra}. Hoy 1 dólar cuesta {_num(precio, dec)} {unidad} (antes, '
+                          f'{_num(previo, dec)}).')
+            continue
+        var = (precio / previo - 1) * 100
+        linea = (f'- {d["nombre"]}: {_num(precio, dec)} {unidad} ({signo(var)} contra {contra}, que fue de '
+                 f'{_num(previo, dec)} {unidad})')
+        fx = leidas.get(d.get("en_dolares_con"))
+        if fx:  # cuánto cayó medido en dólares (lo que ve un inversor de afuera)
+            linea += f'; medido en dólares: {signo(((precio / previo) * (fx[1] / fx[0]) - 1) * 100)}'
+        lineas.append(linea)
+    if not lineas:
+        return ""
+    t = util.ahora()
+    return (f"DATOS ACTUALIZADOS del {_DIAS[t.isoweekday()]} {t:%d/%m} a las {t:%H:%M} (hora de Argentina). Son los más "
+            "nuevos: usalos para contar cómo está todo ahora, diciendo el día y el momento (por ejemplo «el lunes a la "
+            "tarde»), y lo de la apertura solo como contexto.\n" + "\n".join(lineas))
+
+
+def _aplicar_cierre(contenido, tema):
+    """Si el tema trae un cierre fijo (por ejemplo una pregunta para que la gente comente), va en la última escena."""
+    cierre = (tema or {}).get("cierre") or {}
+    if not cierre.get("voz") or not contenido.get("escenas"):
+        return contenido
+    from . import escritor
+    escenas = [dict(e) for e in contenido["escenas"]]
+    escenas[-1]["texto_voz"] = escritor._limpiar(cierre["voz"], voz=True)
+    escenas[-1]["texto_pantalla"] = escritor._siglas(escritor._limpiar(cierre.get("pantalla") or cierre["voz"]))
+    if cierre.get("emoji"):
+        escenas[-1]["emoji"] = cierre["emoji"]
+    return dict(contenido, escenas=escenas,
+                palabras=sum(len(e["texto_voz"].split()) for e in escenas))
+
+
 def _fuente_tema(tema):
+    datos = tema["datos"]
+    vivo = _datos_vivos(tema)
+    if vivo:
+        util.log("Datos del momento:", vivo.split("\n", 1)[-1])
+        datos = vivo + "\n\n" + datos
+    elif tema.get("datos_vivos"):
+        util.avisar("No pude leer las cotizaciones del momento", "El guion usa solo los datos cargados en temas.json.")
     return {"id": "tema:" + tema["id"], "tipo": "noticia", "canal": tema.get("fuente", "normativa oficial"),
-            "titulo": tema["titulo"], "publicado": tema.get("fecha_datos", ""), "transcripcion": tema["datos"]}
+            "titulo": tema["titulo"], "publicado": tema.get("fecha_datos", ""), "transcripcion": datos}
 
 
 def _marcar_tema(p, resultados):
@@ -258,6 +347,8 @@ def generar(simulado=False):
         contenido = escritor.escribir(serie, fuentes, titulos)
     if tema and _carrusel_tema(tema):
         contenido["carrusel"] = _carrusel_tema(tema)
+    if tema:
+        contenido = _aplicar_cierre(contenido, tema)
 
     nombre_carpeta = _carpeta(fecha, turno)
     if SALIDA.exists():
@@ -297,12 +388,18 @@ def rehacer():
     version = int(p.get("version", 1)) + 1
     util.log(f"Rehago el video (versión {version}) con tus cambios:", cambios)
     try:
-        contenido = escritor.aplicar_cambios(serie, p["contenido"], cambios) if cambios else p["contenido"]
+        pedido_ia = cambios
+        vivo = _datos_vivos(tema) if tema else ""
+        if cambios and vivo:  # al rehacerlo, los números del mercado se actualizan a la hora del cambio
+            pedido_ia += "\n\nAdemás, si el guion da números del mercado, actualizalos con estos:\n" + vivo
+        contenido = escritor.aplicar_cambios(serie, p["contenido"], pedido_ia) if cambios else p["contenido"]
     except Exception as e:  # noqa
         util.avisar("No pude aplicar los cambios al guion", f"Sigo con el guion anterior. Motivo: {util.ocultar(e)}")
         contenido = p["contenido"]
     if tema and _carrusel_tema(tema) and "carrusel" not in cambios.lower() and "placa" not in cambios.lower():
         contenido = dict(contenido, carrusel=_carrusel_tema(tema))  # las placas fijas no se tocan
+    if tema and not any(x in cambios.lower() for x in ("cierre", "final", "pregunta", "termin")):
+        contenido = _aplicar_cierre(contenido, tema)  # el cierre fijo se mantiene salvo que pidas cambiarlo
     otros_clips = any(x in cambios.lower() for x in ("clip", "imagen", "imágen", "fondo", "toma", "visual", "video de fondo"))
     evitar = set((p.get("video") or {}).get("clips_ids") or []) if otros_clips else set()
     nombre = f'{p.get("base") or p["carpeta"]}-v{version}'
