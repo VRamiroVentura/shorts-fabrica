@@ -38,6 +38,35 @@
       }
     },
     {
+      "id": "brasil-vacaciones-2026-10",
+      "turno": 2,
+      "serie": "plata",
+      "hasta": "2026-10-29",
+      "titulo": "Gastar en Brasil, 10% más barato",
+      "fuente": "Turismo en Río (julio 2026), Quanto Custa Viajar, Infobae y Banco Nación",
+      "fecha_datos": "fines de octubre de 2026",
+      "carrusel_ig": false,
+      "datos_vivos": [
+        {
+          "nombre": "Real brasileño",
+          "yahoo": "BRL=X",
+          "awesome": "USD-BRL",
+          "moneda": true,
+          "unidad": "reales",
+          "decimales": 2,
+          "referencia": 4.99,
+          "contra": "el viernes antes de la elección (4,99 reales por dólar)"
+        }
+      ],
+      "cierre": {
+        "voz": "¿Vos qué opinás? ¿Te irías a Brasil antes que a la Costa?",
+        "pantalla": "¿Brasil o la Costa?",
+        "emoji": "🏖️"
+      },
+      "prompt": "Video corto y positivo para argentinos que piensan dónde vacacionar este verano. Formato \"Esto te cambia\". TONO NEUTRAL en lo político: el tema es la plata del que viaja.\n- Hablá siempre de que CAYÓ EL REAL, nunca de que \"subió el dólar\".\n- Escena 1: de frente: vacacionar en Brasil ya competía con la Costa, y con la caída del real ahora sale todavía más barato. Prometé decir cuánto.\n- Escenas 2 y 3: cuánto cayó el real (con los DATOS ACTUALIZADOS si están; si no, el dato del Banco Nación: de 317 a 284 pesos, un 10% menos) y qué significa: todo lo que pagues allá en reales (comida, playa, taxis, compras) te sale más o menos ese porcentaje menos.\n- No des ejemplos de precios ni hagas cuentas en dólares: alcanza con el porcentaje.\n- Lo de la Costa, en UNA sola frase y sin números de la Costa: antes de la elección, alojamiento y comida en Río ya costaban casi lo mismo que en Mar del Plata.\n- Sin aclaraciones ni advertencias (no hables de pasajes, paquetes ni de si el real se recupera). Lo que sale más barato es lo que gastás allá: decilo así, sin prometer que todo el viaje baja.\n- Giro: Brasil ya era el favorito: en 2025 fueron 3,4 millones de argentinos, un récord.\n- Cierre: terminá EXACTAMENTE con: «¿Vos qué opinás? ¿Te irías a Brasil antes que a la Costa?».\n- Título sugerido (máximo 40 caracteres): «Gastar en Brasil, 10% más barato» o parecido.\n- Hashtags: #brasil #vacaciones #real #verano #viajes #argentina.",
+      "datos": "VACACIONES EN BRASIL DESPUÉS DE LA CAÍDA DEL REAL (fines de octubre de 2026).\n- Qué pasó: el domingo 25 de octubre ganó Lula el balotaje y el lunes 26 el real se hundió. El viernes 1 dólar costaba 4,99 reales; el lunes llegó a 5,47 (el real perdió casi 9% contra el dólar). En el Banco Nación, el real pasó de 317 a 284 pesos: 10,4% menos.\n- Qué se abarata (Infobae): lo que se paga en reales en destino: comidas, bebida en la playa, sombrillas y reposeras, taxis, transporte y compras.\n- Ya competía con la Costa: antes de la elección, una semana de alojamiento y comida para dos en Río (hotel 3 estrellas, comiendo afuera) costaba casi lo mismo que en Mar del Plata (departamento de 1 ambiente, comiendo afuera), sin contar cómo llegar.\n- Brasil es el destino favorito: en 2025 lo visitaron 3.386.823 argentinos, el récord."
+    },
+    {
       "id": "fal-2026",
       "turno": 1,
       "serie": "monotributo",
