@@ -1,6 +1,42 @@
 {
-  "_ayuda": "Temas puntuales que tienen que salir sí o sí. Cada uno sale UNA vez, en el próximo video del turno indicado (1 = el de finanzas), en lugar del tema que tocaba ese día, en el orden de la lista. 'datos' es lo único que puede usar el guion (chequeado a mano): si cambia la norma, actualizalo acá. 'hasta' es la fecha en que el tema deja de tener sentido. Cuando sale, queda anotado en data/estado.json (temas_hechos) y no se repite. 'carrusel' son las placas fijas (si no está, las escribe la IA) y 'carrusel_ig': true hace que ese día también se suba el carrusel a Instagram, además del Reel.",
+  "_ayuda": "Temas puntuales que tienen que salir sí o sí. Cada uno sale UNA vez, en el próximo video del turno indicado (1 = el de finanzas), en lugar del tema que tocaba ese día, en el orden de la lista. 'datos' es lo único que puede usar el guion (chequeado a mano): si cambia la norma, actualizalo acá. 'hasta' es la fecha en que el tema deja de tener sentido. Cuando sale, queda anotado en data/estado.json (temas_hechos) y no se repite. 'carrusel' son las placas fijas (si no está, las escribe la IA) y 'carrusel_ig': true hace que ese día también se suba el carrusel a Instagram, además del Reel. 'datos_vivos' trae cotizaciones del momento en que se arma el video (Yahoo / AwesomeAPI) y 'cierre' fija la última frase del video.",
   "temas": [
+    {
+      "id": "brasil-lula-2026-10",
+      "turno": 1,
+      "serie": "economia",
+      "hasta": "2026-10-27",
+      "titulo": "Ganó Lula y se desplomaron el real y la Bolsa de Brasil",
+      "fuente": "La Nación, MercoPress y Bloomberg",
+      "fecha_datos": "lunes 26 de octubre de 2026, mañana y mediodía",
+      "carrusel_ig": false,
+      "prompt": "Video de actualidad para cualquier argentino que escuchó la noticia y no entiende qué pasó. Formato \"Esto te cambia\". TONO NEUTRAL: nada de opiniones sobre Lula, Bolsonaro ni la elección; contá qué hizo el mercado y por qué, como un dato.\n- Hablá siempre de que CAYÓ EL REAL (\"el real perdió casi 9%\"), nunca de que \"subió el dólar\".\n- Escena 1: el hecho, de frente: ganó Lula y al día siguiente se desplomaron el real y la Bolsa de Brasil. Prometé contar cómo quedó todo y qué tiene que ver con vos.\n- Escenas 2 y 3: dale contexto de tiempo a quien lo ve a la noche: cómo arrancó el lunes (la Bolsa tuvo que frenar a los pocos minutos) y cómo estaba a la tarde, el día después de la elección, con los DATOS ACTUALIZADOS si están (decí el día y el momento: «el lunes a la tarde, el real había perdido...»). Si no hay datos actualizados, usá los del mediodía diciendo «al mediodía».\n- La Bolsa: decí cuánto cayó en reales y, para que se entienda la magnitud, cuánto medida en dólares, que es lo que perdió un inversor de afuera (usá el dato «medido en dólares» de los DATOS ACTUALIZADOS si está; si no, que el fondo de acciones brasileñas en Nueva York llegó a caer 27%).\n- Desarrollo: por qué: los inversores habían apostado a que ganaba Flávio Bolsonaro (después de la primera vuelta la Bolsa había subido casi 8%) esperando más orden en las cuentas públicas, y el resultado los agarró mal parados. La duda fiscal (deuda de más del 80% del PBI) en una frase.\n- Giro: un dato que casi nadie sabe: que fue el primer freno de la Bolsa desde la pandemia (marzo de 2020), o que las exportadoras como Vale subieron porque un real barato les conviene.\n- Lo que más importa para quien mira: las vacaciones. Si el real sigue barato, Brasil sale más barato para vacacionar este verano (en condicional). Si entra, una frase de que a lo que Argentina le vende a Brasil le cuesta más competir.\n- Cierre: terminá EXACTAMENTE con esta pregunta, para que la gente opine en los comentarios: «¿Seguirá bajando todo mucho más? ¿Vos qué opinás?». No hagas pronósticos propios.\n- Hashtags: #brasil #lula #real #vacaciones #economia #argentina.",
+      "datos": "BRASIL: REACCIÓN DE LOS MERCADOS TRAS LA REELECCIÓN DE LULA (lunes 26 de octubre de 2026).\n- Elección: el domingo 25 de octubre Lula da Silva ganó el balotaje con alrededor del 51,8% de los votos contra el senador Flávio Bolsonaro (hijo de Jair Bolsonaro). Es su cuarta victoria presidencial y el primer candidato que gana después de haber salido segundo en la primera vuelta desde que volvieron las elecciones directas en 1989. El bolsonarismo no reconoció el resultado y habló de pedir que se anule.\n- El real (a la mañana): el viernes 1 dólar costaba 4,99 reales; el lunes abrió en 5,42 y a las 11:43 estaba en 5,47. O sea, el real llegó a perder casi 9% de su valor contra el dólar en una mañana. Según el diario El País, es la peor caída del real en un día desde 1999.\n- La Bolsa (índice Ibovespa): el viernes cerró en unos 205.000 puntos. El lunes cayó más de 10% a los pocos minutos y se activó el 'circuit breaker', el freno automático que corta las operaciones 30 minutos: fue el primero desde marzo de 2020 (la pandemia). A las 11:26 caía 17,3% y a las 12:07, 15,5% (173.000 puntos).\n- Medido en dólares (lo que perdió un inversor de afuera, porque se suman la caída de las acciones y la del real): el fondo de acciones brasileñas que cotiza en Nueva York (EWZ) llegó a caer 27% antes de la apertura, y las acciones de Petrobras, Itaú y Bradesco en Nueva York caían más de 20%.\n- Las que más cayeron en Brasil: bancos como Banco do Brasil (−31%) y Bradesco (−27%); Petrobras cayó 12,5%. En cambio, exportadoras como Vale (+6%) y Suzano (+8%) subieron, porque cobran en dólares y un real barato les conviene.\n- El Tesoro de Brasil canceló las subastas de deuda previstas del 27 al 29 de octubre.\n- Por qué: los inversores habían apostado a que ganaba Flávio Bolsonaro. Después de que él ganara la primera vuelta, a principios de octubre, la Bolsa había subido 7,7% esperando más disciplina fiscal. La duda principal es fiscal: la deuda pública de Brasil supera el 80% del PBI. Los analistas miran quién será el ministro de Hacienda y si Lula consigue mayorías en un Congreso con mayoría opositora.\n- Para Argentina (consecuencias lógicas, en condicional): si el real se mantiene más barato, vacacionar en Brasil sale más barato para un argentino. Brasil es uno de los principales socios comerciales de Argentina: a los productos argentinos que se venden en Brasil les cuesta más competir.",
+      "datos_vivos": [
+        {
+          "nombre": "Real brasileño",
+          "yahoo": "BRL=X",
+          "awesome": "USD-BRL",
+          "moneda": true,
+          "unidad": "reales",
+          "decimales": 2,
+          "contra": "el cierre anterior (si es lunes, el del viernes, antes de la elección)"
+        },
+        {
+          "nombre": "Bolsa de Brasil (índice Ibovespa)",
+          "yahoo": "^BVSP",
+          "unidad": "puntos",
+          "decimales": 0,
+          "en_dolares_con": "BRL=X",
+          "contra": "el cierre anterior (si es lunes, el del viernes, antes de la elección)"
+        }
+      ],
+      "cierre": {
+        "voz": "¿Seguirá bajando todo mucho más? ¿Vos qué opinás?",
+        "pantalla": "¿Seguirá bajando? ¿Qué opinás?",
+        "emoji": "🤔"
+      }
+    },
     {
       "id": "fal-2026",
       "turno": 1,
