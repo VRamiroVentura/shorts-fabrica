@@ -1,0 +1,51 @@
+name: Sugerencias de mejora
+
+# Todos los días: aplica las sugerencias que no respondiste a tiempo, arma nuevas con los números de hoy si no quedan
+# en la fila, y te manda UNA por mail. Respondés con «Responder sugerencia».
+on:
+  schedule:
+    - cron: "23 13 * * *"   # 10:23 de Argentina
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mejoras
+  cancel-in-progress: false
+
+jobs:
+  sugerencias:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      YT_API_KEY: ${{ secrets.YT_API_KEY }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      IG_TOKEN: ${{ secrets.IG_TOKEN }}
+      GH_PAT: ${{ secrets.GH_PAT }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -q -r requirements.txt
+      - name: Sugerencia del día
+        run: python -m fabrica.main mejoras
+      - name: Guardar
+        run: |
+          git config user.name "fabrica-bot"
+          git config user.email "fabrica-bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet && exit 0
+          git commit -m "Sugerencias de mejora [skip ci]"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            git pull --rebase -q && continue
+            sleep 5
+          done
+          exit 1

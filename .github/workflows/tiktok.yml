@@ -1,0 +1,48 @@
+name: Cargar vistas de TikTok
+
+# Los domingos te llega un mail con los videos de la semana. Escribí las vistas de TikTok en ese orden, separadas por
+# coma, y las sugerencias de mejora las suman a las de las otras redes.
+on:
+  workflow_dispatch:
+    inputs:
+      vistas:
+        description: "Vistas en el orden del mail, separadas por coma (ej.: 1200, 340, 0, 89)"
+        type: string
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mejoras
+  cancel-in-progress: false
+
+jobs:
+  cargar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      VISTAS: ${{ inputs.vistas }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -q requests
+      - name: Cargar las vistas
+        run: python -m fabrica.main tiktok
+      - name: Guardar
+        run: |
+          git config user.name "fabrica-bot"
+          git config user.email "fabrica-bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet && exit 0
+          git commit -m "Vistas de TikTok [skip ci]"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            git pull --rebase -q && continue
+            sleep 5
+          done
+          exit 1

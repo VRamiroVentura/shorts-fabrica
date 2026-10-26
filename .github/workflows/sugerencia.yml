@@ -1,0 +1,61 @@
+name: Responder sugerencia
+
+# Tu respuesta a la sugerencia de mejora que te llegó por mail. Si no respondés, se aplica sola a los 2 días.
+on:
+  workflow_dispatch:
+    inputs:
+      respuesta:
+        description: "¿Qué hacemos con la sugerencia?"
+        type: choice
+        options: ["Sí, aplicala", "No, dejala", "Aplicala con cambios", "Deshacer el último cambio"]
+        default: "Sí, aplicala"
+      cambios:
+        description: "Si elegiste «con cambios», escribí cómo (ej.: «mejor los sábados», «a las 18:30»)"
+        type: string
+        default: ""
+      numero:
+        description: "Número de sugerencia (vacío = la última que te llegó)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mejoras
+  cancel-in-progress: false
+
+jobs:
+  responder:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      RESPUESTA: ${{ inputs.respuesta }}
+      CAMBIOS: ${{ inputs.cambios }}
+      NUMERO: ${{ inputs.numero }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -q requests
+      - name: Anotar tu respuesta
+        run: python -m fabrica.main sugerencia
+      - name: Guardar
+        run: |
+          git config user.name "fabrica-bot"
+          git config user.email "fabrica-bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet && exit 0
+          git commit -m "Respuesta a sugerencia [skip ci]"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            git pull --rebase -q && continue
+            sleep 5
+          done
+          exit 1
