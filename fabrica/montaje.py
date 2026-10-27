@@ -16,7 +16,6 @@ AMARILLO_ASS = "&H0000D4FF&"   # (255, 212, 0) en formato BGR de ASS
 BLANCO_ASS = "&H00FFFFFF&"
 CORTE = 2.3                    # cada cuánto cambia el clip de fondo (segundos, aprox.)
 SUB_Y = 1160                   # centro de los subtítulos (zona segura de Reels/TikTok/Shorts)
-SUB_Y_GRAFICO = 1520           # en las escenas con gráfico los subtítulos bajan para no tapar las barras
 
 
 def _run(cmd):
@@ -63,7 +62,7 @@ def _bloques(palabras, max_palabras=3, max_letras=15):
     return bloques
 
 
-def subtitulos(palabras, gancho, serie, usuario, dur_gancho, dur_total, destino, en_grafico=()):
+def subtitulos(palabras, gancho, serie, usuario, dur_gancho, dur_total, destino):
     fuente = _fuente_subs()
     cab = f"""[Script Info]
 ScriptType: v4.00+
@@ -84,7 +83,6 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
     eventos = []
     for bloque in _bloques(palabras):
-        y = SUB_Y_GRAFICO if bloque[0][3] in en_grafico else SUB_Y
         for i, w in enumerate(bloque):
             ini = w[0]
             fin = bloque[i + 1][0] if i + 1 < len(bloque) else w[1] + 0.25
@@ -97,7 +95,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                 else:
                     partes.append(txt)
             pop = "{\\fscx82\\fscy82\\t(0,90,\\fscx100\\fscy100)}" if i == 0 else ""
-            eventos.append([ini, fin, "{\\pos(%d,%d)}" % (W // 2, y) + pop + " ".join(partes)])
+            eventos.append([ini, fin, "{\\pos(%d,%d)}" % (W // 2, SUB_Y) + pop + " ".join(partes)])
     eventos.sort(key=lambda e: e[0])
     for k in range(len(eventos) - 1):  # nunca dos a la vez y sin parpadeos
         sig = eventos[k + 1][0]
@@ -250,6 +248,9 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
     candidatos = []
     for esc, (ini, fin) in zip(escenas, tiempos):
         dur = fin - ini
+        if esc.get("grafico"):  # esta escena va con un cartel animado: no hace falta buscar clips
+            candidatos.append([])
+            continue
         lista = broll.propios_para(propios, esc)
         consultas = [x for x in (esc.get("broll") or []) if x][:2]
         if clave and consultas:
@@ -297,8 +298,23 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
 
     postales_usadas, anterior_postal = 0, False
     ultima = len(escenas) - 1
+    graficos_ok = []
     for i, (esc, (ini, fin)) in enumerate(zip(escenas, tiempos)):
         dur = fin - ini
+        if esc.get("grafico"):
+            from . import graficos
+            destino = trabajo / f"fondo{n:03d}.mp4"
+            try:
+                graficos.render(esc["grafico"], dur, destino, getattr(_fondos, "estilo", "oscuro"), seed + i)
+                segmentos.append(destino)
+                colocados.append({"dest": destino, "largo": dur, "i": i, "clip": None, "n": n})
+                graficos_ok.append((ini, fin))
+                anterior_postal = False
+                n += 1
+                continue
+            except Exception as e:  # noqa  (si falla el cartel, la escena va con un clip como siempre)
+                util.log("No pude armar el gráfico, uso un clip:", util.ocultar(e))
+                esc["grafico"] = None
         buenos = mejores(candidatos[i], puntajes[i], 2)          # pegan con la frase
         exacto = any(p >= 3 for p in puntajes[i])
         # Postal de Argentina: en la intriga (escena 2) y en el cierre siempre que no haya un clip exacto,
@@ -379,44 +395,8 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
                 x["clip"] = None
         revisar = nuevos
     _fondos.ids = [x["clip"]["id"] for x in colocados if x.get("clip") and x["clip"].get("id")]
+    _fondos.graficos = graficos_ok
     return segmentos, de_video, banco, de_propios, postales_usadas
-
-
-def plan_graficos(n, cuantos):
-    """Qué escenas van con gráfico. Devuelve [(desde, hasta, índice del gráfico, completo)] y el resto va con
-    video de fondo. El gráfico principal arranca con el gancho y se arma mientras se cuenta lo prometido; las
-    dos últimas escenas lo retoman (o muestran el segundo gráfico) para cerrar con el dato a la vista."""
-    if n <= 4:
-        return [(0, n - 1, 0, False)]
-    inicio = min(3, n - 3)
-    tramos = [(0, inicio, 0, False)]
-    if cuantos > 1:
-        tramos += [(n - 2, n - 2, 1, False), (n - 1, n - 1, 0, True)]
-    else:
-        tramos += [(n - 2, n - 1, 0, True)]
-    return tramos
-
-
-def _con_graficos(graficos, escenas, tiempos, trabajo, seed, evitar):
-    """Fondos de un video de datos: los tramos con gráfico se dibujan acá y el medio va con clips como siempre."""
-    from . import graficos as gr
-    tramos = plan_graficos(len(escenas), len(graficos))
-    en_grafico = {i for a, b, _, _ in tramos for i in range(a, b + 1)}
-    medio = [i for i in range(len(escenas)) if i not in en_grafico]
-    seg_medio, de_video, banco, de_propios, de_postales = [], 0, "", 0, 0
-    if medio:
-        seg_medio, de_video, banco, de_propios, de_postales = _fondos(
-            [escenas[i] for i in medio], [tiempos[i] for i in medio], trabajo, seed, evitar)
-    # el medio siempre es un bloque seguido (entre el gráfico del arranque y el del cierre)
-    segmentos, puesto_medio = [], False
-    for a, b, idx, completo in tramos:
-        if a > 0 and not puesto_medio:
-            segmentos += seg_medio
-            puesto_medio = True
-        destino = trabajo / f"grafico_{a}.mp4"
-        gr.clip(graficos[min(idx, len(graficos) - 1)], tiempos[b][1] - tiempos[a][0], destino, completo)
-        segmentos.append(destino)
-    return segmentos, de_video, banco, de_propios, de_postales, en_grafico
 
 
 def _musica(cfg):
@@ -445,13 +425,15 @@ def _portada(segmentos, contenido, destino, trabajo, serie_nombre=""):
 
 
 # ---------------------------------------------------------------- todo junto
-def generar(contenido, serie_nombre, usuario, carpeta, evitar=()):
+def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_graficos="oscuro"):
     cfg = util.config()
     salida = Path(carpeta)
     trabajo = salida / "_trabajo"
     trabajo.mkdir(parents=True, exist_ok=True)
     escenas = [{"texto": e["texto_voz"], "pantalla": e.get("texto_pantalla", ""), "emoji": e.get("emoji", ""),
-                "prompt": e.get("prompt", ""), "broll": e.get("broll", "")} for e in contenido["escenas"]]
+                "prompt": e.get("prompt", ""), "broll": e.get("broll", ""),
+                "grafico": e.get("grafico") if cfg.get("graficos", True) else None} for e in contenido["escenas"]]
+    _fondos.estilo = estilo_graficos
     seed = random.randint(1, 10_000_000)
 
     # 1) voz y tiempos
@@ -459,15 +441,10 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=()):
     dur_voz = voz.duracion(wav)
     total = round(tiempos[-1][1], 3)
 
-    # 2) fondos (con gráficos animados si el contenido los trae)
+    # 2) fondos
     _fondos.ids = []
-    graficos = [g for g in (contenido.get("graficos") or []) if isinstance(g, dict)]
-    if graficos:
-        segmentos, de_pexels, banco, de_propios, de_postales, en_grafico = _con_graficos(
-            graficos, escenas, tiempos, trabajo, seed, evitar)
-    else:
-        segmentos, de_pexels, banco, de_propios, de_postales = _fondos(escenas, tiempos, trabajo, seed, evitar)
-        en_grafico = set()
+    _fondos.graficos = []
+    segmentos, de_pexels, banco, de_propios, de_postales = _fondos(escenas, tiempos, trabajo, seed, evitar)
     (trabajo / "lista.txt").write_text("".join(f"file '{p.resolve()}'\n" for p in segmentos))
     _run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(trabajo / "lista.txt"),
           "-c", "copy", str(trabajo / "fondo.mp4")])
@@ -475,16 +452,14 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=()):
     # 3) subtítulos + gancho
     gancho = (contenido["escenas"][0].get("texto_pantalla") or contenido.get("miniatura", {}).get("linea1") or "")
     dur_gancho = min(max(tiempos[0][1], 2.2), 4.0)
-    subtitulos(palabras, gancho, serie_nombre, usuario, dur_gancho, total, trabajo / "subs.ass", en_grafico)
+    subtitulos(palabras, gancho, serie_nombre, usuario, dur_gancho, total, trabajo / "subs.ass")
 
     # 4) mezcla final: fondo oscurecido + subtítulos + barra de progreso + voz (+ música)
     musica = _musica(cfg)
     fonts = util.RAIZ / "fonts"
-    oscurecer = "drawbox=x=0:y=0:w=iw:h=ih:color=black@0.22:t=fill"
-    if en_grafico:  # los gráficos ya tienen fondo oscuro: no se oscurecen
-        rangos = "+".join(f"between(t,{tiempos[i][0]:.3f},{tiempos[i][1]:.3f})" for i in sorted(en_grafico))
-        oscurecer += f":enable='not({rangos})'"
-    filtro_v = (f"[0:v]{oscurecer},"
+    tramos = getattr(_fondos, "graficos", [])  # los carteles animados no se oscurecen
+    sin_graf = (":enable='not(" + "+".join(f"between(t,{a:.2f},{b:.2f})" for a, b in tramos) + ")'") if tramos else ""
+    filtro_v = (f"[0:v]drawbox=x=0:y=0:w=iw:h=ih:color=black@0.22:t=fill{sin_graf},"
                 f"ass={trabajo / 'subs.ass'}:fontsdir={fonts}[v0];"
                 f"color=c=0xFFD400:s={W}x14:r={FPS}[barra];"
                 f"[v0][barra]overlay=x='-w+w*t/{total}':y={H - 14}:shortest=1[v]")
@@ -506,9 +481,10 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=()):
     _run(cmd)
 
     # 5) portada
-    _portada(segmentos[-1:] if graficos else segmentos, contenido, salida / "thumb.jpg", trabajo, serie_nombre)
+    _portada(segmentos, contenido, salida / "thumb.jpg", trabajo, serie_nombre)
 
     meta = {"duracion": round(voz.duracion(salida / "video.mp4"), 2), "voz": motor, "clips": len(segmentos),
+            "graficos": len(getattr(_fondos, "graficos", [])),
             "clips_stock": de_pexels, "banco": banco, "clips_propios": de_propios, "postales": de_postales, "musica": musica.name if musica else None, "voz_seg": round(dur_voz, 2),
             "clips_ids": list(getattr(_fondos, "ids", []))}
     (salida / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")

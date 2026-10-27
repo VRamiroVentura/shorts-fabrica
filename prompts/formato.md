@@ -36,6 +36,16 @@ TEXTOS PARA PUBLICAR (los mismos en las 3 redes):
 - miniatura: linea1 (máximo 4 palabras) y linea2 (máximo 3), pensadas para que alguien frene el scroll.
 - miniatura.emoji: un emoji que acompañe la portada. miniatura.prompt: ilustración en inglés de un personaje simple de dibujo animado con una emoción clara (sorpresa, preocupación, alegría), sin texto.
 
+CARTELES ANIMADOS (opcional, para variar y explicar mejor)
+En hasta 3 escenas (nunca la escena 1) podés poner, en lugar de un video de fondo, un cartel animado con el campo "grafico". Usalo solo cuando ayude a entender: un número importante, una lista, el paso de una cosa a otra, una palabra clave o una cuenta. Si la escena se entiende igual con un video, no lo pongas. Todo lo que diga el cartel tiene que estar en lo que dice la voz en esa escena (nada de datos nuevos) y ser corto (máximo 22 caracteres por texto).
+Tipos:
+- {"tipo": "resaltado", "texto": "palabra clave", "sello": "frase corta" (opcional), "sello_color": "rojo" (lo que te cuesta) o "verde" (lo que te conviene)}
+- {"tipo": "numero", "rotulo": "qué es", "valor": "$1.234.567" o "35%", "nota": "aclaración corta" (opcional)}
+- {"tipo": "ticket", "lineas": [["concepto", "+"], ["otro", "−"]], "sello": "frase" (opcional), "sello_color": "rojo" o "verde"}
+- {"tipo": "lista", "titulo": "título corto", "items": ["uno", "dos", "tres"]} (de 2 a 5 ítems, se van tildando)
+- {"tipo": "comparacion", "arriba": "antes", "abajo": "después", "rotulo": "qué lo cambia" (opcional)}
+En cualquier cartel podés sumar "fondo" para elegir el color según lo que se cuenta: "azul" (explicar, datos), "verde" (lo que te conviene: ahorro, beneficio), "bordo" (lo que te cuesta: alerta, error, multa, estafa), "violeta" (historias y curiosidades) o "carbon" (neutro). En los videos de impuestos el fondo es siempre una hoja de cuaderno contable.
+
 El video y el carrusel tratan el MISMO tema, pero el carrusel se lee (más concreto, más guardable) y el video se escucha.
 
 FORMATO DE RESPUESTA
@@ -45,6 +55,6 @@ Respondé SOLO con un JSON válido con esta forma exacta:
   "descripcion": "...",
   "hashtags": ["#...", "#..."],
   "miniatura": { "linea1": "...", "linea2": "...", "emoji": "...", "prompt": "..." },
-  "escenas": [ { "texto_voz": "...", "texto_pantalla": "...", "broll": ["...", "..."], "emoji": "...", "prompt": "..." } ],
+  "escenas": [ { "texto_voz": "...", "texto_pantalla": "...", "broll": ["...", "..."], "emoji": "...", "prompt": "...", "grafico": null } ],
   "carrusel": [ { "titulo": "...", "texto": "...", "emoji": "..." } ]
 }

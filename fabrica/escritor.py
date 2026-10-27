@@ -109,13 +109,20 @@ def gemini(sistema, usuario, temperatura=0.9):
         texto, fin = "", ""
         # Si el modelo no acepta algún ajuste (pensamiento o filtros), pruebo sin él.
         for ajustes in ((True, True), (False, True), (False, False)):
-            r = util.pedir("POST", API.format(modelo=modelo), headers={"x-goog-api-key": clave},
-                           json=_cuerpo(sistema, usuario, temperatura, modelo, *ajustes),
-                           intentos=1 if descubiertos else 3, espera=15, timeout=240)
+            try:
+                r = util.pedir("POST", API.format(modelo=modelo), headers={"x-goog-api-key": clave},
+                               json=_cuerpo(sistema, usuario, temperatura, modelo, *ajustes),
+                               intentos=1 if descubiertos else 2, espera=15, timeout=150)
+            except Exception as e:  # noqa  (Google no contestó a tiempo: paso al modelo siguiente)
+                r = None
+                errores.append(f"{modelo}: no respondió ({type(e).__name__})")
+                break
             if r is not None and r.status_code == 400 and any(x in _mensaje(r).lower() for x in ("think", "safety")):
                 continue
             break
-        if r is None or r.status_code != 200:
+        if r is None:
+            continue
+        if r.status_code != 200:
             errores.append(f"{modelo}: {getattr(r, 'status_code', '?')} {_mensaje(r)}")
             continue
         datos = r.json()
@@ -196,6 +203,25 @@ def _titulo_corto(t, maximo=60):
     return corto
 
 
+GRAFICOS_MAX = 3
+
+
+def _grafico(g):
+    """Escena gráfica (cartel animado) que propone la IA, revisada; None si no sirve."""
+    if not isinstance(g, dict):
+        return None
+    from . import graficos
+    g = graficos.valido({k: v for k, v in g.items()})
+    if not g:
+        return None
+    for k in ("texto", "sello", "rotulo", "valor", "nota", "titulo", "arriba", "abajo"):
+        if g.get(k):
+            g[k] = _siglas(_limpiar(g[k]))
+    if g.get("items"):
+        g["items"] = [_siglas(_limpiar(x)) for x in g["items"] if str(x).strip()]
+    return g
+
+
 def validar(d):
     escenas = []
     for e in d.get("escenas", []):
@@ -206,6 +232,9 @@ def validar(d):
                             "emoji": _emoji(e.get("emoji"), "💡"),
                             "prompt": str(e.get("prompt") or "").strip(),
                             "broll": _broll(e.get("broll"))})
+            g = _grafico(e.get("grafico"))
+            if g and len(escenas) > 1 and sum(1 for x in escenas if x.get("grafico")) < GRAFICOS_MAX:
+                escenas[-1]["grafico"] = g  # nunca en la escena 1 (ahí va el gancho escrito)
     carrusel = []
     for p in d.get("carrusel", []):
         if p.get("titulo"):
@@ -214,7 +243,7 @@ def validar(d):
     palabras = sum(len(e["texto_voz"].split()) for e in escenas)
     if len(escenas) < 4:
         raise ValueError(f"Guion corto: {len(escenas)} escenas")
-    if palabras > 190:
+    if palabras > 320:  # si se pasa un poco, después lo recorta _ajustar_largo (y la voz se acelera un poco)
         raise ValueError(f"Guion largo: {palabras} palabras")
     if len(carrusel) < 4:
         raise ValueError(f"Carrusel corto: {len(carrusel)} placas")

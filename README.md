@@ -217,3 +217,13 @@ cambios» (escribís cómo) o «Deshacer el último cambio». **Si no respondés
 - Cada guion además recibe lo aprendido: los títulos propios que mejor y peor anduvieron y lo que rinde en la competencia.
 - Ajustes en config: `mejoras_dias_para_aplicar` (2), `mejoras_min_posts` (3), `mejoras_dias_entre_cambios` (7), `mejoras_videos_por_serie` (10), `mejoras_dias_minimos` (2),
   `series_protegidas` (["monotributo"]), `carrusel_series` (["monotributo"]).
+
+## Carteles animados (escenas gráficas)
+
+En algunas escenas (hasta 3 por video, nunca la primera) la IA puede poner, en lugar de un video de stock, un cartel
+animado para explicar mejor: palabra clave resaltada con sello, número grande que cuenta, ticket de sumadora, lista
+que se va tildando o comparación con flecha. Lo arma `fabrica/graficos.py`, gratis, en GitHub.
+
+- Fondos: **cuaderno** (hoja de libro contable) para las series de `graficos_cuaderno` (por defecto
+  `["monotributo"]`) y **oscuro** para todo lo demás, en 5 colores según lo que se cuenta: azul (explicar), verde (lo que te conviene), bordó (lo que te cuesta), violeta (historias) y carbón (neutro).
+- Para apagarlos: `"graficos": false` en config.json. Si un cartel falla, esa escena va con un clip como siempre.
