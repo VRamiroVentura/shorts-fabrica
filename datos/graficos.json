@@ -1,0 +1,179 @@
+{
+  "_ayuda": "Banco de datos para la serie 'La plata en datos'. Sale uno por vez, en el orden de la lista, y no se repite (queda anotado en el historial). Todos los números tienen que estar chequeados en al menos dos fuentes. 'graficos': el primero se arma al principio del video y vuelve al final; si hay un segundo (por ejemplo un contador), sale en la anteúltima escena. Barras: entre 3 y 12, con 'nombre' y 'valor' (número con punto decimal: 31.5). 'unidad': '%' o ' M€' (con espacio adelante si es una palabra). 'resaltar': el nombre de la barra que va en amarillo. 'nota': cartel que aparece al final, máximo unas 30 letras. 'datos': lo único que puede usar el guion además de los números del gráfico. 'hasta' (opcional): fecha en que el dato deja de servir.",
+  "datos": [
+    {
+      "id": "inflacion-latam-2025",
+      "titulo": "La inflación de 2025, país por país en Sudamérica",
+      "fuente": "INDEC y los institutos oficiales de cada país, vía Infobae y La Capital (enero de 2026)",
+      "fecha_datos": "diciembre de 2025 (interanual)",
+      "datos": "INFLACIÓN ANUAL 2025 (diciembre contra diciembre) según los institutos oficiales de cada país.\n- Argentina terminó 2025 con 31,5%, la más baja desde 2017, pero sigue siendo la más alta de los países con datos oficiales confiables de la región.\n- Bolivia 20,4% (dato oficial; consultoras privadas lo discuten). Colombia 5,1%. Brasil 4,26%. Uruguay 3,65%. Chile 3,5%. Paraguay 3,1%. Ecuador 1,9%. Perú 1,5%.\n- Venezuela no está en el gráfico porque no tiene una medición oficial confiable (el FMI estima más de 260%).\n- Cuenta: 31,5 dividido 3,5 = 9. La inflación de Argentina fue 9 veces la de Chile.",
+      "prompt": "Ángulo: ¿31,5% es mucho o poco? Mirá a los vecinos. Remate: nueve veces la de Chile. En el medio, una o dos frases de qué significa para el bolsillo una inflación de un dígito (los precios casi no se mueven en el año) contra una de 31,5%.",
+      "graficos": [
+        {
+          "tipo": "barras",
+          "titulo": "Inflación anual 2025",
+          "unidad": "%",
+          "resaltar": "Argentina",
+          "fuente": "institutos oficiales de cada país (dic-2025)",
+          "nota": "9 veces la de Chile",
+          "items": [
+            {
+              "nombre": "Argentina",
+              "valor": 31.5,
+              "emoji": "🇦🇷"
+            },
+            {
+              "nombre": "Bolivia",
+              "valor": 20.4,
+              "emoji": "🇧🇴"
+            },
+            {
+              "nombre": "Colombia",
+              "valor": 5.1,
+              "emoji": "🇨🇴"
+            },
+            {
+              "nombre": "Brasil",
+              "valor": 4.26,
+              "emoji": "🇧🇷"
+            },
+            {
+              "nombre": "Uruguay",
+              "valor": 3.65,
+              "emoji": "🇺🇾"
+            },
+            {
+              "nombre": "Chile",
+              "valor": 3.5,
+              "emoji": "🇨🇱"
+            },
+            {
+              "nombre": "Paraguay",
+              "valor": 3.1,
+              "emoji": "🇵🇾"
+            },
+            {
+              "nombre": "Ecuador",
+              "valor": 1.9,
+              "emoji": "🇪🇨"
+            },
+            {
+              "nombre": "Perú",
+              "valor": 1.5,
+              "emoji": "🇵🇪"
+            }
+          ]
+        },
+        {
+          "tipo": "contador",
+          "arriba": "Argentina 2025",
+          "valor": 31.5,
+          "unidad": "%",
+          "abajo": "La más baja desde 2017",
+          "emoji": "📉",
+          "fuente": "INDEC"
+        }
+      ]
+    },
+    {
+      "id": "futbol-ventas-argentinos-2026",
+      "titulo": "Las ventas más caras de jugadores argentinos",
+      "fuente": "El Economista, El Intransigente, La Gaceta y La Nación (septiembre de 2026)",
+      "fecha_datos": "septiembre de 2026",
+      "datos": "LAS VENTAS MÁS CARAS DE FUTBOLISTAS ARGENTINOS (en millones de euros).\n- Enzo Fernández, de Chelsea a Manchester City, el 1 de septiembre de 2026, en el último día del mercado de pases: unos 140 millones de euros. Las fuentes no coinciden en el monto exacto: La Gaceta y El Intransigente dicen 140, El Español 145 y La Nación 146 (según si cuentan los bonos por rendimiento). Rompió su propio récord.\n- Enzo Fernández, de Benfica a Chelsea, enero de 2023: 121 millones de euros.\n- Gonzalo Higuaín, de Napoli a Juventus, 2016: 90 millones de euros.\n- Julián Álvarez, de Manchester City a Atlético de Madrid, 2024: 75 millones de euros.\n- Ángel Di María, de Real Madrid a Manchester United, 2014: 75 millones de euros.\n- Ángel Di María, de Manchester United a PSG, 2015: 63 millones de euros.\n- Enzo es el único argentino que aparece dos veces arriba de los 100 millones.",
+      "prompt": "Serie de fútbol y plata. Ángulo: el argentino que rompió su propio récord. Recorré el ranking de abajo hacia arriba y dejá a Enzo para el final del tramo del gráfico. En el medio, una o dos frases de por qué los clubes pagan tanto (contratos largos, reventa, derechos de TV), sin inventar cifras. Si decís el monto de la venta a City, decí 'unos 140 millones de euros'.",
+      "graficos": [
+        {
+          "tipo": "barras",
+          "titulo": "Ventas récord de argentinos (millones de €)",
+          "unidad": " M€",
+          "resaltar": "Enzo (City)",
+          "fuente": "El Economista, La Gaceta y La Nación (sep-2026)",
+          "nota": "Rompió su propio récord",
+          "items": [
+            {
+              "nombre": "Enzo (City)",
+              "valor": 140
+            },
+            {
+              "nombre": "Enzo (Chelsea)",
+              "valor": 121
+            },
+            {
+              "nombre": "Higuaín (Juve)",
+              "valor": 90
+            },
+            {
+              "nombre": "Julián (Atleti)",
+              "valor": 75
+            },
+            {
+              "nombre": "Di María (United)",
+              "valor": 75
+            },
+            {
+              "nombre": "Di María (PSG)",
+              "valor": 63
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inflacion-argentina-2017-2025",
+      "titulo": "La inflación de Argentina, año por año desde 2017",
+      "fuente": "INDEC",
+      "fecha_datos": "diciembre de cada año (interanual)",
+      "datos": "INFLACIÓN ANUAL DE ARGENTINA SEGÚN EL INDEC (diciembre contra diciembre).\n- 2017: 24,8%. 2018: 47,6%. 2019: 53,8%. 2020: 36,1%. 2021: 50,9%. 2022: 94,8%. 2023: 211,4%. 2024: 117,8%. 2025: 31,5%.\n- 2023 fue el peor año de la serie. 2025 fue la más baja desde 2017.\n- Qué significa 211,4%: algo que en diciembre de 2022 costaba 1.000 pesos, en diciembre de 2023 costaba unos 3.114 pesos.",
+      "prompt": "Ángulo: ranking de los peores años de inflación. El gráfico ordena los años del más bajo al más alto, así que el último en aparecer es 2023. En el medio, bajalo a un ejemplo con 1.000 pesos (está en el material). Nada de culpar a gobiernos: solo los datos.",
+      "graficos": [
+        {
+          "tipo": "barras",
+          "titulo": "Inflación anual en Argentina (INDEC)",
+          "unidad": "%",
+          "resaltar": "2025",
+          "fuente": "INDEC, diciembre de cada año",
+          "nota": "2025: la más baja desde 2017",
+          "items": [
+            {
+              "nombre": "2023",
+              "valor": 211.4
+            },
+            {
+              "nombre": "2024",
+              "valor": 117.8
+            },
+            {
+              "nombre": "2022",
+              "valor": 94.8
+            },
+            {
+              "nombre": "2019",
+              "valor": 53.8
+            },
+            {
+              "nombre": "2021",
+              "valor": 50.9
+            },
+            {
+              "nombre": "2018",
+              "valor": 47.6
+            },
+            {
+              "nombre": "2020",
+              "valor": 36.1
+            },
+            {
+              "nombre": "2025",
+              "valor": 31.5
+            },
+            {
+              "nombre": "2017",
+              "valor": 24.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

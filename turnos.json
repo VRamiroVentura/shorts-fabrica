@@ -1,9 +1,9 @@
 {
-  "_ayuda": "Segundo video del día. segundo_turno: true = 2 videos por día, false = 1. plan_semanal_2: qué serie sale en el 2º turno (1=lunes ... 7=domingo; podés usar cualquier serie de acá o de config.json). horarios_2: a qué hora sale (hora de Argentina, entre las 12:10 y las 22:30, y separado al menos 4 horas del horario del config). Las instrucciones de cada serie nueva están en prompts/series/. palabras_max: tope de largo del guion de esa serie (160 palabras = casi un minuto; si la voz pasa de 58 segundos, se acelera apenas para que entre). Las series sin tope usan 160. Siempre se prioriza lo más corto que cuente bien el tema.",
+  "_ayuda": "Segundo video del día. segundo_turno: true = 2 videos por día, false = 1. plan_semanal_2: qué serie sale en el 2º turno (1=lunes ... 7=domingo; podés usar cualquier serie de acá o de config.json). horarios_2: a qué hora sale (hora de Argentina, entre las 12:10 y las 22:30, y separado al menos 4 horas del horario del config). Las instrucciones de cada serie nueva están en prompts/series/. palabras_max: tope de largo del guion de esa serie (160 palabras = casi un minuto; si la voz pasa de 58 segundos, se acelera apenas para que entre). Las series sin tope usan 160. Siempre se prioriza lo más corto que cuente bien el tema. La serie 'datos' (La plata en datos) arma un gráfico animado con los datos chequeados de datos/graficos.json, uno por semana; si se terminan, ese día sale la serie de 'respaldo'.",
   "segundo_turno": true,
   "plan_semanal_2": {
     "1": "inventos",
-    "2": "autor",
+    "2": "datos",
     "3": "laplata",
     "4": "estafas",
     "5": "argentino_que",
@@ -107,6 +107,14 @@
       "canales": [],
       "prompt": "Las instrucciones están en prompts/series/estafas.md",
       "palabras_max": 160
+    },
+    "datos": {
+      "nombre": "La plata en datos",
+      "modo": "datos",
+      "respaldo": "economia",
+      "canales": [],
+      "prompt": "Las instrucciones están en prompts/series/datos.md",
+      "palabras_max": 150
     }
   }
 }

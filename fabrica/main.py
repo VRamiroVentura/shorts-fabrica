@@ -201,6 +201,58 @@ def _fuente_tema(tema):
             "titulo": tema["titulo"], "publicado": tema.get("fecha_datos", ""), "transcripcion": datos}
 
 
+# ---------------------------------------------------------------- serie de datos (gráficos animados)
+def _datos_cargados():
+    return (util.leer_json("datos/graficos.json", {}) or {}).get("datos", [])
+
+
+def _dato_pendiente(usados):
+    """El próximo dato del banco (datos/graficos.json) que todavía no salió y sigue vigente."""
+    from . import graficos
+    hoy = util.ahora().strftime("%Y-%m-%d")
+    for d in _datos_cargados():
+        if not d.get("id") or "dato:" + d["id"] in usados:
+            continue
+        if d.get("desde", "") > hoy or (d.get("hasta") and d["hasta"] < hoy):
+            continue
+        malos = [graficos.validar(g) for g in d.get("graficos") or []]
+        if not d.get("graficos") or any(malos):
+            util.avisar("Un dato del banco tiene un gráfico mal cargado",
+                        f'Lo salteo: {d["id"]} ({"; ".join(m for m in malos if m) or "sin gráficos"}).')
+            continue
+        return d
+    return None
+
+
+def _fuente_dato(d):
+    """El material que ve la IA: el texto chequeado del dato más los números exactos de cada gráfico."""
+    from . import graficos
+    lineas = []
+    for g in d["graficos"]:
+        if g.get("tipo", "barras") == "barras":
+            lineas.append(f'GRÁFICO DE BARRAS «{g.get("titulo", "")}» (fuente: {g.get("fuente", "")}):')
+            for it in sorted(g["items"], key=lambda x: -float(x["valor"])):
+                v = graficos._num(float(it["valor"]), graficos._decimales(it["valor"]))
+                lineas.append(f'- {it["nombre"]}: {v}{g.get("unidad", "")}')
+            if g.get("nota"):
+                lineas.append(f'Cartel final que se ve en pantalla: «{g["nota"]}»')
+        else:
+            v = graficos._num(float(g["valor"]), graficos._decimales(g["valor"]))
+            lineas.append(f'NÚMERO GRANDE EN PANTALLA: {g.get("arriba", "")} {v}{g.get("unidad", "")} {g.get("abajo", "")}')
+    texto = (d.get("datos", "").strip() + "\n\nLO QUE SE VE EN PANTALLA (el guion tiene que coincidir con esto):\n"
+             + "\n".join(lineas))
+    return {"id": "dato:" + d["id"], "tipo": "noticia", "canal": d.get("fuente", "fuentes oficiales"),
+            "titulo": d["titulo"], "publicado": d.get("fecha_datos", ""), "transcripcion": texto}
+
+
+def _serie_con_dato(serie, d):
+    s = dict(serie)
+    s["prompt"] = (serie["prompt"] + f'\n\nDATO DE HOY: {d["titulo"]}.\n' + (d.get("prompt") or "").strip() + "\n"
+                   "- Usá SOLO los números del MATERIAL DE REFERENCIA, que están chequeados a mano y son los mismos "
+                   "que muestra el gráfico. No agregues montos, fechas ni porcentajes que no estén ahí.")
+    return s
+
+
 def _marcar_tema(p, resultados):
     """El tema pedido ya salió en alguna red: no se repite."""
     if not p.get("tema_id") or not any(r.get("ok") for r in resultados.values()):
@@ -330,7 +382,21 @@ def generar(simulado=False):
 
     fuentes = []
     clave_yt = util.secreto("YT_API_KEY")
-    if tema:
+    dato = None
+    if not tema and serie.get("modo") == "datos" and not simulado:
+        dato = _dato_pendiente(usados)
+        if dato:
+            serie = _serie_con_dato(serie, dato)
+            util.log("Dato de hoy:", dato["titulo"])
+        else:
+            respaldo = serie.get("respaldo", "economia")
+            util.avisar("Se terminaron los datos del banco",
+                        f"Hoy sale la serie {respaldo}. Cargá datos nuevos en datos/graficos.json.")
+            clave_serie = respaldo
+            serie = _serie(cfg, clave_serie)
+    if dato:
+        fuentes = [_fuente_dato(dato)]
+    elif tema:
         fuentes = [_fuente_tema(tema)]
         util.log("Tema pedido:", tema["titulo"], "(en lugar del tema del día)")
     elif serie.get("modo") == "contable" and not simulado:
@@ -365,6 +431,9 @@ def generar(simulado=False):
         contenido["carrusel"] = _carrusel_tema(tema)
     if tema:
         contenido = _aplicar_cierre(contenido, tema)
+    if dato:
+        contenido = _aplicar_cierre(contenido, dato)
+        contenido["graficos"] = dato["graficos"]
 
     nombre_carpeta = _carpeta(fecha, turno)
     if SALIDA.exists():
@@ -416,6 +485,8 @@ def rehacer():
         contenido = dict(contenido, carrusel=_carrusel_tema(tema))  # las placas fijas no se tocan
     if tema and not any(x in cambios.lower() for x in ("cierre", "final", "pregunta", "termin")):
         contenido = _aplicar_cierre(contenido, tema)  # el cierre fijo se mantiene salvo que pidas cambiarlo
+    if (p.get("contenido") or {}).get("graficos"):  # los gráficos (y sus números) no cambian al rehacer
+        contenido = dict(contenido, graficos=p["contenido"]["graficos"])
     otros_clips = any(x in cambios.lower() for x in ("clip", "imagen", "imágen", "fondo", "toma", "visual", "video de fondo"))
     evitar = set((p.get("video") or {}).get("clips_ids") or []) if otros_clips else set()
     nombre = f'{p.get("base") or p["carpeta"]}-v{version}'
