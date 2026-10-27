@@ -494,5 +494,29 @@
         "id": "1824754265198004"
       }
     }
+  },
+  {
+    "fecha": "2026-10-27",
+    "turno": 2,
+    "hora": "20:30",
+    "serie": "plata",
+    "titulo": "Brasil está un 10 por ciento más barato",
+    "fuentes": [
+      "tema:brasil-vacaciones-2026-10"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": false,
+        "error": "API access blocked. (código 200, OAuthException)"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "gBQdeaBY2U0"
+      },
+      "facebook": {
+        "ok": false,
+        "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page. (código 190, OAuthException)"
+      }
+    }
   }
 ]

@@ -1,67 +1,5 @@
 [
   {
-    "fecha": "2026-10-23",
-    "carpeta": "2026-10-23",
-    "archivos": [
-      "2026-10-23/video.mp4",
-      "2026-10-23/thumb.jpg",
-      "2026-10-23/placa01.jpg",
-      "2026-10-23/placa02.jpg",
-      "2026-10-23/placa03.jpg",
-      "2026-10-23/placa04.jpg",
-      "2026-10-23/placa05.jpg",
-      "2026-10-23/placa06.jpg",
-      "2026-10-23/placa07.jpg",
-      "2026-10-23/placa08.jpg"
-    ]
-  },
-  {
-    "fecha": "2026-10-23",
-    "carpeta": "2026-10-23-t2",
-    "archivos": [
-      "2026-10-23-t2/video.mp4",
-      "2026-10-23-t2/thumb.jpg",
-      "2026-10-23-t2/placa01.jpg",
-      "2026-10-23-t2/placa02.jpg",
-      "2026-10-23-t2/placa03.jpg",
-      "2026-10-23-t2/placa04.jpg",
-      "2026-10-23-t2/placa05.jpg",
-      "2026-10-23-t2/placa06.jpg",
-      "2026-10-23-t2/placa07.jpg"
-    ]
-  },
-  {
-    "fecha": "2026-10-24",
-    "carpeta": "2026-10-24-t2",
-    "archivos": [
-      "2026-10-24-t2/video.mp4",
-      "2026-10-24-t2/thumb.jpg",
-      "2026-10-24-t2/placa01.jpg",
-      "2026-10-24-t2/placa02.jpg",
-      "2026-10-24-t2/placa03.jpg",
-      "2026-10-24-t2/placa04.jpg",
-      "2026-10-24-t2/placa05.jpg",
-      "2026-10-24-t2/placa06.jpg",
-      "2026-10-24-t2/placa07.jpg",
-      "2026-10-24-t2/placa08.jpg"
-    ]
-  },
-  {
-    "fecha": "2026-10-24",
-    "carpeta": "2026-10-24",
-    "archivos": [
-      "2026-10-24/video.mp4",
-      "2026-10-24/thumb.jpg",
-      "2026-10-24/placa01.jpg",
-      "2026-10-24/placa02.jpg",
-      "2026-10-24/placa03.jpg",
-      "2026-10-24/placa04.jpg",
-      "2026-10-24/placa05.jpg",
-      "2026-10-24/placa06.jpg",
-      "2026-10-24/placa07.jpg"
-    ]
-  },
-  {
     "fecha": "2026-10-25",
     "carpeta": "2026-10-25-t2",
     "archivos": [
@@ -88,6 +26,20 @@
       "2026-10-25/placa05.jpg",
       "2026-10-25/placa06.jpg",
       "2026-10-25/placa07.jpg"
+    ]
+  },
+  {
+    "fecha": "2026-10-27",
+    "carpeta": "2026-10-27-t2",
+    "archivos": [
+      "2026-10-27-t2/video.mp4",
+      "2026-10-27-t2/thumb.jpg",
+      "2026-10-27-t2/placa01.jpg",
+      "2026-10-27-t2/placa02.jpg",
+      "2026-10-27-t2/placa03.jpg",
+      "2026-10-27-t2/placa04.jpg",
+      "2026-10-27-t2/placa05.jpg",
+      "2026-10-27-t2/placa06.jpg"
     ]
   }
 ]
