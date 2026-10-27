@@ -107,7 +107,7 @@ jobs:
           sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji > /dev/null
           pip install -q -r requirements.txt
           mkdir -p fonts
-          for f in ofl/anton/Anton-Regular.ttf ofl/poppins/Poppins-Regular.ttf ofl/poppins/Poppins-SemiBold.ttf ofl/poppins/Poppins-Bold.ttf ofl/poppins/Poppins-ExtraBold.ttf ofl/poppins/Poppins-Black.ttf; do
+          for f in ofl/anton/Anton-Regular.ttf ofl/poppins/Poppins-Regular.ttf ofl/poppins/Poppins-SemiBold.ttf ofl/poppins/Poppins-Bold.ttf ofl/poppins/Poppins-ExtraBold.ttf ofl/poppins/Poppins-Black.ttf ofl/spacemono/SpaceMono-Bold.ttf; do
             curl -fsSL -o "fonts/$(basename $f)" "https://github.com/google/fonts/raw/main/$f" || echo "No bajó $f"
           done
 
