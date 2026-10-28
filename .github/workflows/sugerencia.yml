@@ -4,7 +4,7 @@ name: Responder sugerencia
 on:
   workflow_dispatch:
     inputs:
-      respuesta: no es buena sugerencia, es un video poco visto para tomarlo de referencia
+      respuesta:
         description: "¿Qué hacemos con la sugerencia?"
         type: choice
         options: ["Sí, aplicala", "No, dejala", "Aplicala con cambios", "Deshacer el último cambio"]
