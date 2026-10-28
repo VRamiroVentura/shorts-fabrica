@@ -518,5 +518,27 @@
         "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page. (código 190, OAuthException)"
       }
     }
+  },
+  {
+    "fecha": "2026-10-28",
+    "turno": 2,
+    "hora": "13:49",
+    "serie": "laplata",
+    "titulo": "El mito de Disney en La Plata",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": false,
+        "error": "API access blocked. (código 200, OAuthException)"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "Fh_eKlO6nP0"
+      },
+      "facebook": {
+        "ok": false,
+        "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page. (código 190, OAuthException)"
+      }
+    }
   }
 ]
