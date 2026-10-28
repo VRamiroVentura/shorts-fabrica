@@ -1,6 +1,6 @@
 # Clips propios (lo más "argento" que puede tener el video)
 
-Los videos que subas acá tienen prioridad sobre los de Pixabay: la IA los elige cuando pegan con lo que se dice.
+Los videos y fotos que subas acá tienen prioridad sobre los de Pixabay: la IA los elige cuando pegan con lo que se dice.
 
 **Cómo grabarlos:** con el celu en vertical, 5 a 10 segundos cada uno, sin caras (manos y objetos), sin audio importante.
 
@@ -13,3 +13,7 @@ Los videos que subas acá tienen prioridad sobre los de Pixabay: la IA los elige
 - `alquiler-departamento.mp4`, `sueldo-recibo.mp4`, `banco-cajero.mp4`
 
 Con 20 o 30 clips ya cambia muchísimo. Se suben con **Add file → Upload files** dentro de esta carpeta (máximo 25 MB por archivo en la web de GitHub).
+
+**Fotos:** también sirven (`.jpg` o `.png`, mejor verticales). La fábrica les pone un zoom lento para que parezcan video. Ideal para lugares de La Plata, objetos viejos o cosas que no se consiguen en los bancos de video. Sin caras.
+
+**Qué grabar:** cada video avisa en el mail qué le faltó, y el reporte de los lunes junta los pedidos de la semana ("Lo que le falta a la fábrica").

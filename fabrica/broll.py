@@ -203,18 +203,60 @@ def _palabras(t):
     return {w for w in __import__("re").split(r"[^a-z0-9]+", t) if len(w) > 2}
 
 
+FOTOS = ("*.jpg", "*.jpeg", "*.png", "*.JPG", "*.JPEG", "*.PNG", "*.webp")
+
+
+def es_foto(ruta):
+    return Path(str(ruta)).suffix.lower() in (".jpg", ".jpeg", ".png", ".webp")
+
+
+def clip_de_foto(foto, dur, destino, acercar=True):
+    """Foto propia (vertical u horizontal) → clip vertical con zoom lento; si es apaisada, va al centro con el
+    mismo fondo desenfocado atrás."""
+    im = Image.open(foto)
+    try:
+        from PIL import ImageOps
+        im = ImageOps.exif_transpose(im)  # las fotos del celu vienen giradas en el EXIF
+    except Exception:  # noqa
+        pass
+    im = im.convert("RGB")
+    if im.width / im.height <= 0.8:  # vertical: llena la pantalla
+        k = max(W / im.width, H / im.height)
+        im = im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS)
+        x, y = (im.width - W) // 2, (im.height - H) // 2
+        lienzo = im.crop((x, y, x + W, y + H))
+    else:
+        k = max(W / im.width, H / im.height)
+        lienzo = im.resize((round(im.width * k), round(im.height * k))).filter(ImageFilter.GaussianBlur(40))
+        x, y = (lienzo.width - W) // 2, (lienzo.height - H) // 2
+        lienzo = Image.eval(lienzo.crop((x, y, x + W, y + H)), lambda v: int(v * 0.7))
+        frente = im.resize((W, round(im.height * W / im.width)), Image.LANCZOS)
+        lienzo.paste(frente, (0, (H - frente.height) // 2 - 60))
+    compuesto = Path(destino).with_suffix(".png")
+    lienzo.save(compuesto)
+    cuadros = max(1, round(dur * FPS))
+    z = f"1+0.08*on/{cuadros}" if acercar else f"1.08-0.08*on/{cuadros}"
+    flt = (f"scale={int(W * 1.5)}:{int(H * 1.5)},zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
+           f":d={cuadros}:s={W}x{H}:fps={FPS},format=yuv420p")
+    _run(["ffmpeg", "-y", "-v", "error", "-loop", "1", "-framerate", str(FPS), "-i", str(compuesto),
+          "-vf", flt, "-frames:v", str(cuadros), "-r", str(FPS), "-c:v", "libx264", "-preset", "veryfast",
+          "-crf", "20", str(destino)])
+    return destino
+
+
 def propios():
     carpeta = util.RAIZ / "assets" / "clips"
     if not carpeta.exists():
         return []
     out = []
-    for f in sorted(list(carpeta.rglob("*.mp4")) + list(carpeta.rglob("*.mov")) + list(carpeta.rglob("*.MOV"))):
+    tipos = ("*.mp4", "*.mov", "*.MOV", "*.MP4") + FOTOS
+    for f in sorted({x for t in tipos for x in carpeta.rglob(t)}):
         nombre = f.stem.lower().replace("la-plata", "laplata").replace("la_plata", "laplata")
         claves = _palabras(nombre) | _palabras(f.parent.name if f.parent != carpeta else "")
         for k in list(claves):
             claves |= set(_SINONIMOS.get(k, []))
         out.append({"id": f"propio-{f.stem}", "link": str(f), "dur": 99, "tags": " ".join(sorted(claves)),
-                    "claves": claves, "thumb": "", "propio": True})
+                    "claves": claves, "thumb": "", "propio": True, "foto": es_foto(f)})
     return out
 
 
@@ -232,6 +274,8 @@ def miniatura(clip, destino):
             if r is None or r.status_code != 200:
                 return None
             Path(destino).write_bytes(r.content)
+        elif es_foto(clip["link"]):
+            Image.open(clip["link"]).convert("RGB").save(destino, "JPEG")
         else:
             _run(["ffmpeg", "-y", "-v", "error", "-ss", "1", "-i", str(clip["link"]), "-frames:v", "1", str(destino)])
         im = Image.open(destino).convert("RGB")

@@ -30,7 +30,9 @@ PAPEL = (250, 245, 232)
 RENGLON = (170, 200, 225)
 ROJO = (190, 35, 45)
 VERDE = (30, 140, 80)
-TIPOS = ("resaltado", "numero", "ticket", "lista", "comparacion")
+TIPOS = ("resaltado", "numero", "ticket", "lista", "comparacion", "icono", "flechas", "linea_tiempo", "barras",
+         "grilla", "iconos", "antes_despues")
+ESTILOS = ("cuaderno", "oscuro", "revista")
 ZONA = (360, 1010)  # de dónde a dónde puede ir lo gráfico (arriba va la serie, abajo los subtítulos)
 
 _CARPETAS = [util.RAIZ / "fonts", Path("/usr/share/fonts/truetype/google-fonts"),
@@ -110,7 +112,35 @@ def _carbon(color="carbon"):
     return im
 
 
+@lru_cache(maxsize=1)
+def _revista():
+    """Papel de revista vieja: crema con trama fina de puntos y un doble filete en el borde."""
+    rnd = random.Random(5)
+    base = (241, 233, 213)
+    im = Image.new("RGB", (W + 200, H + 200), base)
+    d = ImageDraw.Draw(im)
+    for _ in range(14000):
+        x, y, c = rnd.randint(0, W + 199), rnd.randint(0, H + 199), rnd.randint(-12, 3)
+        d.point((x, y), fill=(base[0] + c, base[1] + c, base[2] + c))
+    for y in range(0, H + 200, 18):
+        for x in range((y // 18) % 2 * 9, W + 200, 18):
+            d.point((x, y), fill=(222, 210, 185))
+    return im
+
+
+def tinta(estilo):
+    """Color del texto que va directo sobre el fondo."""
+    return (255, 255, 255) if estilo == "oscuro" else NEGRO
+
+
 def fondo(estilo, t, semilla=0, color="carbon"):
+    if estilo == "revista":
+        ox, oy = 100 + 20 * math.sin(t * 0.3 + semilla), 100 + 14 * math.sin(t * 0.22 + semilla)
+        im = _revista().crop((int(ox), int(oy), int(ox) + W, int(oy) + H)).convert("RGBA")
+        d = ImageDraw.Draw(im)
+        for m, w in ((34, 4), (46, 2)):  # doble filete
+            d.rectangle([m, m, W - m, H - m], outline=NEGRO, width=w)
+        return im
     if estilo == "cuaderno":
         ox, oy = 100 + 30 * math.sin(t * 0.35 + semilla), 68 + 20 * math.sin(t * 0.25 + semilla) + (t * 12) % 64
         return _hoja().crop((int(ox), int(oy), int(ox) + W, int(oy) + H)).convert("RGBA")
@@ -247,8 +277,8 @@ def _sellar(im, p, cx, cy, t, t0, rot):
 # ------------------------------------------------------------------ cada tipo
 def _resaltado(g, estilo, dur):
     palabra = str(g.get("texto", ""))[:22].upper()
-    estilo_letra = "cond" if estilo == "oscuro" else "bold"
-    claro = _texto(palabra, estilo_letra, 150, NEGRO if estilo == "cuaderno" else (255, 255, 255), max_ancho=900)
+    estilo_letra = "bold" if estilo == "cuaderno" else "cond"
+    claro = _texto(palabra, estilo_letra, 150, tinta(estilo), max_ancho=900)
     oscuro = _texto(palabra, estilo_letra, 150, NEGRO, max_ancho=900)
     sello = _sello(g["sello"], _color_sello(g.get("sello_color"), estilo), 5) if g.get("sello") else None
 
@@ -257,7 +287,7 @@ def _resaltado(g, estilo, dur):
         k = ease_out((t - 0.15) / 0.4)
         capa = Image.new("RGBA", (w + 60, h + 24), (0, 0, 0, 0))
         x2 = 10 + (w + 40) * k
-        if estilo == "cuaderno":  # resaltador por la mitad de abajo de la palabra
+        if estilo != "oscuro":  # resaltador por la mitad de abajo de la palabra
             if k > 0:
                 ImageDraw.Draw(capa).polygon([(10, h * 0.45), (x2, h * 0.38), (x2 + 6, h + 6), (16, h + 12)],
                                              fill=AMA + (215,))
@@ -281,7 +311,7 @@ def _numero(g, estilo, dur):
     import re
     rot = _texto(str(g.get("rotulo", ""))[:30].upper(), "mono", 44, (90, 90, 90), max_ancho=880)
     valor = str(g.get("valor", ""))[:18]
-    nota = (_texto(str(g.get("nota", ""))[:40], "medium", 34, (110, 110, 110) if estilo == "cuaderno" else
+    nota = (_texto(str(g.get("nota", ""))[:40], "medium", 34, (110, 110, 110) if estilo != "oscuro" else
                    (200, 200, 200), max_ancho=880) if g.get("nota") else None)
     m = re.match(r"^(\D*)([\d.]+)(.*)$", valor)  # "$126.610.838 / año" → cuenta de 0 hasta el número
     objetivo = int(m.group(2).replace(".", "")) if m and m.group(2).replace(".", "").isdigit() else None
@@ -395,7 +425,221 @@ def _comparacion(g, estilo, dur):
     return cuadro
 
 
-_ARMAR = {"resaltado": _resaltado, "numero": _numero, "ticket": _ticket, "lista": _lista,
+def _fig(texto, estilo):
+    """Epígrafe chiquito tipo manual: «FIG. — ...»."""
+    c = (120, 120, 120) if estilo == "oscuro" else (90, 80, 65)
+    return _texto(("FIG. — " + str(texto)).upper()[:44], "mono", 28, c, max_ancho=900)
+
+
+def _icono(g, estilo, dur):
+    from . import dibujos
+    dib = dibujos.icono(g.get("icono") if g.get("icono") in dibujos.NOMBRES else "flecha", 440)
+    if estilo == "oscuro":  # en el oscuro el dibujo va sobre un círculo claro
+        base = Image.new("RGBA", (520, 520), (0, 0, 0, 0))
+        ImageDraw.Draw(base).ellipse([0, 0, 519, 519], fill=(245, 238, 222))
+        base.alpha_composite(dib, (40, 40))
+        dib = base
+    texto = _texto(str(g.get("texto", ""))[:22].upper(), "cond", 120, tinta(estilo), max_ancho=900) if g.get("texto") else None
+    fig = _fig(g["rotulo"], estilo) if g.get("rotulo") else None
+
+    def cuadro(im, t):
+        _pop(im, dib, W / 2, 610, t, 0.05, -2.0)
+        if texto:
+            _pop(im, texto, W / 2, 930, t, 0.45, 1.0)
+        if fig and t > 0.7:
+            _pegar(im, fig, W / 2, 1005, 0, 1, clamp((t - 0.7) / 0.3))
+        return False
+    return cuadro
+
+
+def _flechas(g, estilo, dur):
+    from . import dibujos
+    items = [str(x)[:20] for x in (g.get("items") or []) if x][:5]
+    flecha = dibujos.icono("flecha", 120)
+    titulo = _texto(str(g.get("titulo", ""))[:24], "cond", 96, tinta(estilo), max_ancho=900) if g.get("titulo") else None
+    filas = [_texto(it, "cond", 84, tinta(estilo), max_ancho=700) for it in items]
+    paso = max(0.3, (dur - 0.5) / max(1, len(items)))
+    alto_fila = 128
+    y0 = ZONA[0] + (150 if titulo else 40)
+
+    def cuadro(im, t):
+        if titulo:
+            _pop(im, titulo, W / 2, ZONA[0] + 50, t, 0.0, -1.0)
+        for i, f in enumerate(filas):
+            t0 = 0.25 + i * paso
+            if t < t0:
+                continue
+            k = ease_out((t - t0) / 0.3)
+            x = 120 - (1 - k) * 500
+            y = y0 + i * alto_fila
+            _pegar(im, flecha, x + 60, y + 60, 0, 1, clamp(k * 1.5))
+            im.alpha_composite(f, (int(x + 150), int(y + 60 - f.height / 2))) if k > 0.05 else None
+        return False
+    return cuadro
+
+
+def _linea_tiempo(g, estilo, dur):
+    hitos = [(str(a)[:9], str(b)[:26]) for a, b in [(list(h) + ["", ""])[:2] for h in (g.get("hitos") or [])] if a][:4]
+    c = tinta(estilo)
+    anios = [_texto(a, "cond", 80, AMA if estilo == "oscuro" else NEGRO, max_ancho=260) for a, _ in hitos]
+    textos = [_texto(b, "medium", 46, c, max_ancho=560) for _, b in hitos]
+    paso = max(0.35, (dur - 0.5) / max(1, len(hitos)))
+    x_linea, y0, sep = 360, ZONA[0] + 40, (ZONA[1] - ZONA[0] - 60) / max(1, len(hitos))
+
+    def cuadro(im, t):
+        d = ImageDraw.Draw(im)
+        largo = (ZONA[1] - ZONA[0] - 40) * ease_out(t / max(0.5, dur * 0.7))
+        d.line([x_linea, y0, x_linea, y0 + largo], fill=c, width=8)
+        for i in range(len(hitos)):
+            t0 = 0.2 + i * paso
+            if t < t0:
+                continue
+            k = ease_back((t - t0) / 0.3)
+            y = y0 + 30 + i * sep
+            r = 22 * k
+            d.ellipse([x_linea - r, y - r, x_linea + r, y + r], fill=AMA, outline=NEGRO, width=5)
+            a = clamp((t - t0) / 0.2)
+            _pegar(im, anios[i], x_linea - 40 - anios[i].width / 2, y, 0, 1, a)
+            _pegar(im, textos[i], x_linea + 50 + textos[i].width / 2, y, 0, 1, a)
+        return False
+    return cuadro
+
+
+def _barras(g, estilo, dur):
+    datos = []
+    for b in (g.get("barras") or [])[:5]:
+        try:
+            v = str(b[1]).strip()
+            v = v.replace(".", "").replace(",", ".") if "," in v or v.count(".") > 1 else v
+            datos.append((str(b[0])[:18], float(v)))
+        except Exception:  # noqa
+            continue
+    unidad = str(g.get("unidad", ""))[:6]
+    maximo = max([v for _, v in datos] or [1]) or 1
+    c = tinta(estilo)
+    titulo = _texto(str(g.get("titulo", ""))[:26], "cond", 84, c, max_ancho=900) if g.get("titulo") else None
+    rotulos = [_texto(r, "medium", 50, c, max_ancho=330) for r, _ in datos]
+    alto, sep = 70, (ZONA[1] - ZONA[0] - 170) / max(1, len(datos))
+
+    def cuadro(im, t):
+        d = ImageDraw.Draw(im)
+        if titulo:
+            _pop(im, titulo, W / 2, ZONA[0] + 40, t, 0.0, -1.0)
+        for i, (r, v) in enumerate(datos):
+            y = ZONA[0] + 150 + i * sep
+            k = ease_out((t - 0.3 - i * 0.15) / 0.8)
+            if k <= 0:
+                continue
+            _pegar(im, rotulos[i], 60 + rotulos[i].width / 2, y + alto / 2, 0, 1, clamp(k * 2))
+            largo = (W - 640) * (v / maximo) * k
+            d.rectangle([400, y, 400 + largo, y + alto], fill=AMA if i % 2 == 0 else (255, 225, 110),
+                        outline=NEGRO, width=5)
+            x = v * k
+            valor = (f"{x:,.0f}".replace(",", ".") if v >= 100 or v == int(v) else f"{x:.1f}".replace(".", ","))
+            valor += f" {unidad}" if unidad else ""
+            d.text((410 + largo, y + 10), valor, font=F("cond", 48), fill=c)
+        return False
+    return cuadro
+
+
+def _grilla(g, estilo, dur):
+    total = max(2, min(20, int(g.get("total", 10) or 10)))
+    marcados = max(0, min(total, int(g.get("marcados", 0) or 0)))
+    c = tinta(estilo)
+    rot = _texto(str(g.get("rotulo", ""))[:24].upper(), "cond", 100, c, max_ancho=900) if g.get("rotulo") else None
+    titulo = _texto(str(g.get("titulo", ""))[:28], "medium", 48, c, max_ancho=900) if g.get("titulo") else None
+    cols = 5 if total > 10 else min(5, total)
+    filas = math.ceil(total / cols)
+    lado, sep = 130, 22
+
+    def cuadro(im, t):
+        d = ImageDraw.Draw(im)
+        if titulo:
+            _pegar(im, titulo, W / 2, ZONA[0] + 20, 0, 1, clamp(t / 0.3))
+        ancho = cols * lado + (cols - 1) * sep
+        x0, y0 = (W - ancho) / 2, ZONA[0] + 90
+        for i in range(total):
+            t0 = 0.15 + i * 0.06
+            if t < t0:
+                continue
+            k = ease_back((t - t0) / 0.25)
+            fila, col = divmod(i, cols)
+            cx, cy = x0 + col * (lado + sep) + lado / 2, y0 + fila * (lado + sep) + lado / 2
+            m = lado / 2 * k
+            relleno = (ROJO if i < marcados else ((245, 238, 222) if estilo != "oscuro" else (60, 60, 64)))
+            if i < marcados and t < 0.15 + total * 0.06 + 0.3 + i * 0.12:
+                relleno = (245, 238, 222) if estilo != "oscuro" else (60, 60, 64)  # se pintan después, de a uno
+            d.rectangle([cx - m, cy - m, cx + m, cy + m], fill=relleno, outline=NEGRO if estilo != "oscuro" else (230, 230, 230), width=5)
+        if rot:
+            _pop(im, rot, W / 2, y0 + filas * (lado + sep) + 70, t, 0.4 + total * 0.06 + marcados * 0.12, 0)
+        return False
+    return cuadro
+
+
+def _dib(nombre, size):
+    from . import dibujos
+    return dibujos.icono(nombre if nombre in dibujos.NOMBRES else "estrella", size)
+
+
+def _iconos(g, estilo, dur):
+    """2 o 3 dibujitos en fila con su rótulo, apareciendo de a uno (ej. casa + auto + valija)."""
+    pares = [(str(x[0]), str(x[1])[:14]) for x in [(list(i) + ["", ""])[:2] for i in g["iconos"]]][:3]
+    n = len(pares)
+    tam = 300 if n == 3 else 380
+    c = tinta(estilo)
+    titulo = _texto(str(g.get("titulo", ""))[:24], "cond", 90, c, max_ancho=900) if g.get("titulo") else None
+    dibs = []
+    for nombre, rot in pares:
+        dib = _dib(nombre, tam)
+        if estilo == "oscuro":
+            base = Image.new("RGBA", (tam + 40, tam + 40), (0, 0, 0, 0))
+            ImageDraw.Draw(base).ellipse([0, 0, tam + 39, tam + 39], fill=(245, 238, 222))
+            base.alpha_composite(dib, (20, 20))
+            dib = base
+        dibs.append((dib, _texto(rot.upper(), "cond", 54, c, max_ancho=tam + 40) if rot else None))
+    paso = max(0.3, (dur - 0.6) / max(1, n))
+
+    def cuadro(im, t):
+        if titulo:
+            _pop(im, titulo, W / 2, ZONA[0] + 40, t, 0.0, -1.0)
+        for i, (dib, rot) in enumerate(dibs):
+            cx = W * (i + 1) / (n + 1)
+            _pop(im, dib, cx, ZONA[0] + 330, t, 0.2 + i * paso, (-3, 2, -2)[i])
+            if rot:
+                _pop(im, rot, cx, ZONA[0] + 330 + tam / 2 + 70, t, 0.35 + i * paso, 0)
+        return False
+    return cuadro
+
+
+def _antes_despues(g, estilo, dur):
+    """Dos columnas ANTES / AHORA (o los rótulos que mande): dibujito + dato, con flecha en el medio."""
+    c = tinta(estilo)
+    lados = []
+    for k, defecto in (("antes", "ANTES"), ("despues", "AHORA")):
+        x = g.get(k) or {}
+        if not isinstance(x, dict):
+            x = {"texto": str(x)}
+        rot = _texto(str(x.get("rotulo") or defecto)[:12].upper(), "mono", 40, c, max_ancho=440)
+        dib = _dib(x.get("icono"), 300) if x.get("icono") else None
+        txt = _texto(str(x.get("texto", ""))[:16], "cond", 96, c, max_ancho=440)
+        lados.append((rot, dib, txt))
+    flecha = _dib("flecha", 150)
+
+    def cuadro(im, t):
+        for i, (rot, dib, txt) in enumerate(lados):
+            cx, t0 = (270, 810)[i], (0.1, 0.9)[i]
+            _pop(im, rot, cx, ZONA[0] + 30, t, t0, 0)
+            if dib:
+                _pop(im, dib, cx, ZONA[0] + 240, t, t0 + 0.1, (-3, 3)[i])
+            _pop(im, txt, cx, ZONA[0] + (470 if dib else 260), t, t0 + 0.25, 0)
+        if t > 0.6:
+            _pegar(im, flecha, W / 2, ZONA[0] + 260, 0, ease_back((t - 0.6) / 0.3), 1)
+        return False
+    return cuadro
+
+
+_ARMAR = {"iconos": _iconos, "antes_despues": _antes_despues, "icono": _icono, "flechas": _flechas, "linea_tiempo": _linea_tiempo, "barras": _barras, "grilla": _grilla,
+          "resaltado": _resaltado, "numero": _numero, "ticket": _ticket, "lista": _lista,
           "comparacion": _comparacion}
 
 
@@ -415,6 +659,22 @@ def valido(g):
     if t == "lista" and isinstance(g.get("items"), list) and len(g["items"]) >= 2:
         return g
     if t == "comparacion" and g.get("arriba") and g.get("abajo"):
+        return g
+    if t == "icono" and (g.get("texto") or g.get("icono")):
+        return g
+    if t == "flechas" and isinstance(g.get("items"), list) and len(g["items"]) >= 2:
+        return g
+    if t == "linea_tiempo" and isinstance(g.get("hitos"), list) and len(g["hitos"]) >= 2:
+        g["hitos"] = [(list(h) + ["", ""])[:2] if isinstance(h, (list, tuple)) else [str(h), ""] for h in g["hitos"]]
+        return g
+    if t == "barras" and isinstance(g.get("barras"), list) and len(g["barras"]) >= 2:
+        return g
+    if t == "iconos" and isinstance(g.get("iconos"), list) and len(g["iconos"]) >= 2:
+        g["iconos"] = [x if isinstance(x, (list, tuple)) else [str(x), ""] for x in g["iconos"]]
+        return g
+    if t == "antes_despues" and g.get("antes") and g.get("despues"):
+        return g
+    if t == "grilla" and str(g.get("total", "")).isdigit() and str(g.get("marcados", "")).isdigit():
         return g
     return None
 

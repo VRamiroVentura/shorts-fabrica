@@ -253,6 +253,22 @@ def _serie(cfg, clave_serie):
     return serie
 
 
+# Estilo de los carteles si la IA no eligió uno: historias → revista, plata y noticias → oscuro.
+ESTILO_POR_SERIE = {"historias": "revista", "inventos": "revista", "laplata": "revista", "argentino_que": "revista",
+                    "paso_de_verdad": "revista", "mito": "revista", "libro": "revista", "autor": "revista"}
+
+
+def estilo_visual(cfg, clave_serie, contenido):
+    """Estilo de los carteles animados del video. Impuestos siempre en cuaderno; el resto lo elige la IA
+    según el tema (revista, oscuro o cuaderno) y, si no eligió, va por serie."""
+    if clave_serie in cfg.get("graficos_cuaderno", ["monotributo"]):
+        return "cuaderno"
+    elegido = (contenido or {}).get("estilo_visual")
+    if elegido in ("revista", "oscuro", "cuaderno"):
+        return elegido
+    return {**ESTILO_POR_SERIE, **cfg.get("estilo_por_serie", {})}.get(clave_serie, "oscuro")
+
+
 def _producir(cfg, clave_serie, serie, contenido, fuentes, fuentes_detalle, firma_base, fecha, turno, nombre_carpeta,
               evitar=(), version=1):
     """Arma placas, video y portada en out/sitio/<nombre_carpeta> y devuelve la publicación."""
@@ -262,11 +278,19 @@ def _producir(cfg, clave_serie, serie, contenido, fuentes, fuentes_detalle, firm
         shutil.rmtree(carpeta)
     carpeta.mkdir(parents=True)
     placas = carrusel.generar(contenido, serie["nombre"], cfg["usuario"], carpeta)
-    estilo = "cuaderno" if clave_serie in cfg.get("graficos_cuaderno", ["monotributo"]) else "oscuro"
+    estilo = estilo_visual(cfg, clave_serie, contenido)
     montaje.generar(contenido, serie["nombre"], cfg["usuario"], carpeta, evitar=evitar, estilo_graficos=estilo)
     shutil.rmtree(carpeta / "_trabajo", ignore_errors=True)
     (carpeta / "spec.json").unlink(missing_ok=True)
     meta_video = util.leer_json(str((carpeta / "meta.json").relative_to(util.RAIZ)), {}) or {}
+    if meta_video.get("clips_ids"):
+        montaje.anotar_clips(meta_video["clips_ids"])
+    try:
+        from . import faltantes
+        faltantes.anotar({"fecha": fecha, "turno": turno, "serie": clave_serie, "titulo": contenido.get("titulo")},
+                         meta_video, contenido)
+    except Exception as ex:  # noqa
+        util.log("No pude anotar lo que faltó:", util.ocultar(ex))
     (carpeta / "meta.json").unlink(missing_ok=True)
     (SITIO / "index.html").write_text("<meta charset='utf-8'><p>Fábrica de Shorts</p>", encoding="utf-8")
     firma = firma_base
@@ -542,6 +566,15 @@ def _registro(p, res, base):
     ruta.write_text("\n".join(lineas) + "\n", encoding="utf-8")
 
 
+def _faltas_mail(p):
+    try:
+        from . import faltantes
+        return faltantes.bloque_mail(p)
+    except Exception as ex:  # noqa
+        util.log("No pude resumir lo que faltó:", util.ocultar(ex))
+        return ""
+
+
 def _mail_diario(p, res, base):
     from . import publicar as pub
     e = html.escape
@@ -560,6 +593,7 @@ def _mail_diario(p, res, base):
               f'<p><b>Texto:</b><br>{e(p["caption"]).replace(chr(10), "<br>")}</p>'
               f'<p><b>Para TikTok:</b> bajá el video y, antes de publicar, tocá <b>Más opciones</b> y activá '
               f'<b>«Contenido generado por IA»</b> (la voz es de IA).</p>'
+              + _faltas_mail(p) +
               f'<hr><p style="color:#666">{e(p["guion"])}</p>')
     try:
         segundo = " (2º del día)" if p.get("turno", 1) == 2 else ""
@@ -573,9 +607,10 @@ def _rendimiento(cfg, clave_yt, dias=30, entradas=None):
     Por defecto, los últimos `dias`; o las publicaciones que le pases en `entradas`."""
     from . import investigar
     from . import publicar as pub
-    hist = util.leer_json("data/historial.json", [])
+    hist = con_reintentos(util.leer_json("data/historial.json", []) or [])
     desde = (util.ahora() - util.timedelta(days=dias)).strftime("%Y-%m-%d")
-    recientes = entradas if entradas is not None else [h for h in hist if h.get("fecha", "") >= desde]
+    recientes = con_reintentos(list(entradas)) if entradas is not None else None
+    recientes = recientes if entradas is not None else [h for h in hist if h.get("fecha", "") >= desde]
     yt_ids = [h["resultados"]["youtube"]["id"] for h in recientes
               if h.get("resultados", {}).get("youtube", {}).get("ok")]
     yt = investigar.estadisticas_youtube(yt_ids, clave_yt) if (clave_yt and yt_ids) else {}
@@ -840,7 +875,7 @@ def _para_mejoras(cfg, por_serie_max=None, edad_min=None):
     edad = int(edad_min if edad_min is not None else cfg.get("mejoras_dias_minimos", 2))
     hasta = (util.ahora() - util.timedelta(days=edad)).strftime("%Y-%m-%d")
     desde = (util.ahora() - util.timedelta(days=120)).strftime("%Y-%m-%d")
-    hist = [h for h in util.leer_json("data/historial.json", []) or []
+    hist = [h for h in con_reintentos(util.leer_json("data/historial.json", []) or [])
             if desde <= h.get("fecha", "") <= hasta and not h.get("cancelado")
             and any((r or {}).get("ok") for r in (h.get("resultados") or {}).values())]
     elegidas, cuenta = [], {}
@@ -944,6 +979,16 @@ def reporte():
               '"propuesta": "..."}] mirando NUESTRO RENDIMIENTO (si todavía hay pocos datos, decilo).\n\n'
               "NUESTRO RENDIMIENTO (últimos 30 días, por serie):\n" + (nuestro or "(todavía sin datos)") +
               "\n\nCOMPETENCIA:\n" + resumen)
+    from . import faltantes
+    faltas_txt = faltantes.para_ia(7)
+    if faltas_txt:
+        pedido += ("\n\nLO QUE LE FALTÓ A NUESTROS VIDEOS ESTA SEMANA (escenas donde lo que se veía no pegaba del todo "
+                   "con lo que se decía):\n" + faltas_txt + "\n\nCon eso, sumá al JSON \"pedidos_material\": hasta 6 "
+                   "pedidos concretos y fáciles de conseguir, ordenados por cuánto mejorarían los próximos videos: "
+                   '[{"que": "clip" o "foto" o "dibujito", "pedido": "qué conseguir, dicho simple (ej. Grabá 5 '
+                   'segundos de un posnet cobrando, en vertical)", "nombre_archivo": "posnet-cobro.mp4" (solo para '
+                   'clip o foto), "por_que": "para qué videos sirve"}]. Agrupá lo que se repite; nada con caras de '
+                   'personas.')
     try:
         a = escritor.gemini(sistema, pedido, temperatura=0.7)
     except Exception as ex:  # noqa
@@ -984,6 +1029,19 @@ def reporte():
         from . import mejoras
         md += ["", "## Sugerencias de cambio (te llega una por día por mail; si no respondés, se aplica sola)", ""]
         md += [f'- #{p["id"]} {p["titulo"]}: {mejoras.describir(cfg, p)}' for p in nuevas]
+    md += ["", "## Lo que le falta a la fábrica (cómo ayudarla)", ""]
+    pedidos = [x for x in a.get("pedidos_material", []) if isinstance(x, dict) and x.get("pedido")]
+    if pedidos:
+        for x in pedidos:
+            arch = f' → subilo como `assets/clips/{x["nombre_archivo"]}`' if x.get("nombre_archivo") and x.get("que") != "dibujito" else ""
+            md.append(f'- **{str(x.get("que", "")).capitalize()}**: {x["pedido"]}{arch}'
+                      + (f' ({x["por_que"]})' if x.get("por_que") else ""))
+    else:
+        md += [f"- {x}" for x in faltantes.resumen_simple(7)] or ["- Esta semana no faltó nada importante."]
+    if pedidos or faltantes.ultimos(7):
+        md += ["", "Clips y fotos: con el celu en vertical, 5-10 segundos, sin caras. Se suben en el repo dentro de "
+               "`assets/clips/` (Add file → Upload files), con un nombre que diga qué se ve. Los dibujitos se los "
+               "pedís a Claude y te pasa el archivo para subir."]
     md += ["", "## Ideas para las próximas semanas", ""]
     md += [f'- **{i.get("serie", "")}**: {i.get("titulo", "")} · miniatura: "{i.get("miniatura", "")}"'
            for i in a.get("ideas", [])]
@@ -998,10 +1056,116 @@ def reporte():
         util.log("No pude mandar el mail:", ex)
 
 
+# ---------------------------------------------------------------- reintentar lo que no salió
+REINTENTABLES = ("instagram_reel", "instagram_carrusel", "facebook")
+REINTENTOS = "data/reintentos.json"  # aparte del historial, para no chocar con la publicación del día
+
+
+def con_reintentos(historial):
+    """El historial con lo que salió después en un reintento (pisa el error de ese día)."""
+    reint = util.leer_json(REINTENTOS, {}) or {}
+    for h in historial:
+        extra = reint.get(f'{h.get("fecha")}#{h.get("turno", 1)}')
+        if extra:
+            h["resultados"] = {**(h.get("resultados") or {}), **extra}
+    return historial
+
+
+def _texto_publicado(base_nombre):
+    """El texto (caption) que se usó, sacado del registro de publicaciones/."""
+    ruta = util.RAIZ / "publicaciones" / f"{base_nombre}.md"
+    if not ruta.exists():
+        return None
+    md = ruta.read_text(encoding="utf-8")
+    if "## Texto" not in md:
+        return None
+    return md.split("## Texto", 1)[1].split("\n## Guion", 1)[0].strip()
+
+
+def reintentar(cuales=""):
+    """Vuelve a subir, solo en las redes donde falló, los videos de los últimos 2 días (lo que dura la página).
+    No arma nada nuevo ni toca las redes donde ya salió. `cuales`: vacío = todos los que fallaron; o fechas
+    tipo 2026-10-27 o 2026-10-27-t2 separadas por coma."""
+    from . import publicar as pub
+    cfg = util.config()
+    quiere = cfg.get("publicar", {})
+    base = _base_paginas()
+    if not base:
+        util.log("No sé la dirección de la página (falta GITHUB_REPOSITORY)")
+        sys.exit(1)
+    elegidos = {x.strip() for x in (cuales or "").split(",") if x.strip()}
+    desde = (util.ahora() - util.timedelta(days=2)).strftime("%Y-%m-%d")
+    historial = con_reintentos(util.leer_json("data/historial.json", []) or [])
+    sitio = util.leer_json("data/sitio.json", []) or []
+    reint = util.leer_json(REINTENTOS, {}) or {}
+    informe, alguno = [], False
+    for h in historial:
+        if h.get("cancelado") or h.get("fecha", "") < desde:
+            continue
+        nombre = _carpeta(h["fecha"], h.get("turno", 1))
+        if elegidos and nombre not in elegidos and h["fecha"] not in elegidos:
+            continue
+        res = h.setdefault("resultados", {})
+        faltan = [r for r in REINTENTABLES if r in res and not res[r].get("ok") and quiere.get(r)]
+        if not faltan:
+            continue
+        carpetas = [x for x in sitio if x.get("carpeta") == nombre or str(x.get("carpeta", "")).startswith(nombre + "-v")]
+        texto = _texto_publicado(nombre)
+        if not carpetas or not texto:
+            informe.append((h["titulo"], {r: {"ok": False, "error": "ya no está el video o el texto (pasaron más de "
+                                                                     "2 días)"} for r in faltan}))
+            continue
+        archivos = carpetas[-1]["archivos"]
+        video_rel, portada_rel, placas = archivos[0], archivos[1], archivos[2:]
+        local = SALIDA / "reintento" / f"{nombre}.mp4"
+        local.parent.mkdir(parents=True, exist_ok=True)
+        r = util.pedir("GET", base + video_rel, intentos=3, timeout=180)
+        if r is None or r.status_code != 200:
+            informe.append((h["titulo"], {x: {"ok": False, "error": "no pude bajar el video de la página"} for x in faltan}))
+            continue
+        local.write_bytes(r.content)
+        util.log(f"Reintento {nombre} ({h['titulo']}) en:", ", ".join(faltan))
+        nuevos = {}
+        for red in faltan:
+            try:
+                if red == "instagram_reel":
+                    rid = pub.instagram_reel(base + video_rel, base + portada_rel, texto)
+                elif red == "instagram_carrusel":
+                    if not placas:
+                        raise RuntimeError("no hay placas guardadas")
+                    rid = pub.instagram_carrusel([base + x for x in placas], texto)
+                else:
+                    rid = pub.facebook_reel(local, texto, h["titulo"])
+                nuevos[red] = {"ok": True, "id": rid, "reintento": util.ahora().strftime("%Y-%m-%d %H:%M")}
+                alguno = True
+            except Exception as e:  # noqa
+                nuevos[red] = {"ok": False, "error": str(e)[:300]}
+            util.log(red, nuevos[red])
+        clave_r = f'{h["fecha"]}#{h.get("turno", 1)}'
+        reint[clave_r] = {**reint.get(clave_r, {}), **nuevos}
+        informe.append((h["titulo"], nuevos))
+    util.guardar_json(REINTENTOS, reint)
+    if not informe:
+        util.log("No hay nada pendiente: todo lo de los últimos 2 días ya salió (o no está en la página).")
+        return
+    e = html.escape
+    cuerpo = "".join(
+        f"<h3>{e(t)}</h3><ul>" + "".join(
+            f'<li><b>{e(red)}</b>: {"✅ publicado" if r["ok"] else "❌ " + e(r["error"])}</li>' for red, r in rr.items())
+        + "</ul>" for t, rr in informe)
+    try:
+        pub.mail("Reintento de publicación", cuerpo)
+    except Exception as ex:  # noqa
+        util.log("No pude mandar el mail:", ex)
+    if not alguno:
+        sys.exit(1)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("accion", choices=["generar", "publicar", "resumen", "reporte", "toca", "esperar", "probar",
-                                       "rehacer", "listo", "revisar", "online", "mejoras", "sugerencia", "tiktok"])
+                                       "rehacer", "listo", "revisar", "online", "mejoras", "sugerencia", "tiktok",
+                                       "reintentar"])
     ap.add_argument("--ultima", action="store_true")
     ap.add_argument("--base-url", default="")
     ap.add_argument("--simulado", action="store_true")
@@ -1014,6 +1178,8 @@ if __name__ == "__main__":
             mejoras.diario(regenerar=_proponer_hoy, medir=lambda: _para_mejoras(util.config())[0])
         elif a.accion == "tiktok":
             cargar_tiktok()
+        elif a.accion == "reintentar":
+            reintentar(os.getenv("CUALES", ""))
         elif a.accion == "sugerencia":
             sugerencia()
         elif a.accion == "esperar":

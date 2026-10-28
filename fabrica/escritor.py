@@ -204,6 +204,8 @@ def _titulo_corto(t, maximo=60):
 
 
 GRAFICOS_MAX = 3
+DIBUJITOS_FALTANTES = []
+PLAN_B_MAX = 3
 
 
 def _grafico(g):
@@ -219,10 +221,40 @@ def _grafico(g):
             g[k] = _siglas(_limpiar(g[k]))
     if g.get("items"):
         g["items"] = [_siglas(_limpiar(x)) for x in g["items"] if str(x).strip()]
-    return g
+    for k in ("hitos", "iconos", "barras"):  # listas de pares [a, b]: se limpia el texto de los dos
+        if g.get(k):
+            g[k] = [[_siglas(_limpiar(a)) if k != "iconos" else str(a).strip().lower(), _siglas(_limpiar(b))]
+                    for a, b in [(list(x) + ["", ""])[:2] for x in g[k]] if str(a).strip()]
+    from .dibujos import NOMBRES
+    pedidos = [x[0] for x in g.get("iconos") or []] + [str(g.get("icono") or "").strip().lower()]
+    pedidos += [str(g[k].get("icono") or "").lower() for k in ("antes", "despues") if isinstance(g.get(k), dict)]
+    DIBUJITOS_FALTANTES.extend(x for x in pedidos if x and x not in NOMBRES)  # para pedirlos en el reporte
+    if g.get("iconos"):  # dibujitos que no existen: afuera
+        g["iconos"] = [x for x in g["iconos"] if x[0] in NOMBRES]
+    if g["tipo"] == "icono" and str(g.get("icono", "")).strip().lower() not in NOMBRES:
+        if not g.get("texto"):
+            return None
+        g = {"tipo": "resaltado", "texto": g["texto"]}  # sin dibujito que sirva, queda la palabra resaltada
+    elif g.get("icono"):
+        g["icono"] = str(g["icono"]).strip().lower()
+    for k in ("antes", "despues"):
+        if isinstance(g.get(k), dict):
+            g[k] = {c: (_siglas(_limpiar(v)) if c != "icono" else str(v).strip().lower()) for c, v in g[k].items() if v}
+            if g[k].get("icono") not in NOMBRES:
+                g[k].pop("icono", None)
+        elif g.get(k):
+            g[k] = {"texto": _siglas(_limpiar(g[k]))}
+    return g if graficos.valido(g) else None
+
+
+def _estilo(d):
+    from . import graficos
+    e = str(d.get("estilo_visual") or "").strip().lower()
+    return e if e in graficos.ESTILOS else None
 
 
 def validar(d):
+    DIBUJITOS_FALTANTES.clear()
     escenas = []
     for e in d.get("escenas", []):
         voz = _limpiar(e.get("texto_voz") or e.get("texto"), voz=True)
@@ -233,8 +265,12 @@ def validar(d):
                             "prompt": str(e.get("prompt") or "").strip(),
                             "broll": _broll(e.get("broll"))})
             g = _grafico(e.get("grafico"))
-            if g and len(escenas) > 1 and sum(1 for x in escenas if x.get("grafico")) < GRAFICOS_MAX:
+            seguido = len(escenas) > 1 and escenas[-2].get("grafico")  # nunca dos carteles seguidos
+            if g and len(escenas) > 1 and not seguido and sum(1 for x in escenas if x.get("grafico")) < GRAFICOS_MAX:
                 escenas[-1]["grafico"] = g  # nunca en la escena 1 (ahí va el gancho escrito)
+            b = _grafico(e.get("grafico_plan_b")) if not escenas[-1].get("grafico") else None
+            if b and len(escenas) > 1 and sum(1 for x in escenas if x.get("grafico_plan_b")) < PLAN_B_MAX:
+                escenas[-1]["grafico_plan_b"] = b  # reserva: solo se usa si no aparece un video que pegue
     carrusel = []
     for p in d.get("carrusel", []):
         if p.get("titulo"):
@@ -266,6 +302,10 @@ def validar(d):
         "escenas": escenas,
         "carrusel": carrusel[:10],
         "palabras": palabras,
+        "estilo_visual": _estilo(d),
+        "dibujitos_faltantes": sorted(set(DIBUJITOS_FALTANTES)),
+        "material_que_faltaria": [str(x).strip()[:120] for x in (d.get("material_que_faltaria") or [])
+                                  if str(x).strip()][:3] if isinstance(d.get("material_que_faltaria"), list) else [],
     }
 
 

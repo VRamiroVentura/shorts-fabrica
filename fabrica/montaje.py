@@ -119,11 +119,12 @@ COMODINES = ["hands counting money", "hand holding smartphone", "typing on lapto
              "calculator and paperwork", "card payment terminal", "wallet with cash",
              "signing documents", "us dollar bills"]
 
-PUNTUAR = """Sos editor de videos cortos para una cuenta argentina de finanzas personales e impuestos.
+PUNTUAR = """Sos editor de videos cortos para una cuenta argentina de plata, impuestos, historias y curiosidades.
 Te paso las escenas (lo que se dice) con opciones de video de fondo, y al final unos COMODINES.
 Mirá la imagen de cada opción y poné un puntaje:
 3 = muestra justo lo que se dice: la acción, el objeto o el lugar.
-2 = muestra plata, pagos, un celular, una compu, papeles, trabajo o compras, y acompaña bien la frase.
+2 = no muestra justo lo que se dice pero acompaña bien la frase (en temas de plata: pagos, un celular, una compu,
+    papeles, trabajo o compras; en historias: la época, el lugar o el tipo de objeto).
 1 = neutro: no molesta pero no aporta.
 0 = tiene texto agregado encima (títulos, letras grandes, marcas de agua, logos), o no tiene nada que ver
     (un cielo, flores, alguien en la cama, paisajes), o no puede pasar por Argentina:
@@ -238,6 +239,24 @@ def _con_texto(lista, trabajo, ronda):
         return []
 
 
+RECIENTES = "data/clips_recientes.json"
+
+
+def clips_recientes():
+    return util.leer_json(RECIENTES, []) or []
+
+
+def anotar_clips(ids, tope=150):
+    """Guarda los clips usados, para que los próximos videos prefieran otros."""
+    lista = [x for x in clips_recientes() if x not in set(ids)] + list(ids)
+    util.guardar_json(RECIENTES, lista[-tope:])
+
+
+def _falta(esc, que):
+    return {"escena": esc.get("texto", "")[:140], "busqueda": [x for x in (esc.get("broll") or []) if x][:2],
+            "se_uso": que}
+
+
 def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
     """Un clip cada ~2.3 s. Siempre video: primero lo que muestra justo lo que se dice, si no un comodín
     de plata y trámites; nunca algo de otro país ni sin relación. Devuelve (segmentos, de stock, banco, propios)."""
@@ -291,16 +310,31 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
     colocados = []  # cada fondo puesto: para revisar después que no tenga texto encima
     con_ia_de_imagen = bool(util.secreto("CF_ACCOUNT_ID") and util.secreto("CF_API_TOKEN"))
 
+    recientes = set(clips_recientes())  # clips de los últimos videos: van al final de la fila, para no repetir
+
     def mejores(lista, pts, minimo):
         orden = sorted([(p, k) for k, p in enumerate(pts) if p >= minimo and lista[k]["id"] not in usados],
-                       key=lambda x: (-x[0], not lista[x[1]].get("propio"), x[1]))
+                       key=lambda x: (-x[0], lista[x[1]]["id"] in recientes, not lista[x[1]].get("propio"), x[1]))
         return [lista[k] for _, k in orden]
+
+    tope_graficos = int(cfg.get("graficos_por_video", 4))
+    anterior_grafico = False
+    faltas = []  # escenas sin un video que muestre justo lo que se dice: van al reporte como pedido de material
 
     postales_usadas, anterior_postal = 0, False
     ultima = len(escenas) - 1
     graficos_ok = []
     for i, (esc, (ini, fin)) in enumerate(zip(escenas, tiempos)):
         dur = fin - ini
+        # Plan B: si para esta escena no hay ningún video que muestre justo lo que se dice (o los únicos buenos
+        # ya salieron en los últimos videos), va el cartel de reserva que propuso la IA. Nunca dos carteles seguidos.
+        if not esc.get("grafico") and esc.get("plan_b") and not anterior_grafico and len(graficos_ok) < tope_graficos:
+            frescos = any(p >= 3 and c["id"] not in recientes and c["id"] not in usados
+                          for c, p in zip(candidatos[i], puntajes[i]))
+            if not frescos:
+                util.log(f"Escena {i + 1}: sin video que pegue, va el cartel de reserva")
+                esc["grafico"] = esc["plan_b"]
+                faltas.append(_falta(esc, "un cartel de reserva"))
         if esc.get("grafico"):
             from . import graficos
             destino = trabajo / f"fondo{n:03d}.mp4"
@@ -309,12 +343,13 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
                 segmentos.append(destino)
                 colocados.append({"dest": destino, "largo": dur, "i": i, "clip": None, "n": n})
                 graficos_ok.append((ini, fin))
-                anterior_postal = False
+                anterior_postal, anterior_grafico = False, True
                 n += 1
                 continue
             except Exception as e:  # noqa  (si falla el cartel, la escena va con un clip como siempre)
                 util.log("No pude armar el gráfico, uso un clip:", util.ocultar(e))
                 esc["grafico"] = None
+        anterior_grafico = False
         buenos = mejores(candidatos[i], puntajes[i], 2)          # pegan con la frase
         exacto = any(p >= 3 for p in puntajes[i])
         # Postal de Argentina: en la intriga (escena 2) y en el cierre siempre que no haya un clip exacto,
@@ -325,6 +360,15 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
                 postal = mejores(lindas, p_postal, 2)[:1]
         if postal:
             buenos = postal
+        exacto_fresco = any(p >= 3 and c["id"] not in recientes for c, p in zip(candidatos[i], puntajes[i]))
+        if not exacto_fresco and i > 0:
+            if postal:
+                que = "una postal de Argentina"
+            elif buenos:
+                que = "un clip repetido" if exacto else "un clip aproximado"
+            else:
+                que = "un clip de relleno"
+            faltas.append(_falta(esc, que))
         if not buenos:
             buenos = mejores(comodines, p_comodin, 2)[:1]          # comodín de plata y trámites
         if not buenos:
@@ -336,8 +380,11 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
             while buenos and not hecho:
                 c = buenos.pop(0)
                 try:
-                    crudo = broll.bajar(c["link"], trabajo / f"stock_{c['id']}.mp4")
-                    broll.recortar(crudo, largo, destino)
+                    if c.get("foto"):
+                        broll.clip_de_foto(c["link"], largo, destino, acercar=(n % 2 == 0))
+                    else:
+                        crudo = broll.bajar(c["link"], trabajo / f"stock_{c['id']}.mp4")
+                        broll.recortar(crudo, largo, destino)
                     usados.add(c["id"])
                     hecho, puesto = True, c
                     postales_usadas += 1 if c.get("postal") else 0
@@ -381,8 +428,11 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
             hecho = False
             for c in alternativas(x["i"]):
                 try:
-                    crudo = broll.bajar(c["link"], trabajo / f"stock_{c['id']}.mp4")
-                    broll.recortar(crudo, x["largo"], x["dest"])
+                    if c.get("foto"):
+                        broll.clip_de_foto(c["link"], x["largo"], x["dest"])
+                    else:
+                        crudo = broll.bajar(c["link"], trabajo / f"stock_{c['id']}.mp4")
+                        broll.recortar(crudo, x["largo"], x["dest"])
                     usados.add(c["id"])
                     postales_usadas += 1 if c.get("postal") else 0
                     x["clip"], hecho = c, True
@@ -396,6 +446,7 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
         revisar = nuevos
     _fondos.ids = [x["clip"]["id"] for x in colocados if x.get("clip") and x["clip"].get("id")]
     _fondos.graficos = graficos_ok
+    _fondos.faltas = faltas
     return segmentos, de_video, banco, de_propios, postales_usadas
 
 
@@ -432,7 +483,8 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
     trabajo.mkdir(parents=True, exist_ok=True)
     escenas = [{"texto": e["texto_voz"], "pantalla": e.get("texto_pantalla", ""), "emoji": e.get("emoji", ""),
                 "prompt": e.get("prompt", ""), "broll": e.get("broll", ""),
-                "grafico": e.get("grafico") if cfg.get("graficos", True) else None} for e in contenido["escenas"]]
+                "grafico": e.get("grafico") if cfg.get("graficos", True) else None,
+                "plan_b": e.get("grafico_plan_b") if cfg.get("graficos", True) else None} for e in contenido["escenas"]]
     _fondos.estilo = estilo_graficos
     seed = random.randint(1, 10_000_000)
 
@@ -444,6 +496,7 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
     # 2) fondos
     _fondos.ids = []
     _fondos.graficos = []
+    _fondos.faltas = []
     segmentos, de_pexels, banco, de_propios, de_postales = _fondos(escenas, tiempos, trabajo, seed, evitar)
     (trabajo / "lista.txt").write_text("".join(f"file '{p.resolve()}'\n" for p in segmentos))
     _run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(trabajo / "lista.txt"),
@@ -484,7 +537,8 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
     _portada(segmentos, contenido, salida / "thumb.jpg", trabajo, serie_nombre)
 
     meta = {"duracion": round(voz.duracion(salida / "video.mp4"), 2), "voz": motor, "clips": len(segmentos),
-            "graficos": len(getattr(_fondos, "graficos", [])),
+            "graficos": len(getattr(_fondos, "graficos", [])), "estilo_graficos": getattr(_fondos, "estilo", ""),
+            "faltas": getattr(_fondos, "faltas", []),
             "clips_stock": de_pexels, "banco": banco, "clips_propios": de_propios, "postales": de_postales, "musica": musica.name if musica else None, "voz_seg": round(dur_voz, 2),
             "clips_ids": list(getattr(_fondos, "ids", []))}
     (salida / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")

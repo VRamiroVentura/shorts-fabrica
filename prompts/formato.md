@@ -36,15 +36,45 @@ TEXTOS PARA PUBLICAR (los mismos en las 3 redes):
 - miniatura: linea1 (máximo 4 palabras) y linea2 (máximo 3), pensadas para que alguien frene el scroll.
 - miniatura.emoji: un emoji que acompañe la portada. miniatura.prompt: ilustración en inglés de un personaje simple de dibujo animado con una emoción clara (sorpresa, preocupación, alegría), sin texto.
 
-CARTELES ANIMADOS (opcional, para variar y explicar mejor)
-En hasta 3 escenas (nunca la escena 1) podés poner, en lugar de un video de fondo, un cartel animado con el campo "grafico". Usalo solo cuando ayude a entender: un número importante, una lista, el paso de una cosa a otra, una palabra clave o una cuenta. Si la escena se entiende igual con un video, no lo pongas. Todo lo que diga el cartel tiene que estar en lo que dice la voz en esa escena (nada de datos nuevos) y ser corto (máximo 22 caracteres por texto).
+CARTELES ANIMADOS (opcional: se mezclan con los videos, no los reemplazan)
+La base del video siguen siendo los clips de video. Los carteles animados son una herramienta más: usalos solo cuando lo que se ve tenga sentido con lo que se dice en esa escena. Regla de oro: si alguien mira el cartel sin sonido, tiene que entender lo mismo que dice la voz. Si un dibujito o dato no tiene que ver con la frase, no va.
+Dos campos posibles por escena (nunca en la escena 1, y como mucho uno de los dos por escena):
+- "grafico": el cartel va seguro, en lugar del video. Hasta 3 por video. Usalo cuando el cartel explica mejor que cualquier video: un número o porcentaje que dice la voz, fechas de una historia, una lista, una proporción ("7 de cada 10"), un antes y después, o el objeto puntual del que se habla (la birome, el mate).
+- "grafico_plan_b": cartel de reserva. Se usa SOLO si no aparece un video de stock que muestre justo lo que se dice (los bancos de video a veces no tienen nada que pegue, o repiten los mismos clips). Si aparece un buen video, va el video. Ponelo en escenas con ideas difíciles de filmar (un trámite, un concepto, un dato), hasta 3 por video.
+Si la escena se entiende bien con un video común (gente, ciudad, plata, comercio), no pongas ninguno de los dos.
+Nunca dos carteles en escenas seguidas. Todo lo que diga el cartel tiene que estar en lo que dice la voz en esa escena (nada de datos nuevos) y ser corto (máximo 22 caracteres por texto).
+Elegí el tipo que mejor cuente esa escena; variá entre videos, no uses siempre el mismo.
 Tipos:
+- {"tipo": "icono", "icono": "nombre de dibujito", "texto": "palabra o nombre", "rotulo": "epígrafe corto" (opcional)} → un dibujo grande; ideal para presentar el objeto, lugar o personaje de la historia
+- {"tipo": "iconos", "titulo": "título" (opcional), "iconos": [["dibujito", "rótulo"], ["dibujito", "rótulo"]]} → 2 o 3 dibujitos en fila
+- {"tipo": "linea_tiempo", "hitos": [["1938", "qué pasó"], ["1945", "qué pasó"]]} → de 2 a 4 fechas; ideal para historias e inventos
+- {"tipo": "antes_despues", "antes": {"icono": "dibujito" (opcional), "texto": "dato", "rotulo": "ANTES" (opcional)}, "despues": {"icono": "...", "texto": "dato", "rotulo": "AHORA" (opcional)}}
+- {"tipo": "barras", "titulo": "qué se compara", "barras": [["rótulo", "número"], ["rótulo", "número"]], "unidad": "%" o "USD" (opcional)} → de 2 a 5 barras, solo con números que diga la voz
+- {"tipo": "grilla", "titulo": "De cada 10...", "total": 10, "marcados": 7, "rotulo": "7 NO AHORRA"} → cuadraditos que se pintan; para proporciones ("7 de cada 10")
+- {"tipo": "flechas", "titulo": "título" (opcional), "items": ["uno", "dos", "tres"]} → lista con flechas, de 2 a 5 ítems cortos
 - {"tipo": "resaltado", "texto": "palabra clave", "sello": "frase corta" (opcional), "sello_color": "rojo" (lo que te cuesta) o "verde" (lo que te conviene)}
 - {"tipo": "numero", "rotulo": "qué es", "valor": "$1.234.567" o "35%", "nota": "aclaración corta" (opcional)}
 - {"tipo": "ticket", "lineas": [["concepto", "+"], ["otro", "−"]], "sello": "frase" (opcional), "sello_color": "rojo" o "verde"}
 - {"tipo": "lista", "titulo": "título corto", "items": ["uno", "dos", "tres"]} (de 2 a 5 ítems, se van tildando)
 - {"tipo": "comparacion", "arriba": "antes", "abajo": "después", "rotulo": "qué lo cambia" (opcional)}
-En cualquier cartel podés sumar "fondo" para elegir el color según lo que se cuenta: "azul" (explicar, datos), "verde" (lo que te conviene: ahorro, beneficio), "bordo" (lo que te cuesta: alerta, error, multa, estafa), "violeta" (historias y curiosidades) o "carbon" (neutro). En los videos de impuestos el fondo es siempre una hoja de cuaderno contable.
+Dibujitos disponibles (usá exactamente estos nombres):
+  plata: moneda, billete, alcancia, tarjeta, billetera, bolsa, banco, porcentaje, calculadora, documento, balanza, candado, sube, baja, grafico
+  lugares: casa, edificio, fabrica, banco, pin, mundo, bandera, sol, palmera, salud, educacion
+  transporte: auto, colectivo, tren, avion, barco, camion, cohete, valija
+  objetos: foco, lapicera, celular, tele, radio, camara, libro, diario, sobre, regalo, caja, llave, engranaje, lupa, reloj, calendario, carrito, trofeo, pelota, megafono
+  comida: pizza, mate, empanada, taza
+  personas: persona, familia, mano, ojo
+  signos: pregunta, exclamacion, corazon, estrella, rayo, fuego, gota, flecha
+
+LO QUE TE FALTARÍA
+En "material_que_faltaria" (opcional, máximo 3) anotá qué imagen o video te habría servido para que una escena se vea mejor y no tenías: un dibujito que no está en la lista (ej. "dibujito de una vaca"), o un clip o foto concreta de Argentina (ej. "clip de un kiosco de barrio", "foto de la catedral de La Plata"). Esto le llega al dueño de la cuenta para conseguirlo. Si no te faltó nada, dejalo vacío.
+
+ESTILO VISUAL DEL VIDEO
+Elegí uno con el campo "estilo_visual" según lo que se cuenta:
+- "revista": papel de revista vieja con dibujitos. Para historias, inventos, curiosidades, personajes, lugares y "sabías que".
+- "oscuro": fondo de color con carteles. Para noticias, plata, precios, datos, alertas y estafas.
+- "cuaderno": hoja de cuaderno contable. Para impuestos, trámites y temas de contador.
+Con "oscuro" podés sumar en cada cartel "fondo" para el color: "azul" (explicar, datos), "verde" (lo que te conviene: ahorro, beneficio), "bordo" (lo que te cuesta: alerta, error, multa, estafa), "violeta" (historias y curiosidades) o "carbon" (neutro). En los videos de impuestos el estilo es siempre cuaderno.
 
 El video y el carrusel tratan el MISMO tema, pero el carrusel se lee (más concreto, más guardable) y el video se escucha.
 
@@ -52,9 +82,11 @@ FORMATO DE RESPUESTA
 Respondé SOLO con un JSON válido con esta forma exacta:
 {
   "titulo": "...",
+  "estilo_visual": "revista | oscuro | cuaderno",
   "descripcion": "...",
   "hashtags": ["#...", "#..."],
   "miniatura": { "linea1": "...", "linea2": "...", "emoji": "...", "prompt": "..." },
-  "escenas": [ { "texto_voz": "...", "texto_pantalla": "...", "broll": ["...", "..."], "emoji": "...", "prompt": "...", "grafico": null } ],
-  "carrusel": [ { "titulo": "...", "texto": "...", "emoji": "..." } ]
+  "escenas": [ { "texto_voz": "...", "texto_pantalla": "...", "broll": ["...", "..."], "emoji": "...", "prompt": "...", "grafico": null, "grafico_plan_b": null } ],
+  "carrusel": [ { "titulo": "...", "texto": "...", "emoji": "..." } ],
+  "material_que_faltaria": []
 }

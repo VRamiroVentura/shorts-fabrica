@@ -221,9 +221,33 @@ cambios» (escribís cómo) o «Deshacer el último cambio». **Si no respondés
 ## Carteles animados (escenas gráficas)
 
 En algunas escenas (hasta 3 por video, nunca la primera) la IA puede poner, en lugar de un video de stock, un cartel
-animado para explicar mejor: palabra clave resaltada con sello, número grande que cuenta, ticket de sumadora, lista
-que se va tildando o comparación con flecha. Lo arma `fabrica/graficos.py`, gratis, en GitHub.
+animado para explicar o contar mejor. Las escenas gráficas se mezclan con los clips de siempre. Lo arma
+`fabrica/graficos.py`, gratis, en GitHub.
 
-- Fondos: **cuaderno** (hoja de libro contable) para las series de `graficos_cuaderno` (por defecto
-  `["monotributo"]`) y **oscuro** para todo lo demás, en 5 colores según lo que se cuenta: azul (explicar), verde (lo que te conviene), bordó (lo que te cuesta), violeta (historias) y carbón (neutro).
+- Tipos: dibujo grande, 2-3 dibujitos en fila, línea de tiempo, antes/después, barras, grilla que se pinta
+  ("7 de cada 10"), lista con flechas, palabra resaltada con sello, número que cuenta, ticket de sumadora, lista que se
+  tilda y comparación con flecha.
+- Dibujitos: `fabrica/dibujos.py` tiene ~70 (plata, lugares, transporte, objetos, comida, personas y signos), todos
+  dibujados con código. Para sumar uno: agregarlo a `GRUPOS` y dibujarlo en `icono()`.
+- Estilo del video (la IA lo elige con `estilo_visual`): **revista** (papel de revista vieja, para historias e
+  inventos), **oscuro** (5 colores: azul, verde, bordó, violeta, carbón; para noticias y plata) y **cuaderno** (hoja de
+  libro contable). Las series de `graficos_cuaderno` (por defecto `["monotributo"]`) van siempre en cuaderno. Si la IA
+  no elige, va por serie (`estilo_por_serie` en config.json para cambiarlo).
+- Cartel de reserva (`grafico_plan_b`): la IA lo propone para escenas difíciles de filmar y solo se usa si el banco no
+  trae ningún video que muestre justo lo que se dice. Nunca dos carteles seguidos; tope por video en
+  `graficos_por_video` (por defecto 4).
+- Para no repetir clips: `data/clips_recientes.json` guarda los últimos 150 usados y los videos nuevos prefieren otros.
+- Lo que falta: cada video anota en `data/faltantes.json` las escenas donde no encontró un video justo, los
+  dibujitos que la IA quiso y no existen, y el material que el guionista dice que le habría servido
+  (`material_que_faltaria`). El mail de cada video lo muestra, y el reporte semanal (lunes) lo convierte en hasta 6
+  pedidos concretos: qué grabar o fotografiar y con qué nombre subirlo a `assets/clips/`, o qué dibujito sumar.
+- Fotos propias: `assets/clips/` acepta también `.jpg` y `.png`; la fábrica les pone zoom lento.
 - Para apagarlos: `"graficos": false` en config.json. Si un cartel falla, esa escena va con un clip como siempre.
+
+## Reintentar lo que no salió
+
+Si un día Instagram o Facebook fallan (por ejemplo, porque Meta pidió verificar la cuenta), arreglás lo que haga
+falta y después: **Actions → Reintentar publicación → Run workflow**. Vuelve a subir los videos de los últimos
+2 días (lo que dura la página) **solo en las redes donde fallaron**; donde ya salió no lo repite. Vacío = todos; o
+fechas separadas por coma (`2026-10-27` = 1º video, `2026-10-27-t2` = 2º). Te llega un mail con el resultado y queda
+anotado en `data/reintentos.json` para las métricas.
