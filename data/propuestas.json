@@ -27,7 +27,9 @@
       "por_que": "El rendimiento por horario muestra que las 15 h tuvo el promedio más alto con 24 vistas, mientras que a las 12 h promedia 10 vistas. Ajustar la publicación al horario de la tarde mejorará el alcance.",
       "id": 2,
       "fecha": "2026-10-27",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-10-28",
+      "aplica_el": "2026-10-30"
     },
     {
       "tipo": "ajustar_prompt_serie",
