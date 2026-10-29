@@ -1,0 +1,47 @@
+[
+  {
+    "fecha": "2026-10-28",
+    "turno": 1,
+    "serie": "monotributo",
+    "titulo": "FAL: el nuevo fondo para despidos",
+    "escenas": [
+      {
+        "escena": "Ojo: no es plata extra de tu bolsillo.",
+        "busqueda": [
+          "laptop screen typing",
+          "reading financial documents"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Se descuenta directo de las contribuciones patronales que ya pagás en el nueve treinta y uno.",
+        "busqueda": [
+          "hands with pen writing",
+          "receipt printer"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Tenés que elegir la entidad, tramitar tu ID FAL e informarlo en ARCA.",
+        "busqueda": [
+          "hands typing keyboard",
+          "hand holding phone"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Si no elegís a tiempo, te asignan una de oficio.",
+        "busqueda": [
+          "confused person looking screen",
+          "empty desk"
+        ],
+        "se_uso": "un clip aproximado"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "clip de pantalla del sistema de Simplificación Registral de ARCA",
+      "clip de un empleador revisando el formulario 931 en la computadora"
+    ]
+  }
+]

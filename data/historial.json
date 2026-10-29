@@ -540,5 +540,33 @@
         "error": "Facebook no abrió la subida: Any of the pages_read_engagement, pages_manage_metadata,\n        pages_read_user_content, pages_manage_ads, pages_show_list or\n        pages_messaging permission(s) must be granted before impersonating a\n        user's page. (código 190, OAuthException)"
       }
     }
+  },
+  {
+    "fecha": "2026-10-28",
+    "turno": 1,
+    "hora": "21:32",
+    "serie": "monotributo",
+    "titulo": "FAL: el nuevo fondo para despidos",
+    "fuentes": [
+      "tema:fal-2026"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18161445766497599"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "17927176989201942"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "oKqdU5hFdLE"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1103410269154038"
+      }
+    }
   }
 ]
