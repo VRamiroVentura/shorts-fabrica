@@ -568,5 +568,27 @@
         "id": "1103410269154038"
       }
     }
+  },
+  {
+    "fecha": "2026-10-29",
+    "turno": 2,
+    "hora": "14:08",
+    "serie": "estafas",
+    "titulo": "Bernie Madoff: la mayor estafa",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18017627048956200"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "8NaZfjtS_uw"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1490625042927904"
+      }
+    }
   }
 ]

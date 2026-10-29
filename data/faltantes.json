@@ -43,5 +43,63 @@
       "clip de pantalla del sistema de Simplificación Registral de ARCA",
       "clip de un empleador revisando el formulario 931 en la computadora"
     ]
+  },
+  {
+    "fecha": "2026-10-29",
+    "turno": 2,
+    "serie": "estafas",
+    "titulo": "Bernie Madoff: la mayor estafa",
+    "escenas": [
+      {
+        "escena": "No era un improvisado, llegó a ser presidente del Nasdaq.",
+        "busqueda": [
+          "stock market screen",
+          "financial district"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Subiera o bajara la bolsa, el tipo siempre te pagaba.",
+        "busqueda": [
+          "worried businessman",
+          "stock crash graph"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Pero la guita no la invertía en ningún lado.",
+        "busqueda": [
+          "empty office desk",
+          "vault door opening"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Y la bicicleta le funcionó perfecto durante años.",
+        "busqueda": [
+          "calendar pages turning",
+          "city traffic timelapse"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Hasta que en la crisis del dos mil ocho todos quisieron salir.",
+        "busqueda": [
+          "hands typing keyboard",
+          "crowd walking in city"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Le pidieron siete mil millones de dólares y no tenía un mango.",
+        "busqueda": [
+          "empty wallet",
+          "stressed person head in hands"
+        ],
+        "se_uso": "un clip aproximado"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]
