@@ -11,9 +11,12 @@
       "por_que": "Es la serie que mejor rinde con 17 vistas promedio y el video más visto («Si tenés deuda de Patentes o ABL mirá esto» con 24 vistas). Se busca potenciar el contenido enfocado en trámites y deudas concretas que resuelvan problemas locales.",
       "id": 1,
       "fecha": "2026-10-27",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-10-27",
-      "aplica_el": "2026-10-29"
+      "aplica_el": "2026-10-29",
+      "aplicada_el": "2026-10-29",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "cambiar_horario",
@@ -41,7 +44,9 @@
       "por_que": "Historias de plata promedia 6 vistas con picos de 9 vistas en «El negocio de moda que te funde sin avisar». Hace falta ajustar las aperturas para captar atención más rápido.",
       "id": 3,
       "fecha": "2026-10-27",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-10-29",
+      "aplica_el": "2026-10-31"
     }
   ]
 }
