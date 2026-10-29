@@ -1,11 +1,13 @@
 {
   "intentos": {
-    "2026-10-29#2": 1
+    "2026-10-29#2": 1,
+    "2026-10-29": 1
   },
   "ig_renovado": "2026-10-26T15:41:17.684809-03:00",
   "ig_vence_en_dias": 60,
   "temas_hechos": [
     "brasil-vacaciones-2026-10",
-    "fal-2026"
+    "fal-2026",
+    "siradig-2026"
   ]
 }

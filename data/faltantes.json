@@ -101,5 +101,87 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-10-29",
+    "turno": 1,
+    "serie": "monotributo",
+    "titulo": "El descuento en tu recibo de sueldo",
+    "escenas": [
+      {
+        "escena": "Si no cargás las deducciones, tu empleador te retiene sobre el total.",
+        "busqueda": [
+          "argentine pesos cash",
+          "hands counting money"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Ahí le informás a tu empresa los gastos que tuviste en el año.",
+        "busqueda": [
+          "office workers meeting",
+          "hand holding phone"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Entran alquiler o intereses del crédito para tu vivienda.",
+        "busqueda": [
+          "house keys table",
+          "apartment building facade"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Suman personal de casas particulares, seguros de vida y donaciones.",
+        "busqueda": [
+          "cleaning hands home",
+          "receipt printer"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Ojo con mandar cualquier comprobante para pagar menos.",
+        "busqueda": [
+          "hands signing document",
+          "person looking worried"
+        ],
+        "se_uso": "un clip de relleno"
+      },
+      {
+        "escena": "ARCA cruza lo tuyo con la empresa y ya mandó intimaciones masivas.",
+        "busqueda": [
+          "computer screen data",
+          "laptop typing"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "El plazo final es en marzo, pero cargalo mes a mes.",
+        "busqueda": [
+          "calendar on desk",
+          "flipping calendar pages"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Así sentís el alivio en el bolsillo en cada sueldo.",
+        "busqueda": [
+          "argentine pesos cash",
+          "person smiling laptop"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Mandáselo a quien siempre llega justo a fin de mes.",
+        "busqueda": [
+          "colleagues office talking",
+          "hand holding phone"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]

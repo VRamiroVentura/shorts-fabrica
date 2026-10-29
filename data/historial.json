@@ -590,5 +590,33 @@
         "id": "1490625042927904"
       }
     }
+  },
+  {
+    "fecha": "2026-10-29",
+    "turno": 1,
+    "hora": "19:32",
+    "serie": "monotributo",
+    "titulo": "El descuento en tu recibo de sueldo",
+    "fuentes": [
+      "tema:siradig-2026"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18037778912894945"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "18119056627798911"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "grbipIdLWQQ"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "2177659829774316"
+      }
+    }
   }
 ]
