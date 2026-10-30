@@ -225,5 +225,50 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-10-30",
+    "turno": 2,
+    "serie": "argentino_que",
+    "titulo": "En un bar de La Plata armaron este negocio",
+    "escenas": [
+      {
+        "escena": "Juntaron cuatro mil dólares entre los cuatro y crearon Globant.",
+        "busqueda": [
+          "us dollar bills",
+          "hands counting dollars"
+        ],
+        "se_uso": "un clip repetido"
+      },
+      {
+        "escena": "Se tomaron un avión a Londres a buscar clientes sin tener contactos.",
+        "busqueda": [
+          "airplane wing flying",
+          "London street rain"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "En vez de pelear por los programadores cotizados de Buenos Aires, abrieron oficinas en el interior del país.",
+        "busqueda": [
+          "university students walking",
+          "young people in library"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Tomaban gente joven con ganas y la capacitaban ellos mismos.",
+        "busqueda": [
+          "hands typing keyboard",
+          "modern office training"
+        ],
+        "se_uso": "un clip aproximado"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "clip de un café tradicional en La Plata",
+      "dibujito de cuatro amigos reunidos"
+    ]
   }
 ]

@@ -652,5 +652,27 @@
         "id": "1204524069056064"
       }
     }
+  },
+  {
+    "fecha": "2026-10-30",
+    "turno": 2,
+    "hora": "20:01",
+    "serie": "argentino_que",
+    "titulo": "En un bar de La Plata armaron este negocio",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18165561007494286"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "h3WvNSS1Dg4"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1770345774074253"
+      }
+    }
   }
 ]
