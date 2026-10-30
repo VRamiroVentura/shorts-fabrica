@@ -1,5 +1,5 @@
 {
-  "proximo_id": 4,
+  "proximo_id": 7,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -30,9 +30,12 @@
       "por_que": "El rendimiento por horario muestra que las 15 h tuvo el promedio más alto con 24 vistas, mientras que a las 12 h promedia 10 vistas. Ajustar la publicación al horario de la tarde mejorará el alcance.",
       "id": 2,
       "fecha": "2026-10-27",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-10-28",
-      "aplica_el": "2026-10-30"
+      "aplica_el": "2026-10-30",
+      "aplicada_el": "2026-10-30",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -47,6 +50,46 @@
       "estado": "enviada",
       "enviada_el": "2026-10-29",
       "aplica_el": "2026-10-31"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "argentino_que",
+        "texto": "Abrí siempre la primera escena nombrando una cifra millonaria o un logro financiero descomunal de entrada. Enfocate en cómo pasó de no tener un mango a levantar esa fortuna, con ritmo picado y remate de lección de negocios."
+      },
+      "titulo": "Replicar gancho de cifras millonarias en El argentino que...",
+      "por_que": "Es la serie con mejor rendimiento histórico (2943 vistas, 9 guardados y 11 compartidos con 'Vendió su web en 540 millones'). Conviene fijar que el gancho siempre abra con la cifra exacta de plata o el hito absurdo que logró.",
+      "id": 4,
+      "fecha": "2026-10-30",
+      "estado": "enviada",
+      "enviada_el": "2026-10-30",
+      "aplica_el": "2026-11-01"
+    },
+    {
+      "tipo": "cambiar_horario",
+      "params": {
+        "turno": 1,
+        "dia": "1",
+        "hora": "20:30",
+        "antes": "19:30"
+      },
+      "titulo": "Mover turno tarde del lunes a las 20:30 hs",
+      "por_que": "El horario de las 19 hs promedia apenas 85 vistas (como libro con 139), mientras que la franja de las 20 hs rinde 1112 vistas promedio. La distancia con el turno 2 (12:30) se mantiene holgada en 8 horas.",
+      "id": 5,
+      "fecha": "2026-10-30",
+      "estado": "pendiente"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "economia",
+        "texto": "Arrancá siempre comparando un gasto diario absurdo en Argentina contra lo que cuesta afuera o contra cuántas horas de laburo insume. Usá tono indignado pero explicativo, cerrando con una pregunta directa para debatir en comentarios."
+      },
+      "titulo": "Enfocar Economía de todos los días en bolsillo real",
+      "por_que": "La serie debutó con 134 vistas ('¿Por qué la ropa acá sale el triple?'), 0 guardados y 0 compartidos. Necesita comparar precios ridículos contra sueldos locales para generar indignación y compartidos.",
+      "id": 6,
+      "fecha": "2026-10-30",
+      "estado": "pendiente"
     }
   ]
 }
