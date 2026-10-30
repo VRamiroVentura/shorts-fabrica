@@ -618,5 +618,39 @@
         "id": "2177659829774316"
       }
     }
+  },
+  {
+    "fecha": "2026-10-30",
+    "turno": 1,
+    "hora": "13:50",
+    "serie": "monotributo",
+    "titulo": "Prórroga en Ganancias",
+    "fuentes": [
+      "9nVWJ5-1gdY",
+      "https://www.ignacioonline.com.ar/arca-reglamenta-los-cambios-en-ganancias-simplificado-quienes-pueden-adherir/",
+      "https://www.ignacioonline.com.ar/ganancias-arca-prorrogo-hasta-el-16-de-noviembre-la-presentacion-de-declaraciones-juradas/",
+      "https://blogdelcontador.com.ar/news-46439-multas-tributarias-el-gobierno-anticipo-cambios-en-la-aplicacion-prevista-en-el-proyecto-de-inocencia-fiscal",
+      "https://www.ignacioonline.com.ar/montos-asignaciones-familiares-noviembre-2026-anses/",
+      "https://blogdelcontador.com.ar/news-46519-profesionales-estudios-autonomia-tecnica-relacion-laboral",
+      "https://www.ignacioonline.com.ar/uthgra-como-liquidar-los-sueldos-de-octubre-2026-mientras-sigue-la-negociacion-paritaria/"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18126774436677943"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "18115249387843296"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "3OojBmfj2_c"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1204524069056064"
+      }
+    }
   }
 ]

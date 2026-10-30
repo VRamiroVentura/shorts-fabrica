@@ -183,5 +183,47 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-10-30",
+    "turno": 1,
+    "serie": "monotributo",
+    "titulo": "Prórroga en Ganancias",
+    "escenas": [
+      {
+        "escena": "La resolución oficial extendió la fecha para presentar las declaraciones juradas.",
+        "busqueda": [
+          "laptop typing",
+          "computer screen"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Ojo, esto es solo para la presentación, porque el pago sigue en su fecha original.",
+        "busqueda": [
+          "wallet with cash",
+          "counting money"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Avisale a tu contador para armar todo con tiempo y evitar corridas.",
+        "busqueda": [
+          "hand holding phone",
+          "calling on phone"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Guardalo para acordarte de la fecha.",
+        "busqueda": [
+          "hands saving note",
+          "notebook writing"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]
