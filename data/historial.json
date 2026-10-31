@@ -698,5 +698,30 @@
         "id": "2595156674264041"
       }
     }
+  },
+  {
+    "fecha": "2026-10-31",
+    "turno": 1,
+    "hora": "18:31",
+    "serie": "historias",
+    "titulo": "El negocio oculto de las aerolíneas",
+    "fuentes": [
+      "8uNgfFwbziU",
+      "rslcr774JXM"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18125142770512696"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "OnmTe9Ku5tQ"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1682238250092075"
+      }
+    }
   }
 ]

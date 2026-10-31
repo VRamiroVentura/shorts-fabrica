@@ -315,5 +315,79 @@
       "dibujito de un bunker subterráneo",
       "clip de silo nuclear abandonado"
     ]
+  },
+  {
+    "fecha": "2026-10-31",
+    "turno": 1,
+    "serie": "historias",
+    "titulo": "El negocio oculto de las aerolíneas",
+    "escenas": [
+      {
+        "escena": "Pero fijate de dónde sacan la guita posta.",
+        "busqueda": [
+          "hands counting dollar bills",
+          "cash stack table"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "El negocio real no son los asientos.",
+        "busqueda": [
+          "empty airplane seats",
+          "airplane cabin interior"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Son las tarjetas de crédito y las millas.",
+        "busqueda": [
+          "hands paying with card",
+          "credit card payment terminal"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Los bancos te dan esas millas para que uses la tarjeta todos los días.",
+        "busqueda": [
+          "person shopping store card",
+          "hands using smartphone payment"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Y la aerolínea cobra esa guita de contado antes de que viajes.",
+        "busqueda": [
+          "wallet with cash",
+          "cash payment hands"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Eso es ganancia limpia: plata que entra y no tiene costo.",
+        "busqueda": [
+          "calculator on desk",
+          "financial papers coffee desk"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Básicamente, son financieras que usan los aviones como cartel.",
+        "busqueda": [
+          "airplane flying sunset",
+          "commercial airplane takeoff"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Mandáselo a ese amigo que junta millas todo el año.",
+        "busqueda": [
+          "person typing phone cafe",
+          "hand holding smartphone sharing"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]
