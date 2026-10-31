@@ -220,11 +220,19 @@ def _base_paginas():
     return f"https://{duenio.lower()}.github.io/{nombre}/"
 
 
+def _dias_pagina():
+    """Cuántos días quedan los videos en la página (config.json → dias_en_pagina)."""
+    try:
+        return max(1, int(util.config().get("dias_en_pagina", 7)))
+    except (TypeError, ValueError):
+        return 7
+
+
 def _traer_anteriores(actual):
-    """La página de GitHub se reemplaza entera en cada corrida. Traigo los videos de los últimos 2 días
+    """La página de GitHub se reemplaza entera en cada corrida. Traigo los videos de los últimos días (dias_en_pagina)
     para que los links de los mails (y el video para TikTok) sigan andando."""
     base = _base_paginas()
-    desde = (util.ahora() - util.timedelta(days=2)).strftime("%Y-%m-%d")
+    desde = (util.ahora() - util.timedelta(days=_dias_pagina())).strftime("%Y-%m-%d")
     quedan = [x for x in util.leer_json("data/sitio.json", []) or []
               if x.get("fecha", "") >= desde and x.get("carpeta") != actual]
     if not base:
@@ -482,7 +490,7 @@ def publicar(base_url):
         try:
             pub.mail(f'No se publicó (lo pediste): {p["titulo"]}',
                      f'<p>Como pediste, <b>{html.escape(p["titulo"])}</b> no se publicó. Si lo querés subir a mano, '
-                     f'acá está el <a href="{base}{p["archivos"]["video"]}">video</a> (el link dura 2 días).</p>')
+                     f'acá está el <a href="{base}{p["archivos"]["video"]}">video</a> (el link dura {_dias_pagina()} días).</p>')
         except Exception as ex:  # noqa
             util.log("No pude mandar el mail:", ex)
         return
@@ -558,6 +566,17 @@ def _registro(p, res, base):
     lineas = [f'# {p["fecha"]} · {p["serie_nombre"]}', "", f'**{p["titulo"]}**', ""]
     for red, r in res.items():
         lineas.append(f'- {red}: ' + ("publicado (" + str(r["id"]) + ")" if r["ok"] else "ERROR: " + r["error"]))
+    a = p.get("archivos") or {}
+    if base and a.get("video"):
+        links = [f'[Video]({base}{a["video"]})']
+        if a.get("portada"):
+            links.append(f'[Portada]({base}{a["portada"]})')
+        if a.get("placas"):
+            links.append(f'[Carrusel]({base}{a["placas"][0]})')
+        lineas += ["", " · ".join(links) + f" (para bajarlos: duran {_dias_pagina()} días)"]
+    yt = res.get("youtube") or {}
+    if yt.get("ok") and yt.get("id"):
+        lineas += ["", f'Ver en YouTube: https://youtube.com/shorts/{yt["id"]}']
     lineas += ["", "Basado en: " + ("; ".join(f'{f["canal"]} - {f["titulo"]} (x{f["score"]})'
                                               for f in p["fuentes_detalle"]) or "tema propio"),
                "", "## Texto", "", p["caption"], "", "## Guion", "", p["guion"]]
@@ -589,7 +608,7 @@ def _mail_diario(p, res, base):
               f'<p><a href="{base}{p["archivos"]["video"]}">Video</a> · '
               f'<a href="{base}{p["archivos"]["portada"]}">Portada</a> · '
               + (f'<a href="{base}{p["archivos"]["placas"][0]}">Carrusel</a>' if p["archivos"].get("placas") else "")
-              + ' (los links duran 2 días)</p>'
+              + f' (los links duran {_dias_pagina()} días)</p>'
               f'<p><b>Texto:</b><br>{e(p["caption"]).replace(chr(10), "<br>")}</p>'
               f'<p><b>Para TikTok:</b> bajá el video y, antes de publicar, tocá <b>Más opciones</b> y activá '
               f'<b>«Contenido generado por IA»</b> (la voz es de IA).</p>'
@@ -1083,7 +1102,7 @@ def _texto_publicado(base_nombre):
 
 
 def reintentar(cuales=""):
-    """Vuelve a subir, solo en las redes donde falló, los videos de los últimos 2 días (lo que dura la página).
+    """Vuelve a subir, solo en las redes donde falló, los videos que siguen en la página (dias_en_pagina).
     No arma nada nuevo ni toca las redes donde ya salió. `cuales`: vacío = todos los que fallaron; o fechas
     tipo 2026-10-27 o 2026-10-27-t2 separadas por coma."""
     from . import publicar as pub
@@ -1094,7 +1113,7 @@ def reintentar(cuales=""):
         util.log("No sé la dirección de la página (falta GITHUB_REPOSITORY)")
         sys.exit(1)
     elegidos = {x.strip() for x in (cuales or "").split(",") if x.strip()}
-    desde = (util.ahora() - util.timedelta(days=2)).strftime("%Y-%m-%d")
+    desde = (util.ahora() - util.timedelta(days=_dias_pagina())).strftime("%Y-%m-%d")
     historial = con_reintentos(util.leer_json("data/historial.json", []) or [])
     sitio = util.leer_json("data/sitio.json", []) or []
     reint = util.leer_json(REINTENTOS, {}) or {}
@@ -1113,7 +1132,7 @@ def reintentar(cuales=""):
         texto = _texto_publicado(nombre)
         if not carpetas or not texto:
             informe.append((h["titulo"], {r: {"ok": False, "error": "ya no está el video o el texto (pasaron más de "
-                                                                     "2 días)"} for r in faltan}))
+                                                                     f"{_dias_pagina()} días)"} for r in faltan}))
             continue
         archivos = carpetas[-1]["archivos"]
         video_rel, portada_rel, placas = archivos[0], archivos[1], archivos[2:]
@@ -1146,7 +1165,7 @@ def reintentar(cuales=""):
         informe.append((h["titulo"], nuevos))
     util.guardar_json(REINTENTOS, reint)
     if not informe:
-        util.log("No hay nada pendiente: todo lo de los últimos 2 días ya salió (o no está en la página).")
+        util.log("No hay nada pendiente: todo lo de los últimos días ya salió (o no está en la página).")
         return
     e = html.escape
     cuerpo = "".join(

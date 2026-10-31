@@ -1,4 +1,5 @@
 {
+  "dias_en_pagina": 7,
   "_ayuda": "Editá este archivo desde GitHub (ícono del lápiz). usuario: tu @ en las redes. voz_motor: gemini (más natural) o edge (la de Microsoft). voz_gemini: auto o el nombre de una voz (Puck, Orus, Charon, Kore...). voz_genero: hombre o mujer. voz_tempo: 1.0 normal, 1.1 un poco más rápido. voz: la de Microsoft de respaldo (es-AR-TomasNeural o es-AR-ElenaNeural). postales_por_video: cuántas tomas de paisajes y lugares de Argentina puede meter cada video para enganchar la vista (0 = ninguna). musica: archivo mp3 en la carpeta assets (si no está, va sin música); musica_volumen: 0.08 es bajita. referentes_contables: cuentas, sitios y canales de contadores que se usan los viernes. plan_semanal: 1=lunes ... 7=domingo. horarios: a qué hora sale cada día (hora de Argentina, entre las 12:10 y las 22:30). publicar: poné true en cada red a medida que la conectes. carrusel_dias: días en que además del Reel se sube un carrusel a Instagram. La serie 'mito' (Mito o verdad) queda guardada: para volver a usarla, poné \"mito\" en algún día de plan_semanal.",
   "usuario": "@ramacontable",
   "email_aviso": "rventrura95@gmail.com",

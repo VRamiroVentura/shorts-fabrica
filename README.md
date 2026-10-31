@@ -167,7 +167,7 @@ El archivo `turnos.json` agrega un **segundo video por día** con sus propias se
 - Para volver a **un solo video por día**, en `turnos.json` poné `"segundo_turno": false`.
 - Las instrucciones de cada serie nueva están en `prompts/series/` (un archivo por serie).
 - Para probar el 2º video a mano: *Actions → Publicación diaria → Run workflow → Turno: 2*.
-- La página de los videos guarda los de los últimos 2 días, así los links de los mails siguen andando.
+- La página de los videos guarda los de los últimos 7 días (`dias_en_pagina` en config.json), así los links de los mails y de `publicaciones/` siguen andando. Cada archivo de `publicaciones/` trae arriba los links al video, la portada, el carrusel y el de YouTube.
 
 ## Revisar el video antes de que salga
 
@@ -247,7 +247,7 @@ animado para explicar o contar mejor. Las escenas gráficas se mezclan con los c
 ## Reintentar lo que no salió
 
 Si un día Instagram o Facebook fallan (por ejemplo, porque Meta pidió verificar la cuenta), arreglás lo que haga
-falta y después: **Actions → Reintentar publicación → Run workflow**. Vuelve a subir los videos de los últimos
-2 días (lo que dura la página) **solo en las redes donde fallaron**; donde ya salió no lo repite. Vacío = todos; o
+falta y después: **Actions → Reintentar publicación → Run workflow**. Vuelve a subir los videos que siguen en la
+página (7 días, `dias_en_pagina`) **solo en las redes donde fallaron**; donde ya salió no lo repite. Vacío = todos; o
 fechas separadas por coma (`2026-10-27` = 1º video, `2026-10-27-t2` = 2º). Te llega un mail con el resultado y queda
 anotado en `data/reintentos.json` para las métricas.
