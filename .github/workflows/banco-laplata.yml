@@ -1,0 +1,68 @@
+name: Banco de imágenes de La Plata
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "muestra = 4 temas + el plano, no guarda nada. completo = todo y lo guarda en el repo"
+        type: choice
+        options: [muestra, completo]
+        default: muestra
+      solo:
+        description: "(Opcional) ids separados por coma, por ejemplo: catedral,plano_actual"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: banco-laplata
+  cancel-in-progress: false
+
+jobs:
+  banco:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar lo necesario
+        run: pip install pillow requests
+
+      - name: Bajar fotos y dibujar el plano
+        env:
+          MODO: ${{ inputs.modo }}
+          SOLO: ${{ inputs.solo }}
+        run: python fabrica/banco_laplata.py --modo "$MODO" --solo "$SOLO"
+
+      - name: Hoja de contacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: banco-laplata
+          path: out/banco_laplata/
+          retention-days: 7
+
+      - name: Guardar las imágenes en el repo
+        if: inputs.modo == 'completo'
+        run: |
+          git config user.name "fabrica-bot"
+          git config user.email "fabrica-bot@users.noreply.github.com"
+          git add assets/laplata
+          if git diff --cached --quiet; then
+            echo "No hay imágenes nuevas."
+            exit 0
+          fi
+          git commit -m "Banco de La Plata: imágenes nuevas"
+          for i in 1 2 3 4 5; do
+            git pull --rebase -X theirs origin "${{ github.ref_name }}" && git push && exit 0
+            sleep $((i * 10))
+          done
+          echo "No se pudo guardar después de 5 intentos" && exit 1
