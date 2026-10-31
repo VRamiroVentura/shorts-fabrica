@@ -1,0 +1,144 @@
+{
+  "_ayuda": "Historias raras y curiosas de La Plata para la serie 'La Plata secreta'. estado: 'verificado' (se cuenta como hecho), 'leyenda' (se cuenta SIEMPRE como leyenda o mito, nunca como hecho) o 'chequear' (no usar hasta confirmarlo). 'datos' es lo único que puede decir el guion. 'imagenes' son los ids del banco (lugares.json y la lista de abajo). La lista 'imagenes' de este archivo son las búsquedas extra de fotos para estas historias.",
+  "historias": [
+    {
+      "id": "luz_electrica",
+      "titulo": "La primera ciudad de Sudamérica con luz eléctrica en la calle",
+      "estado": "verificado",
+      "datos": "En abril de 1886 La Plata inauguró oficialmente su alumbrado público eléctrico, provisto por la Brush Electric Company. Se la considera la primera ciudad de Sudamérica con ese servicio. Matiz: hay versiones sobre qué ciudad fue la primera de Latinoamérica, así que conviene decir 'de las primeras' o 'la primera de Sudamérica'. Buenos Aires no lo instaló en ese momento.",
+      "fuentes": ["https://billiken.lat/mi-pais/la-plata-la-primera-ciudad-de-latinoamerica-que-con-alumbrado-publico-electrico-esta-en-argentina/", "https://es.hispanopedia.com/wiki/La_Plata"],
+      "imagenes": ["la_plata_1880s", "plaza_san_martin", "plano_1882"]
+    },
+    {
+      "id": "tranvia_1892",
+      "titulo": "El primer tranvía eléctrico de Sudamérica",
+      "estado": "verificado",
+      "datos": "El 8 de noviembre de 1892 se hizo la primera prueba del tranvía eléctrico, un tramo corto por avenida 7, de 45 a 50. Con eso La Plata fue la primera ciudad de Sudamérica con tranvía eléctrico.",
+      "fuentes": ["https://es.hispanopedia.com/wiki/La_Plata"],
+      "imagenes": ["tranvia", "la_plata_1880s"]
+    },
+    {
+      "id": "catedral_115",
+      "titulo": "La Catedral tardó 115 años en terminarse",
+      "estado": "verificado",
+      "datos": "La Catedral se empezó a construir en 1884, se inauguró en 1932 (los 50 años de la ciudad) y estuvo sin sus torres hasta 1999. Las obras para completarla arrancaron en 1996 y la fiesta de inauguración fue el 19 de noviembre de 1999. Las torres miden unos 112 metros.",
+      "fuentes": ["https://www.ambito.com/lifestyle/la-plata/diez-lugares-descubrir-n5030983", "https://structurae.net/fr/ouvrages/cathedrale-de-la-plata", "https://www.perfil.com/noticias/sociedad/la-catedral-de-la-plata-llego-a-la-final-del-mundial-de-catedrales-cuando-y-como-votar.phtml"],
+      "imagenes": ["catedral_sin_torres", "catedral"]
+    },
+    {
+      "id": "mundial_catedrales",
+      "titulo": "La Catedral le ganó a Notre-Dame en el 'Mundial de catedrales'",
+      "estado": "verificado",
+      "datos": "En agosto de 2026 la cuenta de Instagram Documentales de bolsillo armó un 'Mundial de catedrales' con votación del público. La de La Plata eliminó a Notre-Dame de París, al Duomo de Milán y a la Catedral de Colonia, y en la final le ganó a la de Florencia con el 93% de los votos. Aclarar que es una votación en redes, no un ranking oficial.",
+      "fuentes": ["https://www.perfil.com/noticias/sociedad/la-catedral-de-la-plata-llego-a-la-final-del-mundial-de-catedrales-cuando-y-como-votar.phtml", "https://www.conclusion.com.ar/info-general/supero-a-notre-dame-y-florencia-la-catedral-argentina-elegida-como-la-mas-linda-del-mundo/08/2026/"],
+      "imagenes": ["catedral", "plaza_moreno"]
+    },
+    {
+      "id": "teatro_argentino_incendio",
+      "titulo": "El teatro que se quemó y lo terminaron de tirar abajo",
+      "estado": "verificado",
+      "datos": "El 18 de octubre de 1977, durante un ensayo del ballet, un incendio destruyó la sala del Teatro Argentino. Quedaron en pie las paredes exteriores, pero el gobierno militar de entonces decidió demolerlo, pese a las protestas. La compañía estuvo 22 años sin sede propia hasta el edificio nuevo de 1999. Algunas fuentes dicen que se sospechó que fue intencional: contarlo solo como sospecha.",
+      "fuentes": ["https://en.wikipedia.org/wiki/Teatro_Argentino_de_La_Plata", "https://www.lanacion.com.ar/espectaculos/musica/el-teatro-argentino-de-la-plata-a-25-anos-de-su-incendio-nid443325/", "https://www.urbipedia.org/hoja/Teatro_Argentino_de_La_Plata"],
+      "imagenes": ["teatro_argentino_antiguo", "teatro_argentino"]
+    },
+    {
+      "id": "ciudad_eva_peron",
+      "titulo": "Los tres años en que La Plata no se llamó La Plata",
+      "estado": "verificado",
+      "datos": "Tras la muerte de Eva Perón (26 de julio de 1952), la Legislatura bonaerense sancionó el 8 de agosto de 1952 la ley 5.685 que cambió el nombre de la ciudad a Eva Perón. Cambiaron también la universidad y los clubes (Gimnasia y Esgrima de Eva Perón, Estudiantes de Eva Perón), y quienes nacieron en esos años figuran nacidos en Ciudad Eva Perón. Recuperó su nombre en 1955, tras el golpe que derrocó a Perón. Tono neutral: contar el hecho, sin opinar.",
+      "fuentes": ["https://www.lacapitalmdp.com/admiro-la-capacidad-de-mutacion-del-peronismo/", "https://billiken.lat/mi-pais/la-plata-por-que-la-ciudad-argentina-llevo-el-nombre-de-eva-peron-durante-tres-anos/"],
+      "imagenes": ["eva_peron_ciudad", "catedral", "rectorado_unlp"]
+    },
+    {
+      "id": "piedra_fundamental",
+      "titulo": "La piedra enterrada en el centro exacto de la ciudad",
+      "estado": "verificado",
+      "datos": "El 19 de noviembre de 1882 se colocó la piedra fundamental, traída de Azul, en el centro geográfico del casco, en Plaza Moreno. Pedro Benoit y los maestros mayores de obra le construyeron encima una bóveda subterránea de ladrillos. Hay una foto de la piedra sacada el día antes de colocarla.",
+      "fuentes": ["https://repositorioslatinoamericanos.uchile.cl/handle/2250/4295622", "https://www.argentina.gob.ar/normativa/nacional/decreto-1308-1999-61019/texto", "https://ahpbagestion.gba.gob.ar/downloads/c-jlb-68-0-0-0.pdf"],
+      "imagenes": ["fundacion_1882", "plaza_moreno"]
+    },
+    {
+      "id": "panuelos_plano",
+      "titulo": "El día que regalaron el plano de la ciudad en un pañuelo",
+      "estado": "verificado",
+      "datos": "En la ceremonia fundacional se entregaron pañuelos con el plano de la ciudad impreso. En ese plano ya figuraba el Paseo del Bosque, aunque el Bosque no formaba parte del proyecto original de la ciudad.",
+      "fuentes": ["https://www.fau.unlp.edu.ar/web2018/wp-content/uploads/2025/04/GuiaLP_2025_codigo_final_baja.pdf"],
+      "imagenes": ["plano_1882", "paseo_del_bosque", "fundacion_1882"]
+    },
+    {
+      "id": "pasaje_era_estacion",
+      "titulo": "El Pasaje Dardo Rocha era una estación de tren",
+      "estado": "verificado",
+      "datos": "El edificio del Pasaje Dardo Rocha fue originalmente la estación ferroviaria '19 de Noviembre', frente a Plaza San Martín, donde también están la Legislatura y la Casa de Gobierno.",
+      "fuentes": ["https://sedici.unlp.edu.ar/bitstream/handle/10915/185879/Documento_completo.pdf?sequence=1"],
+      "imagenes": ["pasaje_dardo_rocha", "plaza_san_martin", "estacion_trenes"]
+    },
+    {
+      "id": "crecimiento_record",
+      "titulo": "De campo pelado a 65.000 habitantes en ocho años",
+      "estado": "verificado",
+      "datos": "La ciudad tenía unos 7.000 habitantes en 1882, 22.000 en 1884 y 65.000 en 1890; en el censo nacional de 1895 ya era la tercera ciudad del país. Sarmiento la visitó en junio de 1884 y quedó sorprendido por lo rápido que avanzaba.",
+      "fuentes": ["https://upcommons.upc.edu/bitstreams/7abc9fc5-150a-4124-b5cd-2742243f5dcc/download", "https://digital.cic.gba.gob.ar/bitstreams/cef2c348-69b0-43a2-aab9-93d5eea7f2b9/download"],
+      "imagenes": ["la_plata_1880s", "fundacion_1882"]
+    },
+    {
+      "id": "disney_repu",
+      "titulo": "¿Walt Disney se copió de la República de los Niños?",
+      "estado": "leyenda",
+      "datos": "La República de los Niños se inauguró en noviembre de 1951 y Disneyland en 1955. Se dice que Disney la conoció y se inspiró, pero no hay pruebas documentadas: lo que sí está documentado es que Walt Disney vino a la Argentina en 1941, diez años antes de que existiera la República. Contarlo como mito, con el veredicto: no está probado.",
+      "fuentes": ["https://www.lacapital.com.ar/zoom/disney-cumple-100-anos-el-mito-walt-congelado-y-la-inspiracion-argentina-n10096348.html", "https://billiken.lat/entretenimiento/walt-disney-argentina/"],
+      "imagenes": ["republica_ninos"]
+    },
+    {
+      "id": "estatuas_plaza_moreno",
+      "titulo": "Las estatuas que 'le hacen señas' a la Catedral",
+      "estado": "leyenda",
+      "datos": "En Plaza Moreno hay esculturas de las cuatro estaciones del escultor francés Mathurin Moreau y jarrones traídos de Francia. Una leyenda urbana dice que las pusieron los masones para provocar a la Iglesia, y que un arquero sin flecha apunta al rosetón de la Catedral. Los rostros con cuernos de los jarrones serían faunos, figuras de la mitología que protegían bosques y jardines. Contarlo como leyenda.",
+      "fuentes": ["https://www.tiempoar.com.ar/ta_article/la-plata-la-ciudad-que-guarda-mitos-y-tesoros-entre-sus-diagonales/"],
+      "imagenes": ["estatuas_plaza_moreno", "plaza_moreno", "catedral"]
+    },
+    {
+      "id": "bruja_tolosa",
+      "titulo": "La maldición de la bruja de Tolosa",
+      "estado": "leyenda",
+      "datos": "Según una leyenda popular, el día de la fundación una mujer conocida como 'la bruja de Tolosa' maldijo a Dardo Rocha: nunca iba a llegar a ser presidente. Dato real: Dardo Rocha nunca fue presidente. La maldición, obviamente, no se puede comprobar: contarlo como leyenda.",
+      "fuentes": ["https://www.canal26.com/historia/2026/09/01/dardo-rocha-y-la-maldicion-que-nacio-con-la-plata-el-misterio-que-persiste-144-anos-despues/"],
+      "imagenes": ["dardo_rocha", "tolosa", "fundacion_1882"]
+    },
+    {
+      "id": "casa_curutchet",
+      "titulo": "La casa de Le Corbusier en plena calle 53",
+      "estado": "chequear",
+      "datos": "La Casa Curutchet la diseñó Le Corbusier y es Patrimonio de la Humanidad de la UNESCO. Es la casa de la película 'El hombre de al lado'. Antes de usarla, chequear: el año de la declaración de la UNESCO (una nota dice 2006; creemos que es 2016), la dirección exacta y si es su única obra en América Latina.",
+      "fuentes": ["https://www.tiempoar.com.ar/ta_article/la-plata-la-ciudad-que-guarda-mitos-y-tesoros-entre-sus-diagonales/"],
+      "imagenes": ["casa_curutchet"]
+    },
+    {
+      "id": "strauss_lorca",
+      "titulo": "Richard Strauss y García Lorca pasaron por La Plata",
+      "estado": "chequear",
+      "datos": "Según el investigador Nicolás Colombo, el compositor Richard Strauss estuvo en el Teatro Argentino y Federico García Lorca visitó la ciudad. Antes de usarlo, conseguir fechas y una fuente directa.",
+      "fuentes": ["https://www.tiempoar.com.ar/ta_article/la-plata-la-ciudad-que-guarda-mitos-y-tesoros-entre-sus-diagonales/"],
+      "imagenes": ["teatro_argentino_antiguo"]
+    },
+    {
+      "id": "museo_perezoso",
+      "titulo": "La piel de un perezoso gigante de hace 13.000 años",
+      "estado": "chequear",
+      "datos": "Según una nota de Tiempo Argentino, el Museo de La Plata guarda unos 4 millones de piezas y la piel momificada de un perezoso gigante de hace 13.200 años. Antes de usarlo, confirmarlo en la web del museo.",
+      "fuentes": ["https://www.tiempoar.com.ar/ta_article/la-plata-la-ciudad-que-guarda-mitos-y-tesoros-entre-sus-diagonales/"],
+      "imagenes": ["museo_la_plata"]
+    }
+  ],
+  "imagenes": [
+    {"id": "la_plata_1880s", "nombre": "La Plata en construcción (1882-1890)", "grupo": "historicas", "buscar": ["La Plata 1884", "La Plata 1885", "La Plata 1887 fotografía", "La Plata Bradley"], "palabras": ["1882", "1883", "1884", "1885", "1886", "1887", "1888", "1889", "1890"], "max": 5, "etiquetas": ["la ciudad en 1884", "la construcción de la ciudad"]},
+    {"id": "fundacion_1882", "nombre": "Fundación y piedra fundamental (1882)", "grupo": "historicas", "buscar": ["fundación de La Plata 1882", "piedra fundamental La Plata", "La Plata 19 de noviembre de 1882"], "palabras": ["1882", "fundacion", "piedra fundamental"], "max": 4, "etiquetas": ["la fundación", "la piedra fundamental"]},
+    {"id": "tranvia", "nombre": "Tranvías de La Plata", "grupo": "historicas", "buscar": ["tranvía La Plata", "La Plata tram", "tranvías de La Plata"], "palabras": ["tranvia", "tram"], "max": 3, "etiquetas": ["el tranvía"]},
+    {"id": "teatro_argentino_antiguo", "nombre": "El Teatro Argentino original", "grupo": "historicas", "buscar": ["Antiguo Teatro Argentino de La Plata", "Postal Teatro Argentino 1904", "Teatro Argentino La Plata 1915"], "palabras": ["antiguo", "postal", "1904", "1915", "190", "191", "192"], "requiere": ["teatro argentino"], "max": 3, "etiquetas": ["el teatro original", "el teatro antes del incendio"]},
+    {"id": "catedral_sin_torres", "nombre": "La Catedral sin torres (antes de 1999)", "grupo": "historicas", "buscar": ["Catedral de La Plata 1932", "Catedral La Plata antigua", "Catedral de La Plata construcción"], "palabras": ["189", "190", "191", "192", "193", "194", "195", "196", "197", "198", "antigua", "construccion"], "requiere": ["catedral", "plata"], "max": 3, "etiquetas": ["la catedral sin torres"]},
+    {"id": "estatuas_plaza_moreno", "nombre": "Estatuas y jarrones de Plaza Moreno", "grupo": "historicas", "buscar": ["esculturas Plaza Moreno La Plata", "Mathurin Moreau La Plata", "estatua Plaza Moreno"], "palabras": ["moreau", "escultura", "estatua", "sculpture", "statue", "jarron"], "max": 3, "etiquetas": ["las estatuas de plaza moreno"]},
+    {"id": "dardo_rocha", "nombre": "Dardo Rocha", "grupo": "historicas", "buscar": ["Dardo Rocha retrato", "Dardo Rocha"], "palabras": ["dardo rocha"], "requiere": [], "excluir": ["pasaje", "centro cultural", "calle", "avenida", "escuela"], "max": 2, "etiquetas": ["dardo rocha", "el fundador"]},
+    {"id": "tolosa", "nombre": "Tolosa", "grupo": "historicas", "buscar": ["Tolosa La Plata", "Estación Tolosa"], "palabras": ["tolosa"], "requiere": [], "max": 2, "etiquetas": ["tolosa"]},
+    {"id": "eva_peron_ciudad", "nombre": "Ciudad Eva Perón (1952-1955)", "grupo": "historicas", "buscar": ["Ciudad Eva Perón", "Eva Perón La Plata 1952"], "palabras": ["eva peron"], "requiere": [], "max": 2, "etiquetas": ["ciudad eva perón"]}
+  ]
+}
