@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "todavía sin videos de 2 días o más para medir"
+      "balance": "antes 132 vistas promedio (3 videos) → después 234 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -47,9 +47,12 @@
       "por_que": "Historias de plata promedia 6 vistas con picos de 9 vistas en «El negocio de moda que te funde sin avisar». Hace falta ajustar las aperturas para captar atención más rápido.",
       "id": 3,
       "fecha": "2026-10-27",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-10-29",
-      "aplica_el": "2026-10-31"
+      "aplica_el": "2026-10-31",
+      "aplicada_el": "2026-10-31",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -77,7 +80,9 @@
       "por_que": "El horario de las 19 hs promedia apenas 85 vistas (como libro con 139), mientras que la franja de las 20 hs rinde 1112 vistas promedio. La distancia con el turno 2 (12:30) se mantiene holgada en 8 horas.",
       "id": 5,
       "fecha": "2026-10-30",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-10-31",
+      "aplica_el": "2026-11-02"
     },
     {
       "tipo": "ajustar_prompt_serie",
