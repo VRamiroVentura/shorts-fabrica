@@ -1,6 +1,6 @@
 name: Reintentar publicación
 
-# Vuelve a subir los videos de los últimos 2 días SOLO en las redes donde fallaron (Instagram, carrusel, Facebook).
+# Vuelve a subir los videos que siguen en la página (7 días) SOLO en las redes donde fallaron (Instagram, carrusel, Facebook).
 # No arma nada nuevo y no repite donde ya salió. Se usa desde Actions → "Reintentar publicación" → Run workflow.
 on:
   workflow_dispatch:
