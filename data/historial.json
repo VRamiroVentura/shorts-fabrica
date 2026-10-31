@@ -674,5 +674,29 @@
         "id": "1770345774074253"
       }
     }
+  },
+  {
+    "fecha": "2026-10-31",
+    "turno": 2,
+    "hora": "13:01",
+    "serie": "paso_de_verdad",
+    "titulo": "Casas de lujo bajo tierra por USD 3M",
+    "fuentes": [
+      "xcGZNNWPIA0"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18117812243518351"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "RfB8OlojIEQ"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "2595156674264041"
+      }
+    }
   }
 ]

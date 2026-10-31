@@ -270,5 +270,50 @@
       "clip de un café tradicional en La Plata",
       "dibujito de cuatro amigos reunidos"
     ]
+  },
+  {
+    "fecha": "2026-10-31",
+    "turno": 2,
+    "serie": "paso_de_verdad",
+    "titulo": "Casas de lujo bajo tierra por USD 3M",
+    "escenas": [
+      {
+        "escena": "Larry Hall compró un silo de misiles abandonado en Estados Unidos.",
+        "busqueda": [
+          "abandoned military base",
+          "concrete structure underground"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Básicamente armó un country subterraneo para millonarios precavidos.",
+        "busqueda": [
+          "rich people party",
+          "luxury modern living room"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Agarró una chatarra olvidada y la cobró a precio de oro.",
+        "busqueda": [
+          "man thinking looking out window",
+          "laptop typing"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "¿Vos vivirías ahí o te daría claustrofobia?",
+        "busqueda": [
+          "hand holding phone",
+          "person typing on smartphone"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "dibujito de un bunker subterráneo",
+      "clip de silo nuclear abandonado"
+    ]
   }
 ]
