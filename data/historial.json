@@ -723,5 +723,30 @@
         "id": "1682238250092075"
       }
     }
+  },
+  {
+    "fecha": "2026-11-01",
+    "turno": 2,
+    "hora": "14:03",
+    "serie": "negocios_virales",
+    "titulo": "¿Un negocio con un solo plato?",
+    "fuentes": [
+      "RTR1LokvpZA",
+      "pfPvzqX5cTU"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18014168321764104"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "GyFeuQUfC3I"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1056881000699406"
+      }
+    }
   }
 ]

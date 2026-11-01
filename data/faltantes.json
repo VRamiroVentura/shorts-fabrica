@@ -389,5 +389,82 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-11-01",
+    "turno": 2,
+    "serie": "negocios_virales",
+    "titulo": "¿Un negocio con un solo plato?",
+    "escenas": [
+      {
+        "escena": "Hacen mota chawal: una porción abundante de arroz bien especiado.",
+        "busqueda": [
+          "steaming rice dish",
+          "spiced food pot"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Cocinan una olla gigante en la calle y se arman cuadras de fila.",
+        "busqueda": [
+          "giant cooking pan",
+          "chef stirring food"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Mirá los números: como negocio cierra por todos lados.",
+        "busqueda": [
+          "hands counting cash",
+          "calculator on desk"
+        ],
+        "se_uso": "un clip repetido"
+      },
+      {
+        "escena": "Compran bolsas enteras del mismo insumo a precio mayorista.",
+        "busqueda": [
+          "warehouse food stock",
+          "grain storage bags"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "La gente paga, agarra la bandeja y se va al toque.",
+        "busqueda": [
+          "hands paying with card",
+          "hand giving cash"
+        ],
+        "se_uso": "un clip repetido"
+      },
+      {
+        "escena": "¿Podría funcionar un local así en Argentina?",
+        "busqueda": [
+          "Buenos Aires street",
+          "pedestrians walking city"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "El tema es que al argentino le encanta sentarse a mirar cartas eternas.",
+        "busqueda": [
+          "person looking thoughtful",
+          "coffee shop customer"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "¿Qué comida rápida probarías vender con este sistema? Te leo abajo.",
+        "busqueda": [
+          "storefront entrance day",
+          "small food shop"
+        ],
+        "se_uso": "un clip de relleno"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "clip de olla gigante callejera de arroz",
+      "clip de cola de gente en vereda de Buenos Aires"
+    ]
   }
 ]
