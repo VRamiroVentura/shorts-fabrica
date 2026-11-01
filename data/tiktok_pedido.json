@@ -1,0 +1,60 @@
+{
+  "fecha": "2026-11-01",
+  "items": [
+    {
+      "fecha": "2026-10-25",
+      "turno": 2,
+      "titulo": "Hielo 24hs: el negocio automático"
+    },
+    {
+      "fecha": "2026-10-25",
+      "turno": 1,
+      "titulo": "¿Sirve guardar 100 dólares al mes?"
+    },
+    {
+      "fecha": "2026-10-27",
+      "turno": 2,
+      "titulo": "Brasil está un 10 por ciento más barato"
+    },
+    {
+      "fecha": "2026-10-28",
+      "turno": 2,
+      "titulo": "El mito de Disney en La Plata"
+    },
+    {
+      "fecha": "2026-10-28",
+      "turno": 1,
+      "titulo": "FAL: el nuevo fondo para despidos"
+    },
+    {
+      "fecha": "2026-10-29",
+      "turno": 2,
+      "titulo": "Bernie Madoff: la mayor estafa"
+    },
+    {
+      "fecha": "2026-10-29",
+      "turno": 1,
+      "titulo": "El descuento en tu recibo de sueldo"
+    },
+    {
+      "fecha": "2026-10-30",
+      "turno": 1,
+      "titulo": "Prórroga en Ganancias"
+    },
+    {
+      "fecha": "2026-10-30",
+      "turno": 2,
+      "titulo": "En un bar de La Plata armaron este negocio"
+    },
+    {
+      "fecha": "2026-10-31",
+      "turno": 2,
+      "titulo": "Casas de lujo bajo tierra por USD 3M"
+    },
+    {
+      "fecha": "2026-10-31",
+      "turno": 1,
+      "titulo": "El negocio oculto de las aerolíneas"
+    }
+  ]
+}
