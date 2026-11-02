@@ -748,5 +748,30 @@
         "id": "1056881000699406"
       }
     }
+  },
+  {
+    "fecha": "2026-11-01",
+    "turno": 1,
+    "hora": "21:01",
+    "serie": "viral",
+    "titulo": "¿Por qué no te dura el sueldo?",
+    "fuentes": [
+      "H5gDumXuoPI",
+      "CAn1RfmA1qs"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17913777966474017"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "XIadovLBEqE"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "2647097312403086"
+      }
+    }
   }
 ]

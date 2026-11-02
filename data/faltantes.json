@@ -466,5 +466,65 @@
       "clip de olla gigante callejera de arroz",
       "clip de cola de gente en vereda de Buenos Aires"
     ]
+  },
+  {
+    "fecha": "2026-11-01",
+    "turno": 1,
+    "serie": "viral",
+    "titulo": "¿Por qué no te dura el sueldo?",
+    "escenas": [
+      {
+        "escena": "Cobrás el cinco y el quince ya estás contando monedas.",
+        "busqueda": [
+          "hands paying with card",
+          "card payment terminal"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "El error que más veo es dejar los pesos quietos en la caja de ahorro perdiendo valor.",
+        "busqueda": [
+          "argentine pesos on table",
+          "hands resting on desk"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Te rinde intereses diarios y la tenés disponible para pagar las cuentas.",
+        "busqueda": [
+          "laptop typing",
+          "hands organizing papers"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Y si podés ahorrar algo, separalo el día que cobrás, nunca lo que sobra.",
+        "busqueda": [
+          "us dollar bills",
+          "counting money"
+        ],
+        "se_uso": "un clip repetido"
+      },
+      {
+        "escena": "Olvidate de los sahumerios y mové cada peso.",
+        "busqueda": [
+          "notebook and pen",
+          "hands writing on desk"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "¿Vos cómo hacés para que rinda el sueldo? Te leo abajo.",
+        "busqueda": [
+          "Buenos Aires street",
+          "people walking city"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "clip de pantalla de app bancaria argentina transfiriendo fondos"
+    ]
   }
 ]
