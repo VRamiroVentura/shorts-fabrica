@@ -1,5 +1,5 @@
 {
-  "proximo_id": 7,
+  "proximo_id": 9,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 136 vistas promedio (3 videos) → después 221 (2 videos): mejoró"
+      "balance": "antes 137 vistas promedio (3 videos) → después 225 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -35,7 +35,7 @@
       "aplica_el": "2026-10-30",
       "aplicada_el": "2026-10-30",
       "como": "automática (sin respuesta)",
-      "balance": "antes 88 vistas promedio (2 videos) → después 199 (1 videos): mejoró"
+      "balance": "antes 88 vistas promedio (2 videos) → después 204 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "todavía sin videos de 2 días o más para medir"
+      "balance": "antes 1351 vistas promedio (2 videos) → después 1713 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -100,6 +100,34 @@
       "estado": "enviada",
       "enviada_el": "2026-11-01",
       "aplica_el": "2026-11-03"
+    },
+    {
+      "tipo": "cambiar_serie_dia",
+      "params": {
+        "turno": 1,
+        "dia": "6",
+        "serie": "argentino_que",
+        "antes": "historias"
+      },
+      "titulo": "Mover 'El argentino que...' al horario estelar del sábado",
+      "por_que": "'El argentino que...' es nuestra serie más fuerte con 2488 vistas promedio, 16 guardados y 18 compartidos en 2 videos. El horario de las 18 h rinde 1471 vistas promedio, por lo que potenciará aún más su alcance en el fin de semana.",
+      "id": 7,
+      "fecha": "2026-11-02",
+      "estado": "pendiente"
+    },
+    {
+      "tipo": "cambiar_horario",
+      "params": {
+        "turno": 1,
+        "dia": "4",
+        "hora": "20:00",
+        "antes": "19:30"
+      },
+      "titulo": "Mover el turno de las 19:30 a las 20:00 los jueves",
+      "por_que": "El bloque de las 20 h promedia 1344 vistas frente a solo 140 vistas del bloque de las 19 h. Ajustar el turno 1 del jueves a las 20:00 optimizará la retención de audiencia nocturna.",
+      "id": 8,
+      "fecha": "2026-11-02",
+      "estado": "pendiente"
     }
   ]
 }

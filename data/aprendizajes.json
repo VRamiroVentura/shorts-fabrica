@@ -1,15 +1,41 @@
 {
-  "fecha": "2026-10-30",
+  "fecha": "2026-11-02",
   "mejores": [
-    "Vendió su web en 540 millones (2943 vistas)",
-    "El negocio oculto de McDonald's (2687 vistas)",
-    "El mito de Disney en La Plata (1405 vistas)"
+    "Vendió su web en 540 millones (2945 vistas)",
+    "El negocio oculto de McDonald's (2689 vistas)",
+    "En un bar de La Plata armaron este negocio (2032 vistas)"
   ],
   "peores": [
     "El mito de Disney en La Plata (1 vistas)",
     "El método viral de ahorro que acá no camina (5 vistas)",
     "El negocio de moda que te funde sin avisar (13 vistas)"
   ],
-  "patrones": [],
-  "analisis": {}
+  "patrones": [
+    "Historias de negocios basadas en desmontar ilusiones (revelar que el verdadero negocio de una empresa no es lo que vende al público, como aerolíneas operando como bancos).",
+    "Contenido local de alto impacto identitario y orgullo ('El argentino que...') genera el triple de retención y compartidos que los formatos técnicos.",
+    "El dolor del bolsillo inmediato y el miedo al fisco traccionan visualizaciones masivas solo si el gancho plantea una trampa o dinero perdido, no un instructivo burocrático."
+  ],
+  "analisis": {
+    "patrones": [
+      "Historias de negocios basadas en desmontar ilusiones (revelar que el verdadero negocio de una empresa no es lo que vende al público, como aerolíneas operando como bancos).",
+      "Contenido local de alto impacto identitario y orgullo ('El argentino que...') genera el triple de retención y compartidos que los formatos técnicos.",
+      "El dolor del bolsillo inmediato y el miedo al fisco traccionan visualizaciones masivas solo si el gancho plantea una trampa o dinero perdido, no un instructivo burocrático.",
+      "Contraste de números absurdos y quiebras insólitas: cómo alguien pasó de la cima a no tener un peso en cuestión de horas.",
+      "Cuestionamiento a modelos cotidianos de consumo masivo (pizzerías, cafeterías, comida rápida callejera) analizados desde su estructura de costos y márgenes ocultos."
+    ],
+    "formatos_que_rinden": [
+      "Breakdown de modelo de negocio en 45 segundos: Gancho paradójico + Estructura de costos + Dónde está la verdadera ganancia + Cierre con pregunta de debate.",
+      "Storytelling de ascenso, avivada y caída: Historia narrada con ritmo picado sobre cómo se armó un imperio y el error puntual que lo detonó.",
+      "Desarmando el mito del ahorro tradicional: Comparación directa entre lo que hace la mayoría con su sueldo versus la optimización real contra la inflación.",
+      "Resumen de libro enfocado en una sola regla contraintuitiva: Tomar un concepto único de un autor financiero y bajarlo a un dilema cotidiano criollo.",
+      "Alerta fiscal de impacto directo: Gancho de 'cuidado con tu cuenta' explicando en lenguaje llano una retención o trampa impositiva sin jerga contable."
+    ],
+    "estructuras_virales": [
+      "El secreto sucio de la industria: 'Creés que [Empresa X] vende [Producto], pero en realidad el 80% de su plata viene de esto...'",
+      "La paradoja del fundador argentino: 'Tenían solo [Monto bajo] y cero contactos, pero descubrieron una avivada que nadie estaba viendo en el país...'",
+      "La trampa silenciosa de tu sueldo: 'El error que comete el 90% de la gente el día que cobra y le regala plata al banco sin darse cuenta.'",
+      "La estafa que parecía infalible: 'Durante 15 años les pagó a todos sin fallar un solo día, hasta que alguien hizo una cuenta básica en una servilleta.'",
+      "Negocio millonario con costo cero: 'Mirá cómo este tipo convirtió una chatarra inservible en el negocio más caro del mundo para millonarios paranoicos.'"
+    ]
+  }
 }
