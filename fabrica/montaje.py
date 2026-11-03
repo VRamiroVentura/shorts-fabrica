@@ -252,6 +252,43 @@ def anotar_clips(ids, tope=150):
     util.guardar_json(RECIENTES, lista[-tope:])
 
 
+# ---------------------------------------------------------------- La Plata: banco de fotos y plano
+def _normal(t):
+    import unicodedata
+    t = unicodedata.normalize("NFKD", str(t or "")).encode("ascii", "ignore").decode()
+    return " " + re.sub(r"[^a-z0-9]+", " ", t.lower()).strip() + " "
+
+
+def _banco_laplata():
+    """Fotos del banco (assets/laplata/catalogo.json): [(etiquetas normalizadas, [rutas])]."""
+    ruta = util.RAIZ / "assets" / "laplata" / "catalogo.json"
+    try:
+        cat = json.loads(ruta.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    salida = []
+    for tid, t in cat.items():
+        etiquetas = [_normal(x) for x in (t.get("palabras") or []) + [t.get("nombre", "")] if len(str(x)) > 3]
+        fotos = [util.RAIZ / x["archivo"] for x in t.get("imagenes", [])
+                 if (util.RAIZ / x["archivo"]).exists() and "vertical" not in x["archivo"]]
+        if etiquetas and fotos:
+            salida.append((tid, etiquetas, fotos))
+    return salida
+
+
+def _fotos_del_lugar(banco, esc, usados):
+    """Fotos del banco que nombran el lugar que dice esta escena (primero las que no se usaron)."""
+    texto = _normal(esc.get("texto", "")) + _normal((esc.get("mapa") or {}).get("lugar", ""))
+    salida = []
+    for tid, etiquetas, fotos in banco:
+        if any(e in texto for e in etiquetas):
+            for f in fotos:
+                cid = "laplata:" + f.name
+                if cid not in usados:
+                    salida.append({"id": cid, "link": str(f), "foto": True, "propio": True, "banco_laplata": tid})
+    return salida
+
+
 def _falta(esc, que):
     return {"escena": esc.get("texto", "")[:140], "busqueda": [x for x in (esc.get("broll") or []) if x][:2],
             "se_uso": que}
@@ -324,6 +361,9 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
     postales_usadas, anterior_postal = 0, False
     ultima = len(escenas) - 1
     graficos_ok = []
+    mapas_ok, anterior_mapa = [], False
+    tope_mapas = int(cfg.get("mapas_por_video", 2))
+    banco_lp = _banco_laplata() if getattr(_fondos, "la_plata", False) else []
     for i, (esc, (ini, fin)) in enumerate(zip(escenas, tiempos)):
         dur = fin - ini
         # Plan B: si para esta escena no hay ningún video que muestre justo lo que se dice (o los únicos buenos
@@ -335,6 +375,21 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
                 util.log(f"Escena {i + 1}: sin video que pegue, va el cartel de reserva")
                 esc["grafico"] = esc["plan_b"]
                 faltas.append(_falta(esc, "un cartel de reserva"))
+        # Mapa de La Plata: el plano real con cámara que se acerca al lugar (nunca dos seguidos)
+        if esc.get("mapa") and not esc.get("grafico") and not anterior_mapa and len(mapas_ok) < tope_mapas:
+            destino = trabajo / f"fondo{n:03d}.mp4"
+            try:
+                from . import plano3d
+                plano3d.clip_escena(esc["mapa"], dur, destino, cfg.get("mapa_paleta", "tilo"))
+                segmentos.append(destino)
+                colocados.append({"dest": destino, "largo": dur, "i": i, "clip": None, "n": n})
+                mapas_ok.append((ini, fin))
+                anterior_postal, anterior_grafico, anterior_mapa = False, False, True
+                n += 1
+                continue
+            except Exception as e:  # noqa  (si no encuentra el lugar o falla, la escena va como siempre)
+                util.log("No pude armar el mapa, sigo con clips:", util.ocultar(e))
+        anterior_mapa = False
         if esc.get("grafico"):
             from . import graficos
             destino = trabajo / f"fondo{n:03d}.mp4"
@@ -351,6 +406,10 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
                 esc["grafico"] = None
         anterior_grafico = False
         buenos = mejores(candidatos[i], puntajes[i], 2)          # pegan con la frase
+        fotos_lp = _fotos_del_lugar(banco_lp, esc, usados) if banco_lp else []
+        if fotos_lp:  # si la escena nombra un lugar del banco de La Plata, va primero su foto real
+            util.log(f"Escena {i + 1}: foto del banco de La Plata ({fotos_lp[0]['banco_laplata']})")
+            buenos = fotos_lp[:1] + buenos
         exacto = any(p >= 3 for p in puntajes[i])
         # Postal de Argentina: en la intriga (escena 2) y en el cierre siempre que no haya un clip exacto,
         # y en cualquier escena que no tenga nada bueno. Nunca dos seguidas ni más del tope.
@@ -446,6 +505,7 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
         revisar = nuevos
     _fondos.ids = [x["clip"]["id"] for x in colocados if x.get("clip") and x["clip"].get("id")]
     _fondos.graficos = graficos_ok
+    _fondos.mapas = mapas_ok
     _fondos.faltas = faltas
     return segmentos, de_video, banco, de_propios, postales_usadas
 
@@ -484,8 +544,12 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
     escenas = [{"texto": e["texto_voz"], "pantalla": e.get("texto_pantalla", ""), "emoji": e.get("emoji", ""),
                 "prompt": e.get("prompt", ""), "broll": e.get("broll", ""),
                 "grafico": e.get("grafico") if cfg.get("graficos", True) else None,
-                "plan_b": e.get("grafico_plan_b") if cfg.get("graficos", True) else None} for e in contenido["escenas"]]
+                "plan_b": e.get("grafico_plan_b") if cfg.get("graficos", True) else None,
+                "mapa": e.get("mapa") if cfg.get("mapas", True) and isinstance(e.get("mapa"), dict) else None}
+               for e in contenido["escenas"]]
     _fondos.estilo = estilo_graficos
+    todo = _normal(serie_nombre + " " + " ".join(e["texto"] for e in escenas) + " " + contenido.get("titulo", ""))
+    _fondos.la_plata = any(x in todo for x in (" la plata ", " platense", " platenses "))
     seed = random.randint(1, 10_000_000)
 
     # 1) voz y tiempos
@@ -496,6 +560,7 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
     # 2) fondos
     _fondos.ids = []
     _fondos.graficos = []
+    _fondos.mapas = []
     _fondos.faltas = []
     segmentos, de_pexels, banco, de_propios, de_postales = _fondos(escenas, tiempos, trabajo, seed, evitar)
     (trabajo / "lista.txt").write_text("".join(f"file '{p.resolve()}'\n" for p in segmentos))
@@ -510,7 +575,7 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
     # 4) mezcla final: fondo oscurecido + subtítulos + barra de progreso + voz (+ música)
     musica = _musica(cfg)
     fonts = util.RAIZ / "fonts"
-    tramos = getattr(_fondos, "graficos", [])  # los carteles animados no se oscurecen
+    tramos = getattr(_fondos, "graficos", []) + getattr(_fondos, "mapas", [])  # carteles y mapas no se oscurecen
     sin_graf = (":enable='not(" + "+".join(f"between(t,{a:.2f},{b:.2f})" for a, b in tramos) + ")'") if tramos else ""
     filtro_v = (f"[0:v]drawbox=x=0:y=0:w=iw:h=ih:color=black@0.22:t=fill{sin_graf},"
                 f"ass={trabajo / 'subs.ass'}:fontsdir={fonts}[v0];"
@@ -537,7 +602,8 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
     _portada(segmentos, contenido, salida / "thumb.jpg", trabajo, serie_nombre)
 
     meta = {"duracion": round(voz.duracion(salida / "video.mp4"), 2), "voz": motor, "clips": len(segmentos),
-            "graficos": len(getattr(_fondos, "graficos", [])), "estilo_graficos": getattr(_fondos, "estilo", ""),
+            "graficos": len(getattr(_fondos, "graficos", [])), "mapas": len(getattr(_fondos, "mapas", [])),
+            "estilo_graficos": getattr(_fondos, "estilo", ""),
             "faltas": getattr(_fondos, "faltas", []),
             "clips_stock": de_pexels, "banco": banco, "clips_propios": de_propios, "postales": de_postales, "musica": musica.name if musica else None, "voz_seg": round(dur_voz, 2),
             "clips_ids": list(getattr(_fondos, "ids", []))}

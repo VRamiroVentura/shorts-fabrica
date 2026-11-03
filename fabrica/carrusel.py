@@ -7,6 +7,28 @@ from . import marca as m
 
 W, H = 1080, 1350
 MARGEN = 84
+WEB = "ramacontable.com.ar"
+# Temas contables: llevan la web en las placas y en la última "Más información en ramacontable.com.ar"
+SERIES_CONTABLES = ("impuestos",)
+PALABRAS_CONTABLES = ("arca", "afip", "monotribut", "ganancias", "siradig", "iva", "impuesto", "factura",
+                      "aportes", "contribuciones", "sueldo", "recibo", "aguinaldo", "indemnizacion", "convenio",
+                      "empleador", "cuit", "clave fiscal", "ingresos brutos", "arba", "bienes personales")
+
+
+def es_contable(contenido, serie_nombre=""):
+    import re
+    import unicodedata
+
+    def normal(t):
+        return unicodedata.normalize("NFKD", str(t or "")).encode("ascii", "ignore").decode().lower()
+
+    if any(x in normal(serie_nombre) for x in SERIES_CONTABLES):
+        return True
+    texto = " ".join([str(contenido.get("titulo", ""))] + [str(h) for h in contenido.get("hashtags", [])] +
+                     [f'{p.get("titulo", "")} {p.get("cuerpo", "") or p.get("texto", "")}'
+                      for p in contenido.get("carrusel", [])])
+    texto = " " + re.sub(r"[^a-z0-9 ]+", " ", normal(texto)) + " "
+    return sum(1 for x in PALABRAS_CONTABLES if f" {x}" in texto) >= 2
 
 
 def _pill(d, x, y, texto, fondo, color, size=30):
@@ -63,7 +85,7 @@ def portada(placa, serie, usuario, ilustracion=None):
     return img
 
 
-def interior(placa, n, total, usuario, oscura=False):
+def interior(placa, n, total, usuario, oscura=False, web=False):
     fondo, texto, acento = (m.NEGRO, m.BLANCO, m.AMARILLO) if oscura else (m.CREMA, m.NEGRO, m.AMARILLO)
     img = Image.new("RGB", (W, H), fondo)
     d = ImageDraw.Draw(img)
@@ -81,11 +103,11 @@ def interior(placa, n, total, usuario, oscura=False):
         d.ellipse([cx - lado / 2 - 30, cy - lado / 2 - 30, cx + lado / 2 + 30, cy + lado / 2 + 30],
                   fill=(255, 236, 140) if not oscura else (45, 45, 45))
         m.pegar_emoji(img, placa.get("emoji", ""), (cx, cy), lado)
-    _pie(d, usuario, m.GRIS if not oscura else acento, derecha="", flecha=n < total)
+    _pie(d, usuario, m.GRIS if not oscura else acento, derecha=WEB if web else "", flecha=n < total)
     return img
 
 
-def cierre(placa, usuario):
+def cierre(placa, usuario, web=False):
     img = Image.new("RGB", (W, H), m.AMARILLO)
     d = ImageDraw.Draw(img)
     m.pegar_emoji(img, placa.get("emoji", "📌"), (W / 2, 330), 260)
@@ -93,9 +115,24 @@ def cierre(placa, usuario):
     t = placa.get("titulo", "Guardalo para después")
     f, lineas = m.ajustar(d, t.upper() if m.es_anton() else t, estilo, W - 2 * MARGEN, 3, 120, 56)
     y = m.escribir(d, (W / 2, 520), lineas, f, m.NEGRO, interlineado=1.05, anchor="ma")
-    if placa.get("cuerpo"):
-        f2, l2 = m.ajustar(d, placa["cuerpo"], "semibold", W - 2 * MARGEN, 3, 46, 34)
+    cuerpo = placa.get("cuerpo") or ""
+    if web and WEB in cuerpo:  # la web va fija abajo: no la repetimos en el texto
+        cuerpo = ""
+    if cuerpo:
+        f2, l2 = m.ajustar(d, cuerpo, "semibold", W - 2 * MARGEN, 3, 46, 34)
         y = m.escribir(d, (W / 2, y + 30), l2, f2, m.NEGRO, anchor="ma")
+    if web:
+        fw = m.fuente("bold", 40)
+        tw = "Más información en " + WEB
+        if d.textlength(tw, font=fw) > W - 2 * MARGEN:
+            fw = m.fuente("bold", 34)
+        yw = max(y + 40, H - 380)
+        if yw + 60 > H - 270:  # si el título es largo, la web va más chica, pegada al usuario
+            yw, fw = H - 330, m.fuente("bold", 32)
+        ancho = d.textlength(tw, font=fw)
+        d.rounded_rectangle([W / 2 - ancho / 2 - 30, yw - 8, W / 2 + ancho / 2 + 30, yw + fw.size + 18],
+                            radius=(fw.size + 26) // 2, fill=m.BLANCO)
+        d.text((W / 2, yw + 5), tw, font=fw, fill=m.NEGRO, anchor="ma")
     fu = m.fuente("bold", 52)
     ancho = d.textlength(usuario, font=fu)
     d.rounded_rectangle([W / 2 - ancho / 2 - 40, H - 260, W / 2 + ancho / 2 + 40, H - 170], 45, fill=m.NEGRO)
@@ -107,6 +144,7 @@ def cierre(placa, usuario):
 
 def generar(contenido, serie_nombre, usuario, carpeta, ilustracion=None):
     """Devuelve la lista de rutas JPG de las placas."""
+    web = es_contable(contenido, serie_nombre)
     carpeta = Path(carpeta)
     carpeta.mkdir(parents=True, exist_ok=True)
     placas = contenido["carrusel"]
@@ -116,9 +154,9 @@ def generar(contenido, serie_nombre, usuario, carpeta, ilustracion=None):
         if i == 1:
             img = portada(p, serie_nombre, usuario, ilustracion)
         elif i == total:
-            img = cierre(p, usuario)
+            img = cierre(p, usuario, web=web)
         else:
-            img = interior(p, i, total, usuario, oscura=(i == total - 1))
+            img = interior(p, i, total, usuario, oscura=(i == total - 1), web=web)
         ruta = carpeta / f"placa{i:02d}.jpg"
         img.save(ruta, "JPEG", quality=92)
         rutas.append(ruta)

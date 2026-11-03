@@ -33,7 +33,7 @@ Formato: CARRUSEL de 6 a 8 placas.
 TEXTOS PARA PUBLICAR (los mismos en las 3 redes):
 - titulo: máximo 40 caracteres, corto y picante: una pregunta o una afirmación fuerte que den ganas de mirar. El que mejor nos funcionó: "¿Lo barato sale caro?". Tiene que hablar de la plata o la vida de quien mira, no de "un video" ni de "una noticia". Si hay un nombre conocido, usalo. Si el tema es de un solo lugar, nombralo ("ABL en CABA: ..."). Mayúscula solo al principio y en las siglas (ARCA, IVA, CUIT, ANSES), nunca Título En Mayúsculas. Con curiosidad real y sin mentir. Sin emojis.
 - descripcion: 2 o 3 frases como si le escribieras a alguien por WhatsApp. La última invita a comentar con una pregunta concreta ("¿Vos en qué gastás el aguinaldo?").
-  Si el tema es de impuestos, ARCA, monotributo, sueldos, trámites o contabilidad, después de la pregunta agregá una línea aparte, exactamente: "Más info en ramacontable.com.ar, nuestro blog para contadores (link en la bio)."
+  Si el tema es de impuestos, ARCA, monotributo, sueldos, trámites o contabilidad, la descripción ARRANCA con esta línea, exactamente, y recién después van las 2 o 3 frases: "Más info en ramacontable.com.ar, nuestro blog para contadores (link en la bio)."
 - hashtags: 5 a 7, en minúscula, sin tildes, siempre #argentina más los de la serie (#finanzaspersonales, #ahorro, #economia, #monotributo, #libros, #plata).
 - miniatura: linea1 (máximo 4 palabras) y linea2 (máximo 3), pensadas para que alguien frene el scroll.
 - miniatura.emoji: un emoji que acompañe la portada. miniatura.prompt: ilustración en inglés de un personaje simple de dibujo animado con una emoción clara (sorpresa, preocupación, alegría), sin texto.
@@ -68,6 +68,16 @@ Dibujitos disponibles (usá exactamente estos nombres):
   personas: persona, familia, mano, ojo
   signos: pregunta, exclamacion, corazon, estrella, rayo, fuego, gota, flecha
 
+MAPA DE LA PLATA (opcional, solo si el video habla de un lugar de La Plata)
+Si una escena nombra un lugar, una calle o una esquina del casco de La Plata, podés poner el campo "mapa": la fábrica muestra el plano real de la ciudad y la cámara vuela hasta ese punto y lo marca. Después, si hay una foto del lugar en el banco, la usa sola en la escena que lo nombra.
+- {"lugar": "Plaza Moreno", "texto": "Plaza Moreno"} → se acerca a un lugar con nombre (plaza, edificio, parque, estadio). Usá el nombre oficial: "Catedral de La Plata", "Plaza San Martín", "Paseo del Bosque".
+- {"esquina": [7, 50], "texto": "7 y 50"} → se acerca a la esquina de dos calles.
+- "calles": [51, 53] (opcional) → resalta esas calles o avenidas en el plano.
+- "vista": "general" (opcional) → muestra toda la ciudad desde arriba en lugar de acercarse; sirve para hablar del trazado, las diagonales o las plazas.
+- "texto" es el cartel del pin: máximo 20 caracteres.
+Reglas: como mucho 2 mapas por video, nunca en la escena 1 ni en dos escenas seguidas, y nunca en la misma escena que un "grafico". En videos que no son de La Plata, no lo uses.
+En el JSON va dentro de la escena: "mapa": {...} o "mapa": null.
+
 LO QUE TE FALTARÍA
 En "material_que_faltaria" (opcional, máximo 3) anotá qué imagen o video te habría servido para que una escena se vea mejor y no tenías: un dibujito que no está en la lista (ej. "dibujito de una vaca"), o un clip o foto concreta de Argentina (ej. "clip de un kiosco de barrio", "foto de la catedral de La Plata"). Esto le llega al dueño de la cuenta para conseguirlo. Si no te faltó nada, dejalo vacío.
 
@@ -88,7 +98,7 @@ Respondé SOLO con un JSON válido con esta forma exacta:
   "descripcion": "...",
   "hashtags": ["#...", "#..."],
   "miniatura": { "linea1": "...", "linea2": "...", "emoji": "...", "prompt": "..." },
-  "escenas": [ { "texto_voz": "...", "texto_pantalla": "...", "broll": ["...", "..."], "emoji": "...", "prompt": "...", "grafico": null, "grafico_plan_b": null } ],
+  "escenas": [ { "texto_voz": "...", "texto_pantalla": "...", "broll": ["...", "..."], "emoji": "...", "prompt": "...", "grafico": null, "grafico_plan_b": null, "mapa": null } ],
   "carrusel": [ { "titulo": "...", "texto": "...", "emoji": "..." } ],
   "material_que_faltaria": []
 }

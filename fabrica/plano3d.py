@@ -244,6 +244,25 @@ class Plano:
         return [it for it in self.calles
                 if pat.search(normal(it["t"].get("name"))) or pat.search(normal(it["t"].get("ref")))]
 
+    def esquina(self, a, b):
+        """Punto donde se cruzan las calles a y b (por ejemplo 7 y 50). None si no se cruzan."""
+        sa, sb = self.calles_numero(a), self.calles_numero(b)
+        mejores = []
+        for ia in sa:
+            for p1, p2 in zip(ia["p"], ia["p"][1:]):
+                for ib in sb:
+                    for q1, q2 in zip(ib["p"], ib["p"][1:]):
+                        r, s = p2 - p1, q2 - q1
+                        den = r[0] * s[1] - r[1] * s[0]
+                        if abs(den) < 1e-9:
+                            continue
+                        t = ((q1[0] - p1[0]) * s[1] - (q1[1] - p1[1]) * s[0]) / den
+                        u = ((q1[0] - p1[0]) * r[1] - (q1[1] - p1[1]) * r[0]) / den
+                        if -0.02 <= t <= 1.02 and -0.02 <= u <= 1.02:
+                            x = p1 + t * r
+                            mejores.append((float(np.hypot(*x)), (float(x[0]), float(x[1]))))
+        return min(mejores)[1] if mejores else None
+
     # -------------------------------------------------------------- cámara
     def camara(self, objetivo, distancia, inclinacion, rumbo):
         """objetivo (x, y) en metros; inclinación en grados desde el piso; rumbo en grados."""
@@ -497,6 +516,74 @@ def interpolar(tomas, t):
                 "rumbo": a["rumbo"] + (b["rumbo"] - a["rumbo"]) * k,
             }
     return dict(tomas[-1][1])
+
+
+# ------------------------------------------------------------------ escena "mapa" del montaje
+_PLANOS = {}
+
+
+def plano_cacheado(paleta="tilo"):
+    if _PLANOS.get("_error"):  # si ya falló en este video, no lo reintenta en cada escena
+        raise RuntimeError(_PLANOS["_error"])
+    if paleta not in _PLANOS:
+        try:
+            _PLANOS[paleta] = Plano.cargar(paleta)
+        except Exception as e:
+            _PLANOS["_error"] = str(e)
+            raise
+    return _PLANOS[paleta]
+
+
+def _numeros(valor):
+    salida = []
+    for x in (valor or []):
+        m = re.search(r"\d+", str(x))
+        if m:
+            salida.append(int(m.group()))
+    return salida
+
+
+def clip_escena(mapa, segundos, destino, paleta="tilo"):
+    """Arma el clip de una escena con mapa. mapa = {"lugar": "Plaza Moreno"} o {"esquina": [7, 50]},
+    y opcional "calles": [51, 53] (se resaltan), "texto" (cartel) y "vista": "cerca" o "general".
+    Si no encuentra el lugar, levanta un error y el montaje usa un clip como siempre."""
+    plano = plano_cacheado(paleta)
+    objetivo, areas = None, []
+    if mapa.get("esquina"):
+        nums = _numeros(mapa["esquina"])
+        if len(nums) >= 2:
+            objetivo = plano.esquina(nums[0], nums[1])
+    if not objetivo and mapa.get("lugar"):
+        objetivo, areas = plano.buscar(mapa["lugar"])
+    vista = mapa.get("vista", "cerca")
+    calles = plano.calles_numero(*_numeros(mapa.get("calles"))) if mapa.get("calles") else []
+    if not objetivo:
+        if vista == "general" and calles:
+            centro, _ = plano.buscar("Plaza Moreno")
+            objetivo = centro or (0.0, 0.0)
+        else:
+            raise ValueError(f"no encontré en el plano: {mapa}")
+    rumbo = plano.giro + 45
+    if vista == "general":
+        tomas = [(0.0, {"objetivo": objetivo, "distancia": 6500, "inclinacion": 60, "rumbo": rumbo - 6}),
+                 (segundos, {"objetivo": objetivo, "distancia": 4300, "inclinacion": 56, "rumbo": rumbo + 4})]
+    else:
+        tomas = [(0.0, {"objetivo": objetivo, "distancia": 2600, "inclinacion": 56, "rumbo": rumbo - 10}),
+                 (segundos, {"objetivo": objetivo, "distancia": 720, "inclinacion": 48, "rumbo": rumbo + 14})]
+    texto = (mapa.get("texto") or mapa.get("lugar") or "")
+    if not texto and mapa.get("esquina"):
+        n = _numeros(mapa["esquina"])
+        texto = f"{n[0]} y {n[1]}" if len(n) >= 2 else ""
+    texto = str(texto)[:24]
+
+    def pines(t):
+        if vista == "general" and not mapa.get("lugar") and not mapa.get("esquina"):
+            return []
+        return [{"xy": objetivo, "texto": texto, "alfa": min(1.0, max(0.0, (t - 0.3) / 0.5))}]
+
+    resaltes = {"calles": calles, "areas": areas if mapa.get("lugar") else []}
+    plano.video(str(destino), tomas, segundos, resaltes, pines, None)
+    return destino
 
 
 # ------------------------------------------------------------------ muestra
