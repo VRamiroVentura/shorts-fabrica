@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 137 vistas promedio (3 videos) → después 225 (2 videos): mejoró"
+      "balance": "antes 137 vistas promedio (3 videos) → después 231 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -35,7 +35,7 @@
       "aplica_el": "2026-10-30",
       "aplicada_el": "2026-10-30",
       "como": "automática (sin respuesta)",
-      "balance": "antes 88 vistas promedio (2 videos) → después 204 (1 videos): mejoró"
+      "balance": "antes 88 vistas promedio (2 videos) → después 207 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1351 vistas promedio (2 videos) → después 1714 (1 videos): mejoró"
+      "balance": "antes 1352 vistas promedio (2 videos) → después 1723 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -100,9 +100,12 @@
       "por_que": "La serie debutó con 134 vistas ('¿Por qué la ropa acá sale el triple?'), 0 guardados y 0 compartidos. Necesita comparar precios ridículos contra sueldos locales para generar indignación y compartidos.",
       "id": 6,
       "fecha": "2026-10-30",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-01",
-      "aplica_el": "2026-11-03"
+      "aplica_el": "2026-11-03",
+      "aplicada_el": "2026-11-03",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -132,7 +135,9 @@
       "por_que": "El bloque de las 20 h promedia 1344 vistas frente a solo 140 vistas del bloque de las 19 h. Ajustar el turno 1 del jueves a las 20:00 optimizará la retención de audiencia nocturna.",
       "id": 8,
       "fecha": "2026-11-02",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-11-03",
+      "aplica_el": "2026-11-05"
     }
   ]
 }
