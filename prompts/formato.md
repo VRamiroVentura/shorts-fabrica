@@ -27,11 +27,13 @@ Formato: CARRUSEL de 6 a 8 placas.
 - Penúltima placa: el dato o tip más útil (es la que la gente guarda).
 - Última placa: cierre con llamada a la acción ("Guardalo para cuando cobres", "Mandáselo a quien siempre llega justo a fin de mes").
 - En la placa 1, titulo es la frase de portada y texto la línea de apoyo. En la última, titulo es la llamada a la acción y texto una frase corta de apoyo.
+- Si el tema es de impuestos, ARCA, monotributo, sueldos, trámites o contabilidad (por ejemplo, la serie Impuestos sin vueltas): en la última placa, texto es exactamente "Más información en ramacontable.com.ar".
 - Para cada placa, un emoji (UN solo emoji común de un objeto o símbolo, sin banderas) para ilustrarla.
 
 TEXTOS PARA PUBLICAR (los mismos en las 3 redes):
 - titulo: máximo 40 caracteres, corto y picante: una pregunta o una afirmación fuerte que den ganas de mirar. El que mejor nos funcionó: "¿Lo barato sale caro?". Tiene que hablar de la plata o la vida de quien mira, no de "un video" ni de "una noticia". Si hay un nombre conocido, usalo. Si el tema es de un solo lugar, nombralo ("ABL en CABA: ..."). Mayúscula solo al principio y en las siglas (ARCA, IVA, CUIT, ANSES), nunca Título En Mayúsculas. Con curiosidad real y sin mentir. Sin emojis.
 - descripcion: 2 o 3 frases como si le escribieras a alguien por WhatsApp. La última invita a comentar con una pregunta concreta ("¿Vos en qué gastás el aguinaldo?").
+  Si el tema es de impuestos, ARCA, monotributo, sueldos, trámites o contabilidad, después de la pregunta agregá una línea aparte, exactamente: "Más info en ramacontable.com.ar, nuestro blog para contadores (link en la bio)."
 - hashtags: 5 a 7, en minúscula, sin tildes, siempre #argentina más los de la serie (#finanzaspersonales, #ahorro, #economia, #monotributo, #libros, #plata).
 - miniatura: linea1 (máximo 4 palabras) y linea2 (máximo 3), pensadas para que alguien frene el scroll.
 - miniatura.emoji: un emoji que acompañe la portada. miniatura.prompt: ilustración en inglés de un personaje simple de dibujo animado con una emoción clara (sorpresa, preocupación, alegría), sin texto.
