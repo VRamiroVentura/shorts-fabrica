@@ -10,7 +10,7 @@ on:
         default: ambas
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: plano-3d
@@ -58,3 +58,20 @@ jobs:
           name: plano3d
           path: out/plano3d/
           retention-days: 7
+
+      - name: Guardar el plano en el repo (para que la fábrica diaria no lo baje cada vez)
+        run: |
+          f=datos/laplata/osm_casco.json.gz
+          [ -f "$f" ] || { echo "No hay plano para guardar."; exit 0; }
+          tam=$(stat -c%s "$f")
+          if [ "$tam" -gt 45000000 ]; then echo "El plano pesa $tam bytes: es mucho para el repo, no lo guardo."; exit 0; fi
+          git config user.name "fabrica-bot"
+          git config user.email "fabrica-bot@users.noreply.github.com"
+          git add "$f"
+          if git diff --cached --quiet; then echo "El plano ya estaba guardado."; exit 0; fi
+          git commit -m "Plano de La Plata (OpenStreetMap) para los mapas"
+          for i in 1 2 3 4 5; do
+            git pull --rebase -X theirs origin "${{ github.ref_name }}" && git push && exit 0
+            sleep $((i * 10))
+          done
+          echo "No se pudo guardar el plano" && exit 1
