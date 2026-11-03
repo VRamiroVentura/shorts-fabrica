@@ -526,5 +526,71 @@
     "material": [
       "clip de pantalla de app bancaria argentina transfiriendo fondos"
     ]
+  },
+  {
+    "fecha": "2026-11-03",
+    "turno": 1,
+    "serie": "plata",
+    "titulo": "Sueldo contra inflación",
+    "escenas": [
+      {
+        "escena": "Si dejás la plata quieta en el banco, se te consume sola.",
+        "busqueda": [
+          "bank account app",
+          "smartphone screen"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Los precios suben todo el tiempo y al final del mes comprás menos.",
+        "busqueda": [
+          "supermarket aisles",
+          "shopping cart"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "El error clásico es dejar todo en la caja de ahorro común.",
+        "busqueda": [
+          "atm machine",
+          "hand holding card"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "La solución para no perder tanto es moverla a una billetera virtual.",
+        "busqueda": [
+          "smartphone app",
+          "digital wallet"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Te dan rendimiento diario y podés usar la plata cuando quieras.",
+        "busqueda": [
+          "digital coins",
+          "online banking"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Abrí la app ahora y pasá el saldo que te sobra.",
+        "busqueda": [
+          "hands typing",
+          "laptop typing"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Guardalo para cuando cobres y mandáselo a un amigo.",
+        "busqueda": [
+          "sharing phone",
+          "friends talking"
+        ],
+        "se_uso": "un clip repetido"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]

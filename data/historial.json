@@ -773,5 +773,34 @@
         "id": "2647097312403086"
       }
     }
+  },
+  {
+    "fecha": "2026-11-03",
+    "turno": 1,
+    "hora": "14:58",
+    "serie": "plata",
+    "titulo": "Sueldo contra inflación",
+    "fuentes": [
+      "rEhejpGhrLc",
+      "Q-GvKMi6olo"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18148104535600029"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "18173352808458881"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "wF7-9IuPj5I"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1081378481567981"
+      }
+    }
   }
 ]
