@@ -802,5 +802,27 @@
         "id": "1081378481567981"
       }
     }
+  },
+  {
+    "fecha": "2026-11-03",
+    "turno": 2,
+    "hora": "20:31",
+    "serie": "datos",
+    "titulo": "¿Nafta más cara que en los vecinos?",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17998080477047092"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "36c9r2n35q4"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "4607769352775468"
+      }
+    }
   }
 ]
