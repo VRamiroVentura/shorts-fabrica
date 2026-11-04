@@ -877,5 +877,27 @@
         "id": "2949163872132102"
       }
     }
+  },
+  {
+    "fecha": "2026-11-04",
+    "turno": 2,
+    "hora": "15:30",
+    "serie": "laplata",
+    "titulo": "La casa de Le Corbusier en La Plata",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17892938304654161"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "ZCNjKLLdiiY"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "4794246387475796"
+      }
+    }
   }
 ]

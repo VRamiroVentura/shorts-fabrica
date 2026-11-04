@@ -756,5 +756,49 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-11-04",
+    "turno": 2,
+    "serie": "laplata",
+    "titulo": "La casa de Le Corbusier en La Plata",
+    "escenas": [
+      {
+        "escena": "En mil novecientos cuarenta y ocho, el cirujano Pedro Curutchet le pagó en dólares para que le diseñe su casa y consultorio frente al Bosque",
+        "busqueda": [
+          "vintage doctor room",
+          "old letter paper desk"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Mandó los planos desde París y la construcción acá la dirigió Amancio Williams.",
+        "busqueda": [
+          "architect desk drawing",
+          "blueprint construction"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Lo curioso es que el médico la usó poquísimo tiempo porque le resultaba incómoda para atender pacientes.",
+        "busqueda": [
+          "empty room window",
+          "walking inside modern house"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Hoy es Patrimonio de la Humanidad y un orgullo platense, aunque al dueño no le haya servido en el día a día.",
+        "busqueda": [
+          "historic monument sign",
+          "tourist taking photo building"
+        ],
+        "se_uso": "un clip de relleno"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "foto de la Casa Curutchet de La Plata"
+    ]
   }
 ]
