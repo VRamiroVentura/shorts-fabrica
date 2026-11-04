@@ -2,6 +2,56 @@
   "_ayuda": "Temas puntuales que tienen que salir sí o sí. Cada uno sale UNA vez, en el próximo video del turno indicado (1 = el de finanzas), en lugar del tema que tocaba ese día, en el orden de la lista. 'datos' es lo único que puede usar el guion (chequeado a mano): si cambia la norma, actualizalo acá. 'hasta' es la fecha en que el tema deja de tener sentido. Cuando sale, queda anotado en data/estado.json (temas_hechos) y no se repite. 'carrusel' son las placas fijas (si no está, las escribe la IA) y 'carrusel_ig': true hace que ese día también se suba el carrusel a Instagram, además del Reel. 'datos_vivos' trae cotizaciones del momento en que se arma el video (Yahoo / AwesomeAPI) y 'cierre' fija la última frase del video.",
   "temas": [
     {
+      "id": "bancos-cerrados-papa-2026-11",
+      "turno": 1,
+      "serie": "economia",
+      "desde": "2026-11-04",
+      "hasta": "2026-11-06",
+      "titulo": "Cinco días sin bancos: del viernes 6 al martes 10",
+      "fuente": "Decreto 1103/2026, comunicación del BCRA del 1/10/2026, Perfil, El Cronista, Bloomberg Línea",
+      "fecha_datos": "4 de noviembre de 2026",
+      "prompt": "Video de servicio para cualquiera que use el banco. Formato \"Esto te cambia\". Tono de aviso entre amigos, sin alarma.\n- Escena 1: el dato fuerte con fechas: del viernes 6 al martes 10 de noviembre no abre ningún banco del país, y en provincia de Buenos Aires se suma el miércoles 11. Prometé decirle qué hacer antes.\n- Escenas 2 y 3: por qué: el viernes 6 es el Día del Bancario, después el fin de semana, el lunes 9 feriado nacional por la visita del papa León XIV y el martes 10 feriado bancario que puso el Banco Central.\n- Desarrollo: en provincia de Buenos Aires el miércoles 11 también es feriado, así que ahí los bancos vuelven el jueves 12; en el resto del país, el miércoles 11. Qué sigue andando: billeteras virtuales, tarjetas de débito y crédito, home banking y cajeros (que pueden quedarse sin efectivo).\n- Giro: el jueves 5 es el último día con bancos abiertos: si tenés que ir a ventanilla, depositar un cheque o hacer un trámite en sucursal, es ese día. Decí siempre el día y la fecha, nunca 'mañana' ni 'hoy'.\n- Cierre: el cierre fijo.\n- No digas cómo se pagan los feriados ni hables de sueldos. No opines sobre la visita del Papa.\n- Título sugerido: Cinco días sin bancos (del 6 al 10).\n- Hashtags: #bancos #feriado #papa #LeonXIV #provinciadebuenosaires #argentina.",
+      "datos": "BANCOS CERRADOS EN NOVIEMBRE DE 2026 (datos chequeados al 4/11/2026).\n- Viernes 6 de noviembre: Día del Bancario. Los bancos no atienden en todo el país (es un día no laborable para los bancarios, no un feriado para todos).\n- Sábado 7 y domingo 8: fin de semana.\n- Lunes 9: feriado nacional en todo el país por la visita del papa León XIV. Lo dispuso el Decreto 1103/2026 (Boletín Oficial del 28 de septiembre).\n- Martes 10: feriado bancario en todo el país. Lo estableció el Banco Central (BCRA) en una comunicación del 1 de octubre, también por la visita del Papa.\n- Resultado: del viernes 6 al martes 10, cinco días seguidos sin atención en los bancos de todo el país.\n- Miércoles 11: el mismo Decreto 1103/2026 lo declaró feriado solo en la provincia de Buenos Aires. Por eso en territorio bonaerense los bancos tampoco abrirían ese día y vuelven el jueves 12. En el resto del país vuelven el miércoles 11.\n- El papa León XIV visita la Argentina entre el domingo 8 y el miércoles 11 de noviembre, con actividades en Buenos Aires, Córdoba y Luján.\n- Qué sigue funcionando: billeteras virtuales, tarjetas de débito y crédito y home banking. Los cajeros automáticos funcionan, pero en días largos sin bancos pueden quedarse sin efectivo.\n- Último día con bancos abiertos antes del corte: jueves 5 de noviembre.",
+      "cierre": {
+        "voz": "¿Vos tenías algo para hacer en el banco esos días?",
+        "pantalla": "¿Te agarra justo?",
+        "emoji": "🏦"
+      },
+      "carrusel_ig": true,
+      "carrusel": [
+        {
+          "titulo": "Cinco días sin bancos",
+          "cuerpo": "Del viernes 6 al martes 10 de noviembre",
+          "emoji": "🏦"
+        },
+        {
+          "titulo": "Qué días cierran",
+          "cuerpo": "• Vie 6: Día del Bancario\n• Sáb 7 y dom 8: fin de semana\n• Lun 9: feriado por el Papa\n• Mar 10: feriado bancario",
+          "emoji": "📅"
+        },
+        {
+          "titulo": "En provincia de Buenos Aires, uno más",
+          "cuerpo": "El miércoles 11 también es feriado en la Provincia. Ahí los bancos vuelven el jueves 12.",
+          "emoji": "📍"
+        },
+        {
+          "titulo": "Qué sigue funcionando",
+          "cuerpo": "• Billeteras virtuales\n• Tarjetas de débito y crédito\n• Home banking\n• Cajeros (pueden quedarse sin efectivo)",
+          "emoji": "📱"
+        },
+        {
+          "titulo": "El jueves 5 es tu último día",
+          "cuerpo": "Ventanilla, cheques o trámites en sucursal: hacelos el jueves 5.",
+          "emoji": "⏰"
+        },
+        {
+          "titulo": "Guardalo y mandáselo a quien lo necesite",
+          "cuerpo": "Así nadie se queda sin efectivo",
+          "emoji": "📌"
+        }
+      ]
+    },
+    {
       "id": "brasil-lula-2026-10",
       "turno": 1,
       "serie": "economia",
