@@ -658,5 +658,105 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-11-04",
+    "turno": 1,
+    "serie": "economia",
+    "titulo": "¿Por qué el café te cuesta el doble?",
+    "escenas": [
+      {
+        "escena": "Acá te cuesta una fortuna en relación al sueldo.",
+        "busqueda": [
+          "hands counting money",
+          "wallet with cash"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Para tomarte un espresso en la calle laburás un buen rato.",
+        "busqueda": [
+          "person working on laptop",
+          "stressed person desk"
+        ],
+        "se_uso": "un clip de relleno"
+      },
+      {
+        "escena": "Y no es culpa del grano importado.",
+        "busqueda": [
+          "roasted coffee beans",
+          "barista making coffee"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "El grano representa una mínima parte de lo que pagás.",
+        "busqueda": [
+          "argentine pesos",
+          "holding small coin"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Lo pesado es la estructura fija.",
+        "busqueda": [
+          "Buenos Aires street",
+          "cafe shop exterior"
+        ],
+        "se_uso": "un clip repetido"
+      },
+      {
+        "escena": "El alquiler del local que no para de subir.",
+        "busqueda": [
+          "signing contract papers",
+          "receipt printer"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "La tarifa de luz que vino con aumentos picantes.",
+        "busqueda": [
+          "power outlet switch",
+          "electricity meter"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Acá viene la parte que casi nadie mira.",
+        "busqueda": [
+          "person thinking street",
+          "looking through window"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Como la gente sale menos, las cafeterías venden muchas menos tazas.",
+        "busqueda": [
+          "empty cafe tables",
+          "lonely restaurant chairs"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Para cubrir los mismos gastos, tienen que repartirlos entre menos clientes.",
+        "busqueda": [
+          "card payment terminal",
+          "hands paying with card"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "¿Cuánto te están cobrando el café en tu barrio?",
+        "busqueda": [
+          "hand holding phone",
+          "drinking takeaway coffee"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "clip de pizarra con precios de café en pesos en vereda argentina"
+    ]
   }
 ]

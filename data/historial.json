@@ -824,5 +824,30 @@
         "id": "4607769352775468"
       }
     }
+  },
+  {
+    "fecha": "2026-11-04",
+    "turno": 1,
+    "hora": "11:53",
+    "serie": "economia",
+    "titulo": "¿Por qué el café te cuesta el doble?",
+    "fuentes": [
+      "OxWgy8MOSGs",
+      "QmWyQ-BCD8E"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17900378406398068"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "bYjG5a6DaJE"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1155643033552173"
+      }
+    }
   }
 ]
