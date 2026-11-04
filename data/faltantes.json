@@ -663,100 +663,98 @@
     "fecha": "2026-11-04",
     "turno": 1,
     "serie": "economia",
-    "titulo": "¿Por qué el café te cuesta el doble?",
+    "titulo": "Cinco días sin bancos",
     "escenas": [
       {
-        "escena": "Acá te cuesta una fortuna en relación al sueldo.",
+        "escena": "El viernes seis es el Día del Bancario.",
         "busqueda": [
-          "hands counting money",
-          "wallet with cash"
+          "calendar dates",
+          "hand pointing at calendar"
         ],
         "se_uso": "una postal de Argentina"
       },
       {
-        "escena": "Para tomarte un espresso en la calle laburás un buen rato.",
+        "escena": "Después tenés el fin de semana.",
         "busqueda": [
-          "person working on laptop",
-          "stressed person desk"
+          "weekend calendar",
+          "empty streets"
         ],
         "se_uso": "un clip de relleno"
       },
       {
-        "escena": "Y no es culpa del grano importado.",
+        "escena": "El lunes nueve es feriado por la visita del Papa.",
         "busqueda": [
-          "roasted coffee beans",
-          "barista making coffee"
-        ],
-        "se_uso": "un clip aproximado"
-      },
-      {
-        "escena": "El grano representa una mínima parte de lo que pagás.",
-        "busqueda": [
-          "argentine pesos",
-          "holding small coin"
-        ],
-        "se_uso": "un clip aproximado"
-      },
-      {
-        "escena": "Lo pesado es la estructura fija.",
-        "busqueda": [
-          "Buenos Aires street",
-          "cafe shop exterior"
+          "argentina flag",
+          "buenos aires street"
         ],
         "se_uso": "un clip repetido"
       },
       {
-        "escena": "El alquiler del local que no para de subir.",
+        "escena": "Y el martes diez hay feriado bancario del Central.",
         "busqueda": [
-          "signing contract papers",
-          "receipt printer"
+          "bank interior",
+          "empty bank hall"
         ],
         "se_uso": "un clip aproximado"
       },
       {
-        "escena": "La tarifa de luz que vino con aumentos picantes.",
+        "escena": "En provincia de Buenos Aires el miércoles once también es feriado.",
         "busqueda": [
-          "power outlet switch",
-          "electricity meter"
+          "buenos aires map",
+          "street in la plata"
         ],
         "se_uso": "un clip aproximado"
       },
       {
-        "escena": "Acá viene la parte que casi nadie mira.",
+        "escena": "Así que ahí vuelven recién el jueves doce.",
         "busqueda": [
-          "person thinking street",
-          "looking through window"
+          "bank doors opening",
+          "people waiting outside bank"
         ],
         "se_uso": "un clip aproximado"
       },
       {
-        "escena": "Como la gente sale menos, las cafeterías venden muchas menos tazas.",
+        "escena": "En el resto del país abren el miércoles once.",
         "busqueda": [
-          "empty cafe tables",
-          "lonely restaurant chairs"
-        ],
-        "se_uso": "un clip aproximado"
-      },
-      {
-        "escena": "Para cubrir los mismos gastos, tienen que repartirlos entre menos clientes.",
-        "busqueda": [
-          "card payment terminal",
-          "hands paying with card"
-        ],
-        "se_uso": "un clip aproximado"
-      },
-      {
-        "escena": "¿Cuánto te están cobrando el café en tu barrio?",
-        "busqueda": [
-          "hand holding phone",
-          "drinking takeaway coffee"
+          "argentina city",
+          "people walking on street"
         ],
         "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Las billeteras virtuales, las tarjetas y el home banking siguen andando.",
+        "busqueda": [
+          "hands holding phone",
+          "mobile banking app"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Los cajeros funcionan, pero ojo que se pueden quedar sin efectivo.",
+        "busqueda": [
+          "atm machine",
+          "person using atm"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Si tenés que ir a ventanilla o depositar un cheque, hacelo ese día.",
+        "busqueda": [
+          "signing a check",
+          "bank teller counter"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "¿Vos tenías algo para hacer en el banco esos días?",
+        "busqueda": [
+          "sharing phone message",
+          "friends talking"
+        ],
+        "se_uso": "un clip aproximado"
       }
     ],
     "dibujitos": [],
-    "material": [
-      "clip de pizarra con precios de café en pesos en vereda argentina"
-    ]
+    "material": []
   }
 ]

@@ -849,5 +849,33 @@
         "id": "1155643033552173"
       }
     }
+  },
+  {
+    "fecha": "2026-11-04",
+    "turno": 1,
+    "hora": "12:16",
+    "serie": "economia",
+    "titulo": "Cinco días sin bancos",
+    "fuentes": [
+      "tema:bancos-cerrados-papa-2026-11"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18153202195551816"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "18102056510381971"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "qpDNfD_PRo8"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "2949163872132102"
+      }
+    }
   }
 ]
