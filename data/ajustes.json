@@ -16,5 +16,8 @@
   "horarios": {
     "5": "15:00",
     "1": "20:30"
+  },
+  "plan_semanal": {
+    "6": "argentino_que"
   }
 }
