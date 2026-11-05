@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 137 vistas promedio (3 videos) → después 235 (2 videos): mejoró"
+      "balance": "antes 139 vistas promedio (3 videos) → después 236 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -35,7 +35,7 @@
       "aplica_el": "2026-10-30",
       "aplicada_el": "2026-10-30",
       "como": "automática (sin respuesta)",
-      "balance": "antes 88 vistas promedio (2 videos) → después 210 (1 videos): mejoró"
+      "balance": "antes 89 vistas promedio (2 videos) → después 210 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1352 vistas promedio (2 videos) → después 1729 (1 videos): mejoró"
+      "balance": "antes 1352 vistas promedio (2 videos) → después 1731 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -138,9 +138,12 @@
       "por_que": "El bloque de las 20 h promedia 1344 vistas frente a solo 140 vistas del bloque de las 19 h. Ajustar el turno 1 del jueves a las 20:00 optimizará la retención de audiencia nocturna.",
       "id": 8,
       "fecha": "2026-11-02",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-03",
-      "aplica_el": "2026-11-05"
+      "aplica_el": "2026-11-05",
+      "aplicada_el": "2026-11-05",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -170,7 +173,9 @@
       "por_que": "Las 21 h promedia apenas 199 vistas en 5 videos, mientras que la franja de las 20 h promedia 1345 vistas en 4 videos. El domingo a las 13:00 queda a más de 7 horas de distancia.",
       "id": 10,
       "fecha": "2026-11-04",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-11-05",
+      "aplica_el": "2026-11-07"
     },
     {
       "tipo": "ajustar_prompt_serie",
