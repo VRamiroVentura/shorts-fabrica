@@ -861,5 +861,87 @@
       "clip de elizabeth holmes hablando en el escenario",
       "foto de la maquina edison de theranos"
     ]
+  },
+  {
+    "fecha": "2026-11-05",
+    "turno": 1,
+    "serie": "autor",
+    "titulo": "Morgan Housel y el truco de la plata",
+    "escenas": [
+      {
+        "escena": "En su libro explica algo que acá en Argentina se nota el doble.",
+        "busqueda": [
+          "Buenos Aires street",
+          "city traffic"
+        ],
+        "se_uso": "un clip repetido"
+      },
+      {
+        "escena": "Gastar guita para mostrar que tenés guita es la forma más rápida de quedarte sin nada.",
+        "busqueda": [
+          "hands paying with card",
+          "cash payment"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Fijate lo que pasa cuando pegás un aumento en el laburo.",
+        "busqueda": [
+          "laptop typing",
+          "office worker"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Te cambiás el auto o empezás a pedir delivery todos los días.",
+        "busqueda": [
+          "car driving city",
+          "food delivery bag"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Resultado: seguís igual de ajustado a fin de mes.",
+        "busqueda": [
+          "hand holding empty wallet",
+          "person looking worried"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "La verdadera riqueza no es el cero kilómetro sacado en cuotas.",
+        "busqueda": [
+          "car keys hand",
+          "receipt printer"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Es la plata que no gastaste y te da margen para decidir tranquilo.",
+        "busqueda": [
+          "piggy bank close up",
+          "us dollar bills"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "La libertad real no sale en Instagram.",
+        "busqueda": [
+          "person looking phone",
+          "social media feed"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Mandáselo a ese amigo que cobra y se la patina toda en dos días.",
+        "busqueda": [
+          "hand holding phone text",
+          "friends talking"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]

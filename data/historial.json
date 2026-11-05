@@ -921,5 +921,29 @@
         "id": "2344631886369466"
       }
     }
+  },
+  {
+    "fecha": "2026-11-05",
+    "turno": 1,
+    "hora": "20:49",
+    "serie": "autor",
+    "titulo": "Morgan Housel y el truco de la plata",
+    "fuentes": [
+      "FHTJyj2Z1lA"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18112375640245179"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "DdZNGto1f4U"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1674819440646603"
+      }
+    }
   }
 ]
