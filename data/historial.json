@@ -899,5 +899,27 @@
         "id": "4794246387475796"
       }
     }
+  },
+  {
+    "fecha": "2026-11-05",
+    "turno": 2,
+    "hora": "15:14",
+    "serie": "estafas",
+    "titulo": "La estafa de Theranos en 1 minuto",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18111397349192247"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "RsyMazwsy6E"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "2344631886369466"
+      }
+    }
   }
 ]

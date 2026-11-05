@@ -800,5 +800,66 @@
     "material": [
       "foto de la Casa Curutchet de La Plata"
     ]
+  },
+  {
+    "fecha": "2026-11-05",
+    "turno": 2,
+    "serie": "estafas",
+    "titulo": "La estafa de Theranos en 1 minuto",
+    "escenas": [
+      {
+        "escena": "Pero la máquina no funcionaba. Posta, no hacía nada.",
+        "busqueda": [
+          "broken medical device",
+          "dark empty laboratory"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Usaban aparatos comerciales de otras marcas escondidos al fondo del laboratorio.",
+        "busqueda": [
+          "hiding documents in office",
+          "laboratory technician working"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Un periodista del Wall Street Journal destapó el fraude en dos mil quince y se vino todo abajo.",
+        "busqueda": [
+          "newspaper press printing",
+          "investigative reporter typing"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "La empresa quebró y a Holmes le dieron más de once años de cárcel.",
+        "busqueda": [
+          "courtroom gavel slam",
+          "handcuffs close up"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Mirá la lección: si un negocio oculta cómo hace la plata tras un secretismo mágico, salí corriendo.",
+        "busqueda": [
+          "person looking at phone suspicious",
+          "running away shoe steps"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Mandáselo a ese amigo que siempre se encandila con promesas de negocios revolucionarios.",
+        "busqueda": [
+          "hand sharing video on phone",
+          "friends chatting in cafe"
+        ],
+        "se_uso": "un clip repetido"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "clip de elizabeth holmes hablando en el escenario",
+      "foto de la maquina edison de theranos"
+    ]
   }
 ]
