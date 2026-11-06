@@ -979,5 +979,27 @@
         "id": "989337000279761"
       }
     }
+  },
+  {
+    "fecha": "2026-11-06",
+    "turno": 2,
+    "hora": "20:22",
+    "serie": "argentino_que",
+    "titulo": "El argentino que cobró 750 millones",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18134002970510818"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "ccCzI2b3alQ"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1433315778921562"
+      }
+    }
   }
 ]

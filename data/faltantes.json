@@ -1001,5 +1001,73 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-11-06",
+    "turno": 2,
+    "serie": "argentino_que",
+    "titulo": "El argentino que cobró 750 millones",
+    "escenas": [
+      {
+        "escena": "Te permitía ver cotizaciones y operar en bolsa por internet cuando nadie lo hacía acá.",
+        "busqueda": [
+          "stock charts on laptop",
+          "hand holding phone"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "La empresa creció con todo en la región. Y en marzo del dos mil, el Banco Santander se la compró.",
+        "busqueda": [
+          "office team working",
+          "laptop typing"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Pero fijate el momento exacto.",
+        "busqueda": [
+          "wall clock ticking",
+          "calendar on desk"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Semanas después explotó la burbuja puntocom y casi todas las empresas de internet se fueron a pique.",
+        "busqueda": [
+          "stressed person head in hands",
+          "stock market crash screen"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "El Santander perdió casi toda esa plata, pero Wenceslao ya tenía los dólares en la cuenta.",
+        "busqueda": [
+          "receipt printer",
+          "hands holding cash"
+        ],
+        "se_uso": "un clip de relleno"
+      },
+      {
+        "escena": "En los negocios, saber cuándo salir vale más que la idea.",
+        "busqueda": [
+          "person thinking looking away",
+          "calculator on desk"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Mandáselo a quien está por arrancar un proyecto.",
+        "busqueda": [
+          "hand holding phone",
+          "laptop typing"
+        ],
+        "se_uso": "un clip repetido"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "clip de la bolsa de comercio de buenos aires"
+    ]
   }
 ]
