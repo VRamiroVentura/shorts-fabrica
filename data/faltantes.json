@@ -943,5 +943,63 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-11-06",
+    "turno": 1,
+    "serie": "monotributo",
+    "titulo": "Formulario 2711 de Ganancias",
+    "escenas": [
+      {
+        "escena": "ARCA largó una declaración jurada simplificada para personas humanas.",
+        "busqueda": [
+          "document on desk",
+          "hands working on laptop"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Es el formulario dos mil setecientos once dentro del portal.",
+        "busqueda": [
+          "laptop screen",
+          "fingers typing"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Te viene con datos precargados del organismo y de terceros.",
+        "busqueda": [
+          "data loading screen",
+          "digital receipts"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "La idea es evitar la carga manual que te quema la cabeza.",
+        "busqueda": [
+          "person looking tired at desk",
+          "hands on head"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Eso sí, tenés que cumplir con los requisitos y topes que pide el sistema.",
+        "busqueda": [
+          "checking checklist",
+          "document review"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Fijate bien los detalles en ramacontable.com.ar",
+        "busqueda": [
+          "phone browsing",
+          "reading on screen"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]

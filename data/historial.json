@@ -945,5 +945,39 @@
         "id": "1674819440646603"
       }
     }
+  },
+  {
+    "fecha": "2026-11-06",
+    "turno": 1,
+    "hora": "15:01",
+    "serie": "monotributo",
+    "titulo": "Formulario 2711 de Ganancias",
+    "fuentes": [
+      "qgmSOe1adho",
+      "https://www.ignacioonline.com.ar/arca-extienden-la-suspension-de-juicios-fiscales-y-embargos-hasta-junio-de-2027/",
+      "https://www.ignacioonline.com.ar/sire-iva-arca-incorpora-retenciones-y-percepciones-obligatorias-desde-abril-de-2027/",
+      "https://blogdelcontador.com.ar/news-46466-las-claves-impositivas-de-la-reforma-laboral-menos-impuestos-nuevas-exenciones-y-cambios-en-ganancias",
+      "https://blogdelcontador.com.ar/news-46540-pineyro-arca-reintegro-donacion-garrahan",
+      "https://www.ignacioonline.com.ar/empleados-de-comercio-prorrogan-por-6-meses-el-25-de-aporte-solidario-y-ultraactividad/",
+      "https://blogdelcontador.com.ar/news-46477-arca-habilito-la-declaracion-jurada-simplificada-paso-a-paso-para-el-nuevo-formulario-2711"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17885122089527545"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "18108981863259671"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "t0MAigdJvk4"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "989337000279761"
+      }
+    }
   }
 ]
