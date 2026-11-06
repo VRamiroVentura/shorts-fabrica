@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 139 vistas promedio (3 videos) → después 236 (2 videos): mejoró"
+      "balance": "antes 139 vistas promedio (3 videos) → después 237 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -105,7 +105,7 @@
       "aplica_el": "2026-11-03",
       "aplicada_el": "2026-11-03",
       "como": "automática (sin respuesta)",
-      "balance": "todavía sin videos de 2 días o más para medir"
+      "balance": "antes 136 vistas promedio (1 videos) → después 260 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -157,9 +157,12 @@
       "por_que": "Historias de plata promedia 1477 vistas (con videos de 2691 y 1729) pero no tiene lugar fijo en la grilla, mientras que Viral en el mundo el domingo a las 21:00 promedia apenas 208 vistas.",
       "id": 9,
       "fecha": "2026-11-04",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-04",
-      "aplica_el": "2026-11-06"
+      "aplica_el": "2026-11-06",
+      "aplicada_el": "2026-11-06",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "cambiar_horario",
@@ -187,7 +190,9 @@
       "por_que": "El video '¿Un negocio con un solo plato?' metió 1968 vistas mostrando un formato insólito, pero el de 'Hielo 24hs' se quedó en 197. Conviene estandarizar la estructura que desmonta la ilusión del negocio y revela de dónde sale la ganancia real.",
       "id": 11,
       "fecha": "2026-11-04",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-11-06",
+      "aplica_el": "2026-11-08"
     }
   ]
 }
