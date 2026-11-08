@@ -1154,5 +1154,57 @@
       "clip de un frasco de vidrio abriéndose",
       "dibujito de un pepino sonriendo"
     ]
+  },
+  {
+    "fecha": "2026-11-08",
+    "turno": 1,
+    "serie": "historias",
+    "titulo": "El secreto de la mesa VIP",
+    "escenas": [
+      {
+        "escena": "La entrada barata o las promociones en la puerta son para llenar la pista rápido.",
+        "busqueda": [
+          "vip section nightclub",
+          "expensive champagne bottle"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Con el lugar lleno, le venden mesas VIP a un grupo reducido que busca destacarse.",
+        "busqueda": [
+          "bartender pouring drink",
+          "nightclub bar counter"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Ahí te cobran la misma bebida a un precio insólito solo por estar en un sector exclusivo.",
+        "busqueda": [
+          "hands paying cash",
+          "ticket entrance"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "En la noche y en la vida cotidiana, pagar de más por aparentar sale carísimo.",
+        "busqueda": [
+          "crowded dance floor",
+          "party atmosphere"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Mandáselo a ese amigo que siempre quiere ir a la mesa VIP.",
+        "busqueda": [
+          "fishing hook underwater",
+          "nightclub neon sign"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "dibujito de mesa vip con bengalas"
+    ]
   }
 ]

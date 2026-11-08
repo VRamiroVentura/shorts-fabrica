@@ -1026,5 +1026,30 @@
         "id": "1166519105830398"
       }
     }
+  },
+  {
+    "fecha": "2026-11-08",
+    "turno": 1,
+    "hora": "20:31",
+    "serie": "historias",
+    "titulo": "El secreto de la mesa VIP",
+    "fuentes": [
+      "A1zK48vHp3k",
+      "Qr1Ddn3INFE"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18100639025656844"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "0O3S_caNvmE"
+      },
+      "facebook": {
+        "ok": false,
+        "error": "Facebook no recibió el video: HTTP 412: {\"debug_info\":{\"retriable\":true,\"type\":\"AuthorizationFailedError\",\"message\":\"A temporary failure has occurred. Please try again.\"}}"
+      }
+    }
   }
 ]
