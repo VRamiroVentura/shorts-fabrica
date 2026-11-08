@@ -1,5 +1,5 @@
 {
-  "proximo_id": 12,
+  "proximo_id": 16,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 139 vistas promedio (3 videos) → después 237 (2 videos): mejoró"
+      "balance": "antes 139 vistas promedio (3 videos) → después 224 (3 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -35,7 +35,7 @@
       "aplica_el": "2026-10-30",
       "aplicada_el": "2026-10-30",
       "como": "automática (sin respuesta)",
-      "balance": "antes 89 vistas promedio (2 videos) → después 210 (1 videos): mejoró"
+      "balance": "antes 89 vistas promedio (2 videos) → después 201 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1352 vistas promedio (2 videos) → después 1731 (1 videos): mejoró"
+      "balance": "antes 1352 vistas promedio (2 videos) → después 1732 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "todavía sin videos de 2 días o más para medir"
+      "balance": "antes 2492 vistas promedio (2 videos) → después 5759 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -105,7 +105,7 @@
       "aplica_el": "2026-11-03",
       "aplicada_el": "2026-11-03",
       "como": "automática (sin respuesta)",
-      "balance": "antes 136 vistas promedio (1 videos) → después 260 (2 videos): mejoró"
+      "balance": "antes 136 vistas promedio (1 videos) → después 263 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "todavía sin videos de 2 días o más para medir"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 5759 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "todavía sin videos de 2 días o más para medir"
+      "balance": "antes 152 vistas promedio (2 videos) → después 171 (1 videos): quedó igual"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -176,9 +176,12 @@
       "por_que": "Las 21 h promedia apenas 199 vistas en 5 videos, mientras que la franja de las 20 h promedia 1345 vistas en 4 videos. El domingo a las 13:00 queda a más de 7 horas de distancia.",
       "id": 10,
       "fecha": "2026-11-04",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-05",
-      "aplica_el": "2026-11-07"
+      "aplica_el": "2026-11-07",
+      "aplicada_el": "2026-11-08",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -190,9 +193,66 @@
       "por_que": "El video '¿Un negocio con un solo plato?' metió 1968 vistas mostrando un formato insólito, pero el de 'Hielo 24hs' se quedó en 197. Conviene estandarizar la estructura que desmonta la ilusión del negocio y revela de dónde sale la ganancia real.",
       "id": 11,
       "fecha": "2026-11-04",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-06",
-      "aplica_el": "2026-11-08"
+      "aplica_el": "2026-11-08",
+      "aplicada_el": "2026-11-08",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
+    },
+    {
+      "tipo": "cambiar_serie_dia",
+      "params": {
+        "turno": 1,
+        "dia": "4",
+        "serie": "argentino_que",
+        "antes": "autor"
+      },
+      "titulo": "Poner El argentino que... el jueves a la noche",
+      "por_que": "El argentino que... promedia 3581 vistas y 25 guardados (pico de 5759 vistas), mientras que La idea de... en el turno noche del jueves promedia apenas 122 vistas tras 3 videos.",
+      "id": 12,
+      "fecha": "2026-11-08",
+      "estado": "enviada",
+      "enviada_el": "2026-11-08",
+      "aplica_el": "2026-11-10"
+    },
+    {
+      "tipo": "cambiar_serie_dia",
+      "params": {
+        "turno": 1,
+        "dia": "2",
+        "serie": "datos",
+        "antes": "plata"
+      },
+      "titulo": "Sumar La plata en datos el martes al mediodía",
+      "por_que": "Plata fácil promedia 215 vistas en 3 videos sin guardados. La plata en datos logró 1638 vistas en su único video; ponerla al mediodía aprovecha ese interés probado en números y precios.",
+      "id": 13,
+      "fecha": "2026-11-08",
+      "estado": "pendiente"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "estafas",
+        "texto": "Arrancá siempre mostrando la cifra insólita o la promesa absurda que todos creyeron sin dudar. Explicá en 20 segundos el truco exacto con el que engañaban y la cuenta básica que terminó destapando el fraude. Cerrá con una lección concreta para no caer en avivadas financieras similares hoy."
+      },
+      "titulo": "Enfocar Grandes estafas en el mecanismo del engaño",
+      "por_que": "Grandes estafas promedia solo 233 vistas en 3 videos. Funciona mejor revelar el truco puntual que parecía infalible antes que biografías históricas genéricas.",
+      "id": 14,
+      "fecha": "2026-11-08",
+      "estado": "pendiente"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "monotributo",
+        "texto": "Prohibido arrancar nombrando números de formularios o leyes fiscales. Abrí alertando sobre un descuento indebido, retención bancaria o plata que te saca el fisco sin avisar. Explicá cómo chequearlo en dos pasos simples y cerrá invitando a guardar el video antes de cobrar o facturar."
+      },
+      "titulo": "Bajar Impuestos sin vueltas a pérdida directa de plata",
+      "por_que": "Aunque el cambio de horario a las 15:00 hs subió el promedio a 201 vistas, sigue en 181 generales. Los ganchos burocráticos rinden poco (192 vistas con formularios) frente a advertencias de descuentos indebidos en el recibo (270 vistas).",
+      "id": 15,
+      "fecha": "2026-11-08",
+      "estado": "pendiente"
     }
   ]
 }

@@ -1,60 +1,60 @@
 {
-  "fecha": "2026-11-01",
+  "fecha": "2026-11-08",
   "items": [
     {
-      "fecha": "2026-10-25",
+      "fecha": "2026-11-01",
       "turno": 2,
-      "titulo": "Hielo 24hs: el negocio automático"
+      "titulo": "¿Un negocio con un solo plato?"
     },
     {
-      "fecha": "2026-10-25",
+      "fecha": "2026-11-01",
       "turno": 1,
-      "titulo": "¿Sirve guardar 100 dólares al mes?"
+      "titulo": "¿Por qué no te dura el sueldo?"
     },
     {
-      "fecha": "2026-10-27",
-      "turno": 2,
-      "titulo": "Brasil está un 10 por ciento más barato"
-    },
-    {
-      "fecha": "2026-10-28",
-      "turno": 2,
-      "titulo": "El mito de Disney en La Plata"
-    },
-    {
-      "fecha": "2026-10-28",
+      "fecha": "2026-11-03",
       "turno": 1,
-      "titulo": "FAL: el nuevo fondo para despidos"
+      "titulo": "Sueldo contra inflación"
     },
     {
-      "fecha": "2026-10-29",
+      "fecha": "2026-11-03",
       "turno": 2,
-      "titulo": "Bernie Madoff: la mayor estafa"
+      "titulo": "¿Nafta más cara que en los vecinos?"
     },
     {
-      "fecha": "2026-10-29",
+      "fecha": "2026-11-04",
       "turno": 1,
-      "titulo": "El descuento en tu recibo de sueldo"
+      "titulo": "¿Por qué el café te cuesta el doble?"
     },
     {
-      "fecha": "2026-10-30",
+      "fecha": "2026-11-04",
       "turno": 1,
-      "titulo": "Prórroga en Ganancias"
+      "titulo": "Cinco días sin bancos"
     },
     {
-      "fecha": "2026-10-30",
+      "fecha": "2026-11-04",
       "turno": 2,
-      "titulo": "En un bar de La Plata armaron este negocio"
+      "titulo": "La casa de Le Corbusier en La Plata"
     },
     {
-      "fecha": "2026-10-31",
+      "fecha": "2026-11-05",
       "turno": 2,
-      "titulo": "Casas de lujo bajo tierra por USD 3M"
+      "titulo": "La estafa de Theranos en 1 minuto"
     },
     {
-      "fecha": "2026-10-31",
+      "fecha": "2026-11-05",
       "turno": 1,
-      "titulo": "El negocio oculto de las aerolíneas"
+      "titulo": "Morgan Housel y el truco de la plata"
+    },
+    {
+      "fecha": "2026-11-06",
+      "turno": 1,
+      "titulo": "Formulario 2711 de Ganancias"
+    },
+    {
+      "fecha": "2026-11-06",
+      "turno": 2,
+      "titulo": "El argentino que cobró 750 millones"
     }
   ]
 }

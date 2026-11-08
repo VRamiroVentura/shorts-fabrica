@@ -11,12 +11,16 @@
     ],
     "economia": [
       "Arrancá siempre comparando un gasto diario absurdo en Argentina contra lo que cuesta afuera o contra cuántas horas de laburo insume. Usá tono indignado pero explicativo, cerrando con una pregunta directa para debatir en comentarios."
+    ],
+    "negocios_virales": [
+      "Abrí con una cifra o contradicción absurda del negocio (facturación gigante con costo casi nulo o un producto ridículo). Desglosá en 30 segundos la estructura de costos y revelá el verdadero secreto de cómo ganan guita. Terminá preguntando si pondrían ese negocio en Argentina."
     ]
   },
   "horarios": {
     "5": "15:00",
     "1": "20:30",
-    "4": "20:00"
+    "4": "20:00",
+    "7": "20:30"
   },
   "plan_semanal": {
     "6": "argentino_que",
