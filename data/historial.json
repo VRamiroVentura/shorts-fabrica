@@ -1001,5 +1001,30 @@
         "id": "1433315778921562"
       }
     }
+  },
+  {
+    "fecha": "2026-11-08",
+    "turno": 2,
+    "hora": "13:53",
+    "serie": "negocios_virales",
+    "titulo": "Peluches en frasco: el negocio viral",
+    "fuentes": [
+      "u0r8iOjL5qo",
+      "nkmZkfsB9Bk"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17954506590312582"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "TkpKpeCI7jQ"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1166519105830398"
+      }
+    }
   }
 ]

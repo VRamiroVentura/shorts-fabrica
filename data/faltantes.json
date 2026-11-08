@@ -1069,5 +1069,90 @@
     "material": [
       "clip de la bolsa de comercio de buenos aires"
     ]
+  },
+  {
+    "fecha": "2026-11-08",
+    "turno": 2,
+    "serie": "negocios_virales",
+    "titulo": "Peluches en frasco: el negocio viral",
+    "escenas": [
+      {
+        "escena": "Juntaron dos cosas sencillas y armaron un negocio groso.",
+        "busqueda": [
+          "online shopping delivery box",
+          "hands holding plush toy"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Venden pepinillos de tela adentro de frascos de conserva como si fueran de verdad.",
+        "busqueda": [
+          "pickles glass jar",
+          "sewing plush toy"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Lo que pegó fuerte en TikTok fue la gracia de regalarlos envasados.",
+        "busqueda": [
+          "person holding smartphone video",
+          "wrapping a gift box"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Cobran mucho más cara la unidad solo por la presentación.",
+        "busqueda": [
+          "hand opening glass jar",
+          "hands counting money"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Ahora, si querés armar esto acá en Argentina, hay un tema con el correo.",
+        "busqueda": [
+          "delivery truck traffic",
+          "cardboard boxes warehouse"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "El vidrio suma peso al paquete, se rompe fácil y la encomienda te liquida la ganancia.",
+        "busqueda": [
+          "broken glass close up",
+          "calculator on desk"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "El secreto detrás de esta movida no es la tela ni el cosido.",
+        "busqueda": [
+          "thinking person looking away",
+          "magnifying glass on object"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Es agarrar algo común y empaquetarlo de una forma que dé ganas de coleccionarlo.",
+        "busqueda": [
+          "collection of toys on shelf",
+          "sparkles shining"
+        ],
+        "se_uso": "un clip de relleno"
+      },
+      {
+        "escena": "¿Comprarías uno así para regalar o preferís el formato tradicional? Te leo en los comentarios.",
+        "busqueda": [
+          "person thinking in street",
+          "Buenos Aires street"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "clip de un frasco de vidrio abriéndose",
+      "dibujito de un pepino sonriendo"
+    ]
   }
 ]

@@ -1,65 +1,5 @@
 [
   {
-    "fecha": "2026-10-30",
-    "carpeta": "2026-10-30",
-    "archivos": [
-      "2026-10-30/video.mp4",
-      "2026-10-30/thumb.jpg",
-      "2026-10-30/placa01.jpg",
-      "2026-10-30/placa02.jpg",
-      "2026-10-30/placa03.jpg",
-      "2026-10-30/placa04.jpg",
-      "2026-10-30/placa05.jpg"
-    ]
-  },
-  {
-    "fecha": "2026-10-30",
-    "carpeta": "2026-10-30-t2",
-    "archivos": [
-      "2026-10-30-t2/video.mp4",
-      "2026-10-30-t2/thumb.jpg",
-      "2026-10-30-t2/placa01.jpg",
-      "2026-10-30-t2/placa02.jpg",
-      "2026-10-30-t2/placa03.jpg",
-      "2026-10-30-t2/placa04.jpg",
-      "2026-10-30-t2/placa05.jpg",
-      "2026-10-30-t2/placa06.jpg",
-      "2026-10-30-t2/placa07.jpg",
-      "2026-10-30-t2/placa08.jpg"
-    ]
-  },
-  {
-    "fecha": "2026-10-31",
-    "carpeta": "2026-10-31-t2",
-    "archivos": [
-      "2026-10-31-t2/video.mp4",
-      "2026-10-31-t2/thumb.jpg",
-      "2026-10-31-t2/placa01.jpg",
-      "2026-10-31-t2/placa02.jpg",
-      "2026-10-31-t2/placa03.jpg",
-      "2026-10-31-t2/placa04.jpg",
-      "2026-10-31-t2/placa05.jpg",
-      "2026-10-31-t2/placa06.jpg",
-      "2026-10-31-t2/placa07.jpg"
-    ]
-  },
-  {
-    "fecha": "2026-10-31",
-    "carpeta": "2026-10-31",
-    "archivos": [
-      "2026-10-31/video.mp4",
-      "2026-10-31/thumb.jpg",
-      "2026-10-31/placa01.jpg",
-      "2026-10-31/placa02.jpg",
-      "2026-10-31/placa03.jpg",
-      "2026-10-31/placa04.jpg",
-      "2026-10-31/placa05.jpg",
-      "2026-10-31/placa06.jpg",
-      "2026-10-31/placa07.jpg",
-      "2026-10-31/placa08.jpg"
-    ]
-  },
-  {
     "fecha": "2026-11-01",
     "carpeta": "2026-11-01-t2",
     "archivos": [
@@ -202,6 +142,21 @@
       "2026-11-06-t2/placa05.jpg",
       "2026-11-06-t2/placa06.jpg",
       "2026-11-06-t2/placa07.jpg"
+    ]
+  },
+  {
+    "fecha": "2026-11-08",
+    "carpeta": "2026-11-08-t2",
+    "archivos": [
+      "2026-11-08-t2/video.mp4",
+      "2026-11-08-t2/thumb.jpg",
+      "2026-11-08-t2/placa01.jpg",
+      "2026-11-08-t2/placa02.jpg",
+      "2026-11-08-t2/placa03.jpg",
+      "2026-11-08-t2/placa04.jpg",
+      "2026-11-08-t2/placa05.jpg",
+      "2026-11-08-t2/placa06.jpg",
+      "2026-11-08-t2/placa07.jpg"
     ]
   }
 ]
