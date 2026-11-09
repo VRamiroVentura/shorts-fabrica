@@ -1,7 +1,7 @@
 {
-  "fecha": "2026-11-08",
+  "fecha": "2026-11-09",
   "mejores": [
-    "El argentino que cobró 750 millones (5759 vistas)",
+    "El argentino que cobró 750 millones (5925 vistas)",
     "Vendió su web en 540 millones (2947 vistas)",
     "El negocio oculto de McDonald's (2692 vistas)"
   ],
@@ -11,31 +11,31 @@
     "El método viral de ahorro que acá no camina (5 vistas)"
   ],
   "patrones": [
-    "Historias de negocios basadas en desmontar ilusiones (revelar que el verdadero negocio de una empresa no es lo que vende al público, como aerolíneas operando como bancos).",
-    "Contenido local de alto impacto identitario y orgullo ('El argentino que...') genera el triple de retención y compartidos que los formatos técnicos.",
-    "El dolor del bolsillo inmediato y el miedo al fisco traccionan visualizaciones masivas solo si el gancho plantea una trampa o dinero perdido, no un instructivo burocrático."
+    "Los hooks con números concretos y foco local argentino arrasan en retention (ej. cotizaciones, feriados bancarios, brechas).",
+    "Los temas sobre desmitificar el gasto aspiracional y la acumulación real de liquidez generan altísimo ratio de guardados/compartidos.",
+    "El formato de historias de salida exitosa o 'timing perfecto' (como vender antes de una crisis) despierta morbo y curiosidad emprendedora."
   ],
   "analisis": {
     "patrones": [
-      "Historias de negocios basadas en desmontar ilusiones (revelar que el verdadero negocio de una empresa no es lo que vende al público, como aerolíneas operando como bancos).",
-      "Contenido local de alto impacto identitario y orgullo ('El argentino que...') genera el triple de retención y compartidos que los formatos técnicos.",
-      "El dolor del bolsillo inmediato y el miedo al fisco traccionan visualizaciones masivas solo si el gancho plantea una trampa o dinero perdido, no un instructivo burocrático.",
-      "Contraste de números absurdos y quiebras insólitas: cómo alguien pasó de la cima a no tener un peso en cuestión de horas.",
-      "Cuestionamiento a modelos cotidianos de consumo masivo (pizzerías, cafeterías, comida rápida callejera) analizados desde su estructura de costos y márgenes ocultos."
+      "Los hooks con números concretos y foco local argentino arrasan en retention (ej. cotizaciones, feriados bancarios, brechas).",
+      "Los temas sobre desmitificar el gasto aspiracional y la acumulación real de liquidez generan altísimo ratio de guardados/compartidos.",
+      "El formato de historias de salida exitosa o 'timing perfecto' (como vender antes de una crisis) despierta morbo y curiosidad emprendedora.",
+      "Las referencias visuales genéricas (postales/stock impreciso) tiran abajo la retención cuando el guion menciona cosas técnicas o muy específicas.",
+      "El contenido impositivo super formal o rígido pierde tracción rápido; rinde cuando se conecta con el impacto directo al bolsillo del usuario."
     ],
     "formatos_que_rinden": [
-      "Breakdown de modelo de negocio en 45 segundos: Gancho paradójico + Estructura de costos + Dónde está la verdadera ganancia + Cierre con pregunta de debate.",
-      "Storytelling de ascenso, avivada y caída: Historia narrada con ritmo picado sobre cómo se armó un imperio y el error puntual que lo detonó.",
-      "Desarmando el mito del ahorro tradicional: Comparación directa entre lo que hace la mayoría con su sueldo versus la optimización real contra la inflación.",
-      "Resumen de libro enfocado en una sola regla contraintuitiva: Tomar un concepto único de un autor financiero y bajarlo a un dilema cotidiano criollo.",
-      "Alerta fiscal de impacto directo: Gancho de 'cuidado con tu cuenta' explicando en lenguaje llano una retención o trampa impositiva sin jerga contable."
+      "Casos de estudio 'Caso de Éxito vs. Fracaso' explicados en vertical sin cara con apoyo de material real/b-roll preciso.",
+      "Listas de datos comparativos de costo de vida o precios entre Argentina y la región con placas textuales limpias.",
+      "Explicaciones de libros de finanzas aterrizadas con ejemplos cotidianos del día a día argentino (ej. delibery vs. ahorro).",
+      "Desglose de feriados, operativas bancarias y billeteras virtuales con llamados a la acción de compartidos directa a WhatsApp.",
+      "Historias de estafas o negocios raros del exterior explicados con foco en la lección financiera/alerta de peligro."
     ],
     "estructuras_virales": [
-      "El secreto sucio de la industria: 'Creés que [Empresa X] vende [Producto], pero en realidad el 80% de su plata viene de esto...'",
-      "La paradoja del fundador argentino: 'Tenían solo [Monto bajo] y cero contactos, pero descubrieron una avivada que nadie estaba viendo en el país...'",
-      "La trampa silenciosa de tu sueldo: 'El error que comete el 90% de la gente el día que cobra y le regala plata al banco sin darse cuenta.'",
-      "La estafa que parecía infalible: 'Durante 15 años les pagó a todos sin fallar un solo día, hasta que alguien hizo una cuenta básica en una servilleta.'",
-      "Negocio millonario con costo cero: 'Mirá cómo este tipo convirtió una chatarra inservible en el negocio más caro del mundo para millonarios paranoicos.'"
+      "Hook chocante (Dato/Cifra) + Situación local de dolor + Giro o lección + Llamado a compartir.",
+      "Pregunta contraintuitiva + Caso real (El argentino que...) + Momento de tensión + Moraleja sobre el dinero.",
+      "Mito financiero popular + Exposición del error + Solución práctica en 15 segundos + Guardado para después.",
+      "Hecho insólito + Explicación de cómo hacen plata por detrás + Ejemplo de aplicación rápida.",
+      "Noticia impositiva/bancaria rápida + Impacto en tu cuenta en 3 puntos + Qué tenés que hacer hoy."
     ]
   }
 }

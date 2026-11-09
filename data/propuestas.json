@@ -1,5 +1,5 @@
 {
-  "proximo_id": 16,
+  "proximo_id": 19,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -35,7 +35,7 @@
       "aplica_el": "2026-10-30",
       "aplicada_el": "2026-10-30",
       "como": "automática (sin respuesta)",
-      "balance": "antes 89 vistas promedio (2 videos) → después 201 (2 videos): mejoró"
+      "balance": "antes 89 vistas promedio (2 videos) → después 202 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 2492 vistas promedio (2 videos) → después 5759 (1 videos): mejoró"
+      "balance": "antes 2492 vistas promedio (2 videos) → después 5925 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 5759 (1 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 5925 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -228,7 +228,7 @@
       "por_que": "Plata fácil promedia 215 vistas en 3 videos sin guardados. La plata en datos logró 1638 vistas en su único video; ponerla al mediodía aprovecha ese interés probado en números y precios.",
       "id": 13,
       "fecha": "2026-11-08",
-      "estado": "pendiente"
+      "estado": "reemplazada"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -240,7 +240,7 @@
       "por_que": "Grandes estafas promedia solo 233 vistas en 3 videos. Funciona mejor revelar el truco puntual que parecía infalible antes que biografías históricas genéricas.",
       "id": 14,
       "fecha": "2026-11-08",
-      "estado": "pendiente"
+      "estado": "reemplazada"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -252,6 +252,44 @@
       "por_que": "Aunque el cambio de horario a las 15:00 hs subió el promedio a 201 vistas, sigue en 181 generales. Los ganchos burocráticos rinden poco (192 vistas con formularios) frente a advertencias de descuentos indebidos en el recibo (270 vistas).",
       "id": 15,
       "fecha": "2026-11-08",
+      "estado": "reemplazada"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "historias",
+        "texto": "Iniciá siempre la escena 1 con una cifra o monto exacto millonario para generar impacto inmediato. Enfocá el desarrollo en el modelo de negocio oculto o la jugada financiera detrás del caso, manteniendo un ritmo dinámico y rematando con una lección concreta sobre el dinero."
+      },
+      "titulo": "Aplicar ganchos con cifras millonarias a Historias de plata",
+      "por_que": "El cambio #4 demostró que meter cifras millonarias en el gancho de 'El argentino que...' duplicó las vistas (de 2492 a 5925 vistas promedio). Historias de plata es nuestra segunda serie con mejor rendimiento (1479 vistas promedio), y su video más visto fue 'El negocio oculto de McDonald's' con 2692 vistas.",
+      "id": 16,
+      "fecha": "2026-11-09",
+      "estado": "pendiente"
+    },
+    {
+      "tipo": "cambiar_horario",
+      "params": {
+        "turno": 2,
+        "dia": "3",
+        "hora": "17:30",
+        "antes": "13:00"
+      },
+      "titulo": "Mover turno 2 del miércoles a las 20:00 hs",
+      "por_que": "La Plata secreta se emite en el turno 2 del miércoles a las 13:00 hs, un horario que promedia 516 vistas generales frente a las 1874 vistas promedio de la franja de las 20:00 hs. Sus videos rinden bien (hasta 1421 vistas) y un horario nocturno le dará mayor alcance manteniendo las 4 horas de distancia respecto al turno 1 (21:30 hs).",
+      "id": 17,
+      "fecha": "2026-11-09",
+      "estado": "pendiente"
+    },
+    {
+      "tipo": "carrusel_siempre",
+      "params": {
+        "serie": "datos",
+        "activar": true
+      },
+      "titulo": "Activar carrusel en la serie La plata en datos",
+      "por_que": "La competencia rompe récords con datos comparativos visuales e infografías limpias. Nuestro único video de 'La plata en datos' ('¿Nafta más cara que en los vecinos?') logró 1638 vistas pero 0 guardados. El formato carrusel facilitará que los usuarios guarden y comparen las placas informativas.",
+      "id": 18,
+      "fecha": "2026-11-09",
       "estado": "pendiente"
     }
   ]
