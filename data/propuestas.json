@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 2492 vistas promedio (2 videos) → después 5925 (1 videos): mejoró"
+      "balance": "antes 2492 vistas promedio (2 videos) → después 5927 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 5925 (1 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 5927 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -264,7 +264,9 @@
       "por_que": "El cambio #4 demostró que meter cifras millonarias en el gancho de 'El argentino que...' duplicó las vistas (de 2492 a 5925 vistas promedio). Historias de plata es nuestra segunda serie con mejor rendimiento (1479 vistas promedio), y su video más visto fue 'El negocio oculto de McDonald's' con 2692 vistas.",
       "id": 16,
       "fecha": "2026-11-09",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-11-09",
+      "aplica_el": "2026-11-11"
     },
     {
       "tipo": "cambiar_horario",
