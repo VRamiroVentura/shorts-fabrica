@@ -1080,5 +1080,27 @@
         "id": "1077777285305370"
       }
     }
+  },
+  {
+    "fecha": "2026-11-10",
+    "turno": 2,
+    "hora": "20:31",
+    "serie": "datos",
+    "titulo": "Inflación: Argentina vs región",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18077533328752695"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "jIBTFhy0HZ0"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "29368060336159317"
+      }
+    }
   }
 ]

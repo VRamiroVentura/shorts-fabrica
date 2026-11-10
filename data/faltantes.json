@@ -1258,5 +1258,63 @@
     "material": [
       "captura de pantalla de rendimientos de una billetera virtual local"
     ]
+  },
+  {
+    "fecha": "2026-11-10",
+    "turno": 2,
+    "serie": "datos",
+    "titulo": "Inflación: Argentina vs región",
+    "escenas": [
+      {
+        "escena": "Perú cerró el año pasado con tres coma dos por ciento.",
+        "busqueda": [
+          "bar chart growing",
+          "infographic graph"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Colombia llegó al nueve coma tres.",
+        "busqueda": [
+          "economic chart animation",
+          "data visualization"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Ibas al súper a comprar un paquete de fideos.",
+        "busqueda": [
+          "supermarket aisle cart",
+          "grocery shopping hands"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Y al mes siguiente el mismo paquete salía el doble.",
+        "busqueda": [
+          "receipt printer checkout",
+          "price tag changing"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Mientras afuera los precios casi ni se movían.",
+        "busqueda": [
+          "person holding wallet cash",
+          "counting argentine pesos"
+        ],
+        "se_uso": "un clip de relleno"
+      },
+      {
+        "escena": "Contame qué número te sorprendió más.",
+        "busqueda": [
+          "person thinking looking at phone",
+          "hand holding phone"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]
