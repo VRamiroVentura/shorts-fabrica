@@ -1206,5 +1206,57 @@
     "material": [
       "dibujito de mesa vip con bengalas"
     ]
+  },
+  {
+    "fecha": "2026-11-10",
+    "turno": 1,
+    "serie": "plata",
+    "titulo": "El truco del banco para que pierdas",
+    "escenas": [
+      {
+        "escena": "Parece que hacés trabajar la guita, pero fijate: la inflación siempre corre más rápido que la tasa.",
+        "busqueda": [
+          "hands counting money",
+          "wallet with cash"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "A fin de mes el número es más grande, pero comprás menos cosas. Es de manual.",
+        "busqueda": [
+          "supermarket aisle",
+          "empty grocery cart"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Y encima te dejan la plata atada treinta días. Si tenés una urgencia, no la podés tocar.",
+        "busqueda": [
+          "padlock on document",
+          "locked safe"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Fijate en las billeteras virtuales. Te dan un rendimiento diario y la usás cuando querés.",
+        "busqueda": [
+          "hand holding smartphone",
+          "mobile banking app"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "No es magia, es liquidez. Mandáselo a ese amigo que todavía cree que el banco le regala algo.",
+        "busqueda": [
+          "sharing phone screen",
+          "friends talking"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "captura de pantalla de rendimientos de una billetera virtual local"
+    ]
   }
 ]

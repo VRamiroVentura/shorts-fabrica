@@ -1051,5 +1051,34 @@
         "error": "Facebook no recibió el video: HTTP 412: {\"debug_info\":{\"retriable\":true,\"type\":\"AuthorizationFailedError\",\"message\":\"A temporary failure has occurred. Please try again.\"}}"
       }
     }
+  },
+  {
+    "fecha": "2026-11-10",
+    "turno": 1,
+    "hora": "14:56",
+    "serie": "plata",
+    "titulo": "El truco del banco para que pierdas",
+    "fuentes": [
+      "oKsxUe3V0AU",
+      "zxHkJp7Itww"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18124228534938205"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "18004285074040308"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "AyfhtsTjMmw"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1077777285305370"
+      }
+    }
   }
 ]
