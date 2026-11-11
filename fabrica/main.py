@@ -278,9 +278,9 @@ def estilo_visual(cfg, clave_serie, contenido):
 
 
 def _producir(cfg, clave_serie, serie, contenido, fuentes, fuentes_detalle, firma_base, fecha, turno, nombre_carpeta,
-              evitar=(), version=1):
+              evitar=(), version=1, nota_url=""):
     """Arma placas, video y portada en out/sitio/<nombre_carpeta> y devuelve la publicación."""
-    from . import carrusel, montaje
+    from . import carrusel, montaje, portal
     carpeta = SITIO / nombre_carpeta
     if carpeta.exists():
         shutil.rmtree(carpeta)
@@ -305,13 +305,21 @@ def _producir(cfg, clave_serie, serie, contenido, fuentes, fuentes_detalle, firm
     if meta_video.get("clips_stock"):
         firma = firma + f'\nVideos de stock: {meta_video.get("banco")}.'
     tags = " ".join(contenido["hashtags"])
+    descripcion = contenido["descripcion"]
+    desc_yt = descripcion
+    if carrusel.es_contable(contenido, serie["nombre"]):
+        # Videos contables: la línea del blog va siempre primero (por código, no depende de la IA)
+        descripcion = desc_yt = portal.con_linea_blog(descripcion)
+        if nota_url:  # en YouTube el link se puede tocar: va directo a la nota
+            desc_yt = f'{portal.LINEA_BLOG}\nNota completa: {portal.enlace(nota_url, "youtube")}\n\n' + \
+                      descripcion.replace(portal.LINEA_BLOG, "").strip()
     return {
         "fecha": fecha,
         "serie": clave_serie,
         "serie_nombre": serie["nombre"],
         "titulo": contenido["titulo"],
-        "caption": f'{contenido["titulo"]}\n\n{contenido["descripcion"]}\n\n{firma}\n\n{tags}'.strip(),
-        "descripcion_youtube": f'{contenido["descripcion"]}\n\n{firma}\n\n{tags} #shorts'.strip(),
+        "caption": f'{contenido["titulo"]}\n\n{descripcion}\n\n{firma}\n\n{tags}'.strip(),
+        "descripcion_youtube": f'{desc_yt}\n\n{firma}\n\n{tags} #shorts'.strip(),
         "tags": [t.lstrip("#") for t in contenido["hashtags"]],
         "guion": " ".join(e["texto_voz"] for e in contenido["escenas"]),
         "fuentes": fuentes,
@@ -325,6 +333,7 @@ def _producir(cfg, clave_serie, serie, contenido, fuentes, fuentes_detalle, firm
         "base": _carpeta(fecha, turno),
         "firma_base": firma_base,
         "version": version,
+        "nota_portal": nota_url or "",
     }
 
 
@@ -367,11 +376,25 @@ def generar(simulado=False):
         fuentes = [_fuente_tema(tema)]
         util.log("Tema pedido:", tema["titulo"], "(en lugar del tema del día)")
     elif serie.get("modo") == "contable" and not simulado:
-        from . import contable
-        fuentes = contable.buscar(cfg.get("referentes_contables", {}), clave_yt, usados,
-                                  cfg.get("fuentes_por_video", 2))
-        util.log("Fuentes:", [f'{f["canal"]}: {f["titulo"][:90]} ({f.get("tipo")}, {f.get("score")})'
-                              for f in fuentes] or "ninguna, la IA elige el tema")
+        from . import contable, portal
+        referentes = contable.buscar(cfg.get("referentes_contables", {}), clave_yt, usados,
+                                     cfg.get("fuentes_por_video", 2))
+        util.log("Referentes:", [f'{f["canal"]}: {f["titulo"][:90]} ({f.get("tipo")}, {f.get("score")})'
+                                 for f in referentes] or "ninguno")
+        nota, ref = None, None
+        if cfg.get("portal_primero", True):  # una nota ya verificada del portal, si es atractiva
+            datos_portal = portal.traer(cfg)
+            minimo = float(cfg.get("portal_puntaje_minimo", 7))
+            if minimo > 0:
+                nota, ref = portal.elegir(datos_portal, usados, referentes, cfg.get("portal_dias", 7), minimo)
+            else:
+                nota = portal.nota_para_video(datos_portal, usados, cfg.get("portal_dias", 7))
+        if nota:
+            fuentes = [nota] + ([ref] if ref else [])
+            util.log("Tema del portal:", nota["titulo"], nota["score"], nota["url"])
+        else:
+            fuentes = referentes
+            util.log("Sin nota del portal que valga un video: sigo con los referentes")
     elif clave_yt and not simulado:
         try:
             if serie.get("modo") == "virales":
@@ -415,8 +438,9 @@ def generar(simulado=False):
                  ", ".join(f'{f["canal"]} ({f["pais"]})' for f in fuentes) + ".\n" + firma)
     detalle = [{"canal": f["canal"], "titulo": f["titulo"], "score": f.get("score") or f.get("pais", "")}
                for f in fuentes]
+    nota_url = next((f["url"] for f in fuentes if f.get("portal")), "")
     publicacion = _producir(cfg, clave_serie, serie, contenido, [f["id"] for f in fuentes], detalle, firma,
-                            fecha, turno, nombre_carpeta)
+                            fecha, turno, nombre_carpeta, nota_url=nota_url)
     if tema:
         publicacion["tema_id"] = tema["id"]
     util.guardar_json("out/publicacion.json", publicacion)
@@ -459,7 +483,7 @@ def rehacer():
     try:
         nueva = _producir(cfg, p["serie"], serie, contenido, p.get("fuentes", []), p.get("fuentes_detalle", []),
                           p.get("firma_base", cfg.get("firma", "")), p["fecha"], p.get("turno", 1), nombre,
-                          evitar=evitar, version=version)
+                          evitar=evitar, version=version, nota_url=p.get("nota_portal", ""))
     except Exception as e:  # noqa
         # si algo falla, no se pierde el día: sale la versión anterior
         util.avisar("No pude rehacer el video", f"Sale la versión anterior. Motivo: {util.ocultar(e)}")
