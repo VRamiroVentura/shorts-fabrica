@@ -1102,5 +1102,27 @@
         "id": "29368060336159317"
       }
     }
+  },
+  {
+    "fecha": "2026-11-11",
+    "turno": 2,
+    "hora": "15:01",
+    "serie": "laplata",
+    "titulo": "El invento platense que usa el FBI",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17897087232654425"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "l_TRq8EMKxw"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1687645916295141"
+      }
+    }
   }
 ]

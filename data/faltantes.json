@@ -1316,5 +1316,81 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-11-11",
+    "turno": 2,
+    "serie": "laplata",
+    "titulo": "El invento platense que usa el FBI",
+    "escenas": [
+      {
+        "escena": "Hasta ese momento, identificar a alguien era un desastre.",
+        "busqueda": [
+          "old documents background",
+          "magnifying glass on text"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Medían la longitud de los brazos, la oreja y usaban fotos de re mala calidad.",
+        "busqueda": [
+          "tape measure hands",
+          "vintage camera portrait"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Una mancha de sangre con una huella delató a una asesina en Quequén.",
+        "busqueda": [
+          "fingerprint on glass",
+          "police evidence"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Policías de Europa y Estados Unidos vinieron hasta acá a copiarle la idea.",
+        "busqueda": [
+          "airplane flying",
+          "old train station"
+        ],
+        "se_uso": "un clip de relleno"
+      },
+      {
+        "escena": "Scotland Yard y el FBI terminaron usando el método ideado acá a metros de plaza Paso.",
+        "busqueda": [
+          "police badge close up",
+          "hands holding documents"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Vucetich no cobró ni un peso de regalías por su patente y donó todo su archivo a la Universidad de La Plata.",
+        "busqueda": [
+          "argentine pesos",
+          "handwriting letter"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Con lo que tenía a mano resolvió un problema gigante.",
+        "busqueda": [
+          "man thinking notebook",
+          "laptop typing"
+        ],
+        "se_uso": "un clip de relleno"
+      },
+      {
+        "escena": "Mandáselo a algún platense para que saque pecho.",
+        "busqueda": [
+          "hand holding phone",
+          "messaging app screen"
+        ],
+        "se_uso": "un clip aproximado"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "foto de las fichas dactilares originales de Juan Vucetich"
+    ]
   }
 ]
