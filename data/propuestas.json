@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 139 vistas promedio (3 videos) → después 225 (3 videos): mejoró"
+      "balance": "antes 139 vistas promedio (3 videos) → después 226 (3 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -35,7 +35,7 @@
       "aplica_el": "2026-10-30",
       "aplicada_el": "2026-10-30",
       "como": "automática (sin respuesta)",
-      "balance": "antes 89 vistas promedio (2 videos) → después 203 (2 videos): mejoró"
+      "balance": "antes 89 vistas promedio (2 videos) → después 204 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 2495 vistas promedio (2 videos) → después 5995 (1 videos): mejoró"
+      "balance": "antes 2495 vistas promedio (2 videos) → después 6060 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 5995 (1 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 6060 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -198,7 +198,7 @@
       "aplica_el": "2026-11-08",
       "aplicada_el": "2026-11-08",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1084 vistas promedio (2 videos) → después 145 (1 videos): empeoró"
+      "balance": "antes 1084 vistas promedio (2 videos) → después 146 (1 videos): empeoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -267,9 +267,12 @@
       "por_que": "El cambio #4 demostró que meter cifras millonarias en el gancho de 'El argentino que...' duplicó las vistas (de 2492 a 5925 vistas promedio). Historias de plata es nuestra segunda serie con mejor rendimiento (1479 vistas promedio), y su video más visto fue 'El negocio oculto de McDonald's' con 2692 vistas.",
       "id": 16,
       "fecha": "2026-11-09",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-09",
-      "aplica_el": "2026-11-11"
+      "aplica_el": "2026-11-11",
+      "aplicada_el": "2026-11-11",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "cambiar_horario",
@@ -297,7 +300,9 @@
       "por_que": "La competencia rompe récords con datos comparativos visuales e infografías limpias. Nuestro único video de 'La plata en datos' ('¿Nafta más cara que en los vecinos?') logró 1638 vistas pero 0 guardados. El formato carrusel facilitará que los usuarios guarden y comparen las placas informativas.",
       "id": 18,
       "fecha": "2026-11-09",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-11-11",
+      "aplica_el": "2026-11-13"
     }
   ]
 }
