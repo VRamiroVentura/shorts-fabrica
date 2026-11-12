@@ -1,5 +1,5 @@
 {
-  "proximo_id": 19,
+  "proximo_id": 20,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 139 vistas promedio (3 videos) → después 226 (3 videos): mejoró"
+      "balance": "antes 140 vistas promedio (3 videos) → después 226 (3 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -35,7 +35,7 @@
       "aplica_el": "2026-10-30",
       "aplicada_el": "2026-10-30",
       "como": "automática (sin respuesta)",
-      "balance": "antes 89 vistas promedio (2 videos) → después 204 (2 videos): mejoró"
+      "balance": "antes 90 vistas promedio (2 videos) → después 204 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1352 vistas promedio (2 videos) → después 1809 (2 videos): mejoró"
+      "balance": "antes 1352 vistas promedio (2 videos) → después 1810 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 2495 vistas promedio (2 videos) → después 6060 (1 videos): mejoró"
+      "balance": "antes 2495 vistas promedio (2 videos) → después 6111 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 6060 (1 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 6111 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -162,7 +162,7 @@
       "aplica_el": "2026-11-06",
       "aplicada_el": "2026-11-06",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1886 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1888 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -181,7 +181,7 @@
       "aplica_el": "2026-11-07",
       "aplicada_el": "2026-11-08",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1886 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1888 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -286,9 +286,10 @@
       "por_que": "La Plata secreta se emite en el turno 2 del miércoles a las 13:00 hs, un horario que promedia 516 vistas generales frente a las 1874 vistas promedio de la franja de las 20:00 hs. Sus videos rinden bien (hasta 1421 vistas) y un horario nocturno le dará mayor alcance manteniendo las 4 horas de distancia respecto al turno 1 (21:30 hs).",
       "id": 17,
       "fecha": "2026-11-09",
-      "estado": "enviada",
+      "estado": "descartada",
       "enviada_el": "2026-11-10",
-      "aplica_el": "2026-11-12"
+      "aplica_el": "2026-11-12",
+      "motivo": "tiene que quedar a 4 horas o más del otro video de ese día"
     },
     {
       "tipo": "carrusel_siempre",
@@ -303,6 +304,20 @@
       "estado": "enviada",
       "enviada_el": "2026-11-11",
       "aplica_el": "2026-11-13"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "monotributo",
+        "texto": "Explicá el impacto impositivo directamente en pesos perdidos o ahorrados en el bolsillo del contribuyente. Usá un lenguaje simple y directo de calle sin modismos contables rígidos."
+      },
+      "titulo": "Enfocar Impuestos sin vueltas en el golpe directo al bolsillo",
+      "por_que": "Impuestos sin vueltas subió a 226 vistas con los últimos ganchos (#1 mejoró), pero sigue abajo con 183 de promedio. Los temas con impacto inmediato en pesos como Ganancias o el recibo generan más retención.",
+      "id": 19,
+      "fecha": "2026-11-12",
+      "estado": "enviada",
+      "enviada_el": "2026-11-12",
+      "aplica_el": "2026-11-14"
     }
   ]
 }
