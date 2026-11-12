@@ -1,0 +1,41 @@
+name: Muestra de animación (Remotion)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  muestra:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: animaciones
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar Remotion
+        run: npm install --no-audit --no-fund
+
+      - name: Preparar el navegador que usa Remotion
+        run: npx remotion browser ensure || echo "Sigue igual, lo baja al renderizar"
+
+      - name: Armar el video de muestra (8 segundos)
+        run: npx remotion render src/index.ts Promo out/muestra.mp4
+
+      - name: Armar el GIF chico
+        run: npx remotion render src/index.ts Promo out/muestra.gif --codec=gif --scale=0.4 --every-nth-frame=2
+
+      - name: Subir video y GIF
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: muestra-animacion
+          path: animaciones/out/
+          retention-days: 7
