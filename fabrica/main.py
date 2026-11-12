@@ -74,7 +74,7 @@ def _semana():
 def _resolver_plan(cfg, valor, dia, turno):
     valor = str(valor or "").strip()
     series = cfg["series"]
-    if valor in series:
+    if valor in series and valor != "capitulos":
         return valor
     if valor == "capitulos":
         try:
@@ -162,6 +162,11 @@ def _serie_con_tema(serie, tema):
                    + tema.get("prompt", "").strip() + "\n"
                    "- Usá SOLO los datos del MATERIAL DE REFERENCIA, que están chequeados a mano. No agregues montos, "
                    "fechas, porcentajes ni requisitos que no estén ahí.")
+    cierre = (tema.get("cierre") or {}).get("voz")
+    if cierre:  # el cierre lo pone la fábrica: que el guion no lo anticipe ni lo repita
+        s["prompt"] += ("\n- La última escena ya está escrita y la pone la fábrica: «" + cierre.strip() + "». Escribí el resto "
+                        "para que termine justo antes de eso: no anticipes ni repitas esa idea ni sus palabras en la "
+                        "escena anterior.")
     if tema.get("palabras_max"):
         s["palabras_max"] = tema["palabras_max"]
     return s
@@ -497,7 +502,14 @@ def generar(simulado=False):
     else:
         util.log("Sin YT_API_KEY: la IA elige el tema dentro de la serie")
 
-    if simulado:
+    guardado = None
+    if tema and tema.get("capitulo"):  # capítulo de serie: se usa el guion revisado 2 días antes, tal cual
+        from . import capitulos
+        guardado = capitulos.contenido_guardado(tema["id"])
+    if guardado:
+        contenido = guardado
+        util.log("Uso el guion revisado del capítulo:", tema["id"])
+    elif simulado:
         contenido = escritor.validar(json.loads((util.RAIZ / "data" / "ejemplo_contenido.json").read_text(encoding="utf-8")))
     else:
         try:
@@ -527,7 +539,7 @@ def generar(simulado=False):
         contenido["carrusel"] = _carrusel_tema(tema)
     if tema:
         contenido = _aplicar_cierre(contenido, tema)
-    if tema and tema.get("capitulo"):
+    if tema and tema.get("capitulo") and not contenido.get("animacion"):
         from . import capitulos
         contenido = capitulos.animar(contenido, tema)
 
@@ -554,6 +566,50 @@ def generar(simulado=False):
     if not simulado:
         _anotar_sitio(anteriores, publicacion)
     util.log("Listo:", contenido["titulo"])
+
+
+def _guion_capitulo(cfg, tema, cambios=""):
+    """Escribe (o corrige) el guion de un capítulo, lo anima y lo guarda en data/guiones/."""
+    from . import capitulos, escritor
+    serie = _serie_con_tema(_serie(cfg, "capitulos"), tema)
+    previo = capitulos.contenido_guardado(tema["id"])
+    if cambios and previo:
+        contenido = escritor.aplicar_cambios(serie, previo, cambios)
+    else:
+        contenido = escritor.escribir(serie, [_fuente_tema(tema)], [])
+    contenido = _aplicar_cierre(contenido, tema)
+    contenido = capitulos.animar(dict(contenido, animacion=None), tema)
+    capitulos.guardar_guion(tema, contenido, "corregido" if cambios else "para revisar")
+    return contenido
+
+
+def preparar_capitulo():
+    """Lunes: arma el guion del capítulo del miércoles y te lo manda con asunto URGENTE para revisarlo con tiempo."""
+    from . import capitulos
+    cfg = util.config()
+    tema = capitulos.tema_de_hoy(cfg)
+    if not tema:
+        util.log("No hay capítulos pendientes.")
+        return
+    contenido = capitulos.contenido_guardado(tema["id"])
+    if contenido:
+        util.log("El capítulo ya tiene guion guardado: te lo mando para revisar.")
+    else:
+        contenido = _guion_capitulo(cfg, tema)
+    capitulos.mail_revision(tema, contenido)
+
+
+def corregir_capitulo():
+    """Aplica los cambios que escribiste (workflow «Corregir guion») al guion del próximo capítulo."""
+    from . import capitulos
+    cfg = util.config()
+    cambios = (os.getenv("CAMBIOS") or "").strip()
+    tema = capitulos.tema_de_hoy(cfg)
+    if not tema or not cambios:
+        util.log("No hay capítulo pendiente o no escribiste cambios.")
+        return
+    contenido = _guion_capitulo(cfg, tema, cambios)
+    capitulos.mail_revision(tema, contenido, " (corregido)")
 
 
 def rehacer():
@@ -1325,7 +1381,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("accion", choices=["generar", "publicar", "resumen", "reporte", "toca", "esperar", "probar",
                                        "rehacer", "listo", "revisar", "online", "mejoras", "sugerencia", "tiktok",
-                                       "reintentar"])
+                                       "reintentar", "preparar_capitulo", "corregir_capitulo"])
     ap.add_argument("--ultima", action="store_true")
     ap.add_argument("--base-url", default="")
     ap.add_argument("--simulado", action="store_true")
@@ -1333,6 +1389,10 @@ if __name__ == "__main__":
     try:
         if a.accion == "toca":
             toca()
+        elif a.accion == "preparar_capitulo":
+            preparar_capitulo()
+        elif a.accion == "corregir_capitulo":
+            corregir_capitulo()
         elif a.accion == "mejoras":
             from . import mejoras
             mejoras.diario(regenerar=_proponer_hoy, medir=lambda: _para_mejoras(util.config())[0])

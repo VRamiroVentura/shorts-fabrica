@@ -1,0 +1,220 @@
+{
+  "id": "mdc-0",
+  "titulo": "¿Monotributista o Responsable Inscripto?",
+  "estado": "revisado",
+  "actualizado": "2026-11-16 10:00",
+  "_ayuda": "Podés corregir el texto de cada escena (texto_voz = lo que dice la voz; texto_pantalla = lo que se lee). Respetá las comillas y las comas. O usá el workflow «Corregir guion» y escribí los cambios.",
+  "contenido": {
+    "titulo": "¿Monotributo o Responsable Inscripto? La diferencia real",
+    "descripcion": "Más info en ramacontable.com.ar, nuestro blog para contadores (link en la bio).\nA muchos les da miedo pasar a Responsable Inscripto, pero a veces conviene. La diferencia no es cuánto ganás, sino cómo pagás. ¿Vos cuál sos y por qué?",
+    "hashtags": [
+      "#monotributo",
+      "#responsableinscripto",
+      "#impuestos",
+      "#arca",
+      "#emprendedores",
+      "#argentina"
+    ],
+    "miniatura": {
+      "linea1": "¿Monotributo o RI?",
+      "linea2": "Cuál te conviene",
+      "emoji": "⚖️",
+      "prompt": ""
+    },
+    "escenas": [
+      {
+        "texto_voz": "A muchos les da terror pasar a Responsable Inscripto, pero a veces conviene más que el monotributo.",
+        "texto_pantalla": "¿Monotributo o RI?",
+        "emoji": "😱",
+        "prompt": "",
+        "broll": [
+          "worried person laptop",
+          "accountant desk papers"
+        ]
+      },
+      {
+        "texto_voz": "La gran diferencia no es cuánto ganás, sino cómo pagás los impuestos.",
+        "texto_pantalla": "Cómo pagás los impuestos",
+        "emoji": "⚖️",
+        "prompt": "",
+        "broll": [
+          "scale balance money",
+          "tax documents"
+        ]
+      },
+      {
+        "texto_voz": "El monotributo te cobra una cuota fija todos los meses. Ahí adentro ya están el IVA, Ganancias, la jubilación y la obra social.",
+        "texto_pantalla": "Una cuota fija",
+        "emoji": "💳",
+        "prompt": "",
+        "broll": [
+          "paying bill phone",
+          "monthly calendar"
+        ]
+      },
+      {
+        "texto_voz": "Imaginate que laburás solo con la compu y casi no tenés gastos: ahí el monotributo te re sirve.",
+        "texto_pantalla": "Pocos gastos: monotributo",
+        "emoji": "💻",
+        "prompt": "",
+        "broll": [
+          "freelancer laptop home",
+          "designer working computer"
+        ]
+      },
+      {
+        "texto_voz": "El Responsable Inscripto funciona al revés: pagás Ganancias sobre lo que te queda limpio, después de restar los costos.",
+        "texto_pantalla": "Ganancias sobre lo que ganás",
+        "emoji": "📊",
+        "prompt": "",
+        "broll": [
+          "calculator expenses",
+          "business accounting"
+        ]
+      },
+      {
+        "texto_voz": "Y además descontás el IVA de las facturas que te hacen tus proveedores cuando comprás para el negocio.",
+        "texto_pantalla": "Descontás el IVA de tus compras",
+        "emoji": "🧾",
+        "prompt": "",
+        "broll": [
+          "receipt invoice shop",
+          "buying supplies store"
+        ]
+      },
+      {
+        "texto_voz": "Pensá en alguien con un local, que compra mercadería y paga un alquiler caro: con tantos gastos, pagar según lo que realmente gana puede convenirle.",
+        "texto_pantalla": "Muchos gastos: puede convenir RI",
+        "emoji": "🏪",
+        "prompt": "",
+        "broll": [
+          "small shop owner",
+          "store shelves merchandise"
+        ]
+      },
+      {
+        "texto_voz": "Ojo: los aportes de autónomo y la obra social van por separado.",
+        "texto_pantalla": "Autónomos y obra social, aparte",
+        "emoji": "⚠️",
+        "prompt": "",
+        "broll": [
+          "health insurance card",
+          "retirement savings"
+        ]
+      },
+      {
+        "texto_voz": "Ser Responsable Inscripto no siempre es una tragedia: a veces es mejor que hacer malabares, o hacer las cosas mal, para seguir en el monotributo. Los topes de hoy, en rama contable punto com punto ar.",
+        "texto_pantalla": "Topes de hoy en ramacontable.com.ar",
+        "emoji": "⚖️",
+        "prompt": "",
+        "broll": [
+          "juggling balls",
+          "person smiling relief"
+        ]
+      }
+    ],
+    "carrusel": [
+      {
+        "titulo": "¿Monotributo o Responsable Inscripto?",
+        "cuerpo": "La diferencia real, explicada fácil",
+        "emoji": "⚖️"
+      },
+      {
+        "titulo": "Monotributo",
+        "cuerpo": "Una cuota fija por mes. Incluye IVA, Ganancias, jubilación y obra social.",
+        "emoji": "💳"
+      },
+      {
+        "titulo": "Responsable Inscripto",
+        "cuerpo": "Pagás Ganancias sobre lo que ganás (ingresos menos gastos) y descontás el IVA de tus compras.",
+        "emoji": "📊"
+      },
+      {
+        "titulo": "¿Cuándo conviene cada uno?",
+        "cuerpo": "Pocos gastos: monotributo.\nMuchos gastos o clientes empresas: puede convenir RI.",
+        "emoji": "🤔"
+      },
+      {
+        "titulo": "Ojo",
+        "cuerpo": "Como RI, los aportes de autónomo y la obra social van aparte.",
+        "emoji": "⚠️"
+      },
+      {
+        "titulo": "Guardalo y mandáselo a quien lo dude",
+        "cuerpo": "Más información en ramacontable.com.ar",
+        "emoji": "📌"
+      }
+    ],
+    "estilo_visual": "oscuro",
+    "dibujitos_faltantes": [],
+    "material_que_faltaria": [],
+    "palabras": 180,
+    "animacion": {
+      "serie": null,
+      "piezas": [
+        {
+          "tipo": "titulo",
+          "texto": "¿Monotributo o Responsable Inscripto?",
+          "icono": "calculadora",
+          "cinta": "¿Cuál te conviene?"
+        },
+        {
+          "tipo": "barrido",
+          "texto": "Cómo pagás"
+        },
+        {
+          "tipo": "etiquetas",
+          "palabra": "Cuota fija",
+          "cintas": [
+            "IVA + Ganancias",
+            "Jubilación + obra social"
+          ],
+          "icono_orbita": "moneda"
+        },
+        {
+          "tipo": "titulo",
+          "texto": "Pocos gastos: monotributo",
+          "icono": "billetera"
+        },
+        {
+          "tipo": "banda",
+          "numero": 1,
+          "texto": "Ganancias real",
+          "icono": "grafico",
+          "detalle": "Sobre lo que te queda, restando costos"
+        },
+        {
+          "tipo": "banda",
+          "numero": 2,
+          "texto": "IVA de compras",
+          "icono": "factura",
+          "detalle": "Lo descontás con las facturas de tus proveedores"
+        },
+        {
+          "tipo": "titulo",
+          "texto": "Muchos gastos: puede convenir RI",
+          "icono": "casa"
+        },
+        {
+          "tipo": "checklist",
+          "titulo": "Aparte pagás",
+          "items": [
+            "Autónomos",
+            "Obra social"
+          ],
+          "activo": 0,
+          "icono": "alerta"
+        },
+        {
+          "tipo": "cierre",
+          "texto": "Topes de hoy en",
+          "web": "ramacontable.com.ar",
+          "proximo": "Monotributo de cero, cap. 1"
+        }
+      ]
+    },
+    "portada_animada": {
+      "tipo": "vs"
+    }
+  }
+}

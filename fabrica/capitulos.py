@@ -12,6 +12,7 @@ from pathlib import Path
 from . import util
 
 CARPETA = util.RAIZ / "series"
+GUIONES = util.RAIZ / "data" / "guiones"
 MONTOS = "data/montos_monotributo.json"
 PORTAL_MONTOS = "https://ramacontable.com.ar/monotributo-categorias-vigentes.html"
 # Respaldo: escala vigente desde el 1/8/2026 (ARCA). Solo se usa hasta el 31/1/2027.
@@ -61,9 +62,64 @@ def proximo(cfg):
 
 
 def serie_de_hoy(cfg):
-    """La clave de serie para la grilla: "capitulos" si hay un capítulo pendiente; si no, None (va el respaldo)."""
+    """La clave de serie para la grilla: "capitulos" si el próximo capítulo tiene su guion guardado (revisado con
+    tiempo); si no, None y va la serie de respaldo. Nunca se arma un capítulo sin guion previo."""
     s, c = proximo(cfg)
-    return "capitulos" if (c and "capitulos" in cfg["series"]) else None
+    if not (c and "capitulos" in cfg["series"]):
+        return None
+    if not guion(c["id"]):
+        util.avisar("El capítulo de hoy no tiene guion revisado",
+                    f"«{c.get('titulo')}» no salió: falta su guion en data/guiones/{c['id']}.json. Va la serie de respaldo.")
+        return None
+    return "capitulos"
+
+
+# ---------------------------------------------------------------- guiones guardados (se revisan 2 días antes)
+def guion(cap_id):
+    return util.leer_json(f"data/guiones/{cap_id}.json", None)
+
+
+def contenido_guardado(cap_id):
+    g = guion(cap_id) or {}
+    c = g.get("contenido")
+    return c if isinstance(c, dict) and c.get("escenas") else None
+
+
+def guardar_guion(tema, contenido, estado="para revisar"):
+    GUIONES.mkdir(parents=True, exist_ok=True)
+    util.guardar_json(f"data/guiones/{tema['id']}.json", {
+        "id": tema["id"], "titulo": tema.get("titulo", ""), "estado": estado,
+        "actualizado": util.ahora().strftime("%Y-%m-%d %H:%M"),
+        "_ayuda": "Podés corregir el texto de cada escena (texto_voz = lo que dice la voz; texto_pantalla = lo que se "
+                  "lee). Respetá las comillas y las comas. O usá el workflow «Corregir guion» y escribí los cambios.",
+        "contenido": contenido})
+
+
+def mail_revision(tema, contenido, asunto_extra=""):
+    import html
+    import os
+    from . import publicar
+    repo = os.getenv("GITHUB_REPOSITORY", "VRamiroVentura/shorts-fabrica")
+    piezas = ((contenido.get("animacion") or {}).get("piezas") or [])
+    filas = []
+    for i, e in enumerate(contenido.get("escenas", [])):
+        pieza = piezas[i].get("tipo", "") if i < len(piezas) else ""
+        filas.append(f"<tr><td style='vertical-align:top;padding:6px 10px;color:#888'>{i + 1}</td>"
+                     f"<td style='padding:6px 10px'>{html.escape(e.get('texto_voz', ''))}<br>"
+                     f"<small style='color:#888'>En pantalla: {html.escape(e.get('texto_pantalla', ''))} · pieza: {pieza}</small></td></tr>")
+    cuerpo = (f"<h2>{html.escape(tema.get('titulo', ''))}</h2>"
+              "<p><b>Sale el miércoles a las 20:00 con este guion, palabra por palabra.</b> Revisalo con tiempo.</p>"
+              f"<table style='border-collapse:collapse'>{''.join(filas)}</table>"
+              f"<p><b>Título:</b> {html.escape(contenido.get('titulo', ''))}<br><b>Descripción:</b> "
+              f"{html.escape(contenido.get('descripcion', ''))}</p>"
+              "<h3>Si querés cambiar algo</h3><ul>"
+              f"<li>Escribí los cambios en <a href='https://github.com/{repo}/actions/workflows/corregir-guion.yml'>"
+              "Corregir guion</a> (Run workflow) y te llega este mail de nuevo.</li>"
+              f"<li>O editá el texto directo: <a href='https://github.com/{repo}/edit/main/data/guiones/{tema['id']}.json'>"
+              f"data/guiones/{tema['id']}.json</a>.</li>"
+              "<li>Si está bien, no hagas nada.</li></ul>"
+              "<h3>Datos que usó (chequeados)</h3><pre style='white-space:pre-wrap'>" + html.escape(tema.get("datos", "")) + "</pre>")
+    return publicar.mail(f"URGENTE: revisá el capítulo del miércoles{asunto_extra} · {tema.get('titulo', '')}", cuerpo)
 
 
 def _buscar(cap_id, cfg=None):
