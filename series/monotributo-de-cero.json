@@ -28,20 +28,19 @@
     {
       "id": "mdc-1",
       "numero": 1,
-      "titulo": "¿Qué es el monotributo y te conviene?",
+      "titulo": "¿Qué es el monotributo?",
       "portada": {
-        "tema": "¿Qué es y te conviene?"
+        "tema": "¿Qué es el monotributo?"
       },
-      "prompt": "Gancho: '¿Recién te recibiste o arrancás por tu cuenta? Esto es lo primero que tenés que saber.' Qué es (una frase), quién puede (en la práctica, para un profesional manda cuánto factura por año), por qué conviene (sabés cuánto pagás cada mes, tenés obra social y sumás años para jubilarte, con mucho menos papeleo) y cuándo deja de convenir (si vas a facturar más que el tope o si tus clientes son empresas que te piden factura con IVA). De las categorías nombrá SOLO la más baja (A) y la más alta (K) con su tope anual; nada de recorrer categorías. Si vendés productos: el tope es el mismo que para servicios y hay un precio máximo por unidad.",
+      "prompt": "Video corto (unos 40 segundos). Gancho: '¿Sos independiente o pensás en hacerte monotributista? Esto es lo primero que tenés que saber.' Qué es (una sola cuota por mes que junta IVA, Ganancias, jubilación y obra social) y quién puede entrar (cualquiera que trabaje por su cuenta o venda productos; manda cuánto factura por año). Los topes de la categoría más baja y la más alta van EN PANTALLA como referencia, avisando que se actualizan en febrero y agosto y que los valores de hoy están en el portal. Nada de por qué conviene ni precio máximo: eso va en el capítulo 3.",
       "datos": "- El monotributo unifica en una cuota mensual el IVA, Ganancias, los aportes jubilatorios y la obra social.\n- Para ser monotributista hay que cumplir parámetros de facturación anual, superficie del local, energía consumida y alquiler del local.\n- Servicios y venta de productos comparten el mismo tope anual en cada categoría; lo que cambia es la cuota (desde la categoría C, más baja para quien vende productos).\n- Quien vende productos no puede venderlos más caros que un precio máximo por unidad.\n- Los montos se actualizan dos veces por año (febrero y agosto).",
       "montos": [
         "tope_A",
-        "tope_K",
-        "precio_max"
+        "tope_K"
       ],
       "cierre": {
-        "voz": "Las categorías y topes de hoy están en rama contable punto com punto ar. En el próximo: lo que pagás todos los meses.",
-        "pantalla": "Topes de hoy en ramacontable.com.ar",
+        "voz": "¿Tenés dudas? Los topes actualizados y nuestro contacto están en rama contable punto com punto ar. En el próximo: lo que pagás todos los meses.",
+        "pantalla": "Dudas y topes en ramacontable.com.ar",
         "emoji": "📌"
       },
       "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-1",
@@ -54,24 +53,44 @@
       "portada": {
         "tema": "Lo que pagás todos los meses"
       },
-      "prompt": "Gancho: '¿Sabías que tu cuota del monotributo no es solo impuesto?' La cuota tiene tres partes: impuesto, jubilación y obra social (para mucha gente es un beneficio que no sabía que tenía). Nombrá solo las puntas: la cuota de la A y la de la K. Giro: si además sos empleado, la jubilación y la obra social ya te las cubre tu empleador y solo pagás el impuesto; si sos solo monotributista y tenés prepaga, la parte de obra social igual se paga, pero podés mandarla a tu prepaga. Darse de alta: una sola frase ('se hace online, la guía está en el portal').",
-      "datos": "- La cuota tiene tres componentes: impuesto integrado (reemplaza IVA y Ganancias), aporte jubilatorio y obra social.\n- Si además trabajás en relación de dependencia, en el monotributo solo pagás el impuesto: la jubilación y la obra social las cubre tu empleador (ARCA).\n- Si sos solo monotributista, la parte de obra social es obligatoria aunque tengas prepaga, pero podés derivar ese aporte a tu prepaga. Desde la Resolución 1/2025 del Ministerio de Salud ya no hace falta una obra social intermediaria.\n- Los montos se actualizan dos veces por año (febrero y agosto).",
+      "prompt": "Video corto (unos 40 segundos). Gancho: '¿Sabías que tu cuota del monotributo no es solo impuesto?' Tres partes: impuesto, jubilación y obra social (con la misma cuota sumás años para jubilarte y tenés cobertura de salud). Las cuotas de la categoría más baja y la más alta van EN PANTALLA, avisando que cambian en febrero y agosto. Giro: si además sos empleado, la jubilación y la obra social las cubre tu empleador y solo pagás el impuesto. La parte de obra social se paga igual aunque ya tengas otra obra social o prepaga; si querés un plan mejor, la diferencia se paga aparte.",
+      "datos": "- La cuota tiene tres componentes: impuesto integrado (reemplaza IVA y Ganancias), aporte jubilatorio y obra social.\n- Si además trabajás en relación de dependencia, en el monotributo solo pagás el impuesto: la jubilación y la obra social las cubre tu empleador (ARCA).\n- Si sos solo monotributista, la parte de obra social es obligatoria aunque ya tengas otra obra social o una prepaga. Si querés un plan mejor que el básico, la diferencia se paga aparte.\n- Los montos se actualizan dos veces por año (febrero y agosto).",
       "montos": [
         "cuota_A",
         "cuota_K_servicios",
         "cuota_K_bienes"
       ],
       "cierre": {
-        "voz": "Los montos de hoy y cuándo cambian, en rama contable punto com punto ar. En el próximo: qué factura hacés y a quién.",
+        "voz": "Los montos de hoy y cuándo cambian, en rama contable punto com punto ar. En el próximo: ¿te conviene el monotributo?",
         "pantalla": "Montos de hoy en ramacontable.com.ar",
         "emoji": "💸"
       },
       "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-2",
-      "proximo": "¿Qué factura hago y a quién?"
+      "proximo": "¿Te conviene el monotributo?"
     },
     {
       "id": "mdc-3",
       "numero": 3,
+      "titulo": "¿Te conviene el monotributo?",
+      "portada": {
+        "tema": "¿Te conviene?"
+      },
+      "prompt": "Video corto (unos 40 segundos). Gancho: '¿El monotributo te conviene o te va a quedar chico?' Por qué conviene (sabés cuánto pagás cada mes, tenés obra social y sumás años para jubilarte, con muy poco papeleo). Cuándo deja de convenir (si vas a pasar el tope o si tus clientes son empresas que te piden factura con IVA). Si vendés productos: el tope es el mismo que para servicios, pero hay un precio máximo por unidad (va en pantalla como referencia, se actualiza en febrero y agosto).",
+      "datos": "- El monotributo es simple: una cuota fija por mes que incluye obra social y aportes jubilatorios.\n- Deja de convenir si vas a facturar más que el tope de la categoría más alta, o si tus clientes son empresas inscriptas que necesitan una factura con IVA para descontarlo (factura A, que es del régimen general).\n- Servicios y venta de productos tienen el mismo tope anual en cada categoría; la cuota de quien vende productos es más baja desde la categoría C.\n- Quien vende productos no puede venderlos más caros que un precio máximo por unidad.\n- Los montos se actualizan en febrero y agosto.",
+      "montos": [
+        "precio_max"
+      ],
+      "cierre": {
+        "voz": "Si te quedan dudas, escribinos desde rama contable punto com punto ar. En el próximo: qué factura hacés y a quién.",
+        "pantalla": "Escribinos en ramacontable.com.ar",
+        "emoji": "🤔"
+      },
+      "proximo": "¿Qué factura hago y a quién?",
+      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-3"
+    },
+    {
+      "id": "mdc-4",
+      "numero": 4,
       "titulo": "¿Qué factura hago y a quién?",
       "portada": {
         "tema": "¿Qué factura hago y a quién?"
@@ -84,12 +103,12 @@
         "pantalla": "Más en ramacontable.com.ar",
         "emoji": "🧾"
       },
-      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-3",
+      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-4",
       "proximo": "Recategorización"
     },
     {
-      "id": "mdc-4",
-      "numero": 4,
+      "id": "mdc-5",
+      "numero": 5,
       "titulo": "Recategorización: el trámite que si te olvidás, te sale caro",
       "portada": {
         "tema": "Recategorización"
@@ -102,12 +121,12 @@
         "pantalla": "Fechas en ramacontable.com.ar",
         "emoji": "📅"
       },
-      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-4",
+      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-5",
       "proximo": "Señales de que llegás al límite"
     },
     {
-      "id": "mdc-5",
-      "numero": 5,
+      "id": "mdc-6",
+      "numero": 6,
       "titulo": "Señales de que estás llegando al límite del monotributo",
       "portada": {
         "tema": "Señales de que llegás al límite"
@@ -123,7 +142,7 @@
         "pantalla": "Valores en ramacontable.com.ar",
         "emoji": "🚦"
       },
-      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-5"
+      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-6"
     }
   ]
 }

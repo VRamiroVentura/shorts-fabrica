@@ -1,0 +1,181 @@
+{
+  "id": "mdc-1",
+  "titulo": "¿Qué es el monotributo?",
+  "estado": "revisado",
+  "actualizado": "2026-11-16 10:00",
+  "_ayuda": "Podés corregir el texto de cada escena (texto_voz = lo que dice la voz; texto_pantalla = lo que se lee). Respetá las comillas y las comas. O usá el workflow «Corregir guion» y escribí los cambios.",
+  "contenido": {
+    "titulo": "¿Qué es el monotributo? Lo primero que tenés que saber",
+    "descripcion": "Más info en ramacontable.com.ar, nuestro blog para contadores (link en la bio).\nSi sos independiente o pensás en hacerte monotributista, arrancá por acá. Capítulo 1 de Monotributo de cero. ¿Qué duda tenés?",
+    "hashtags": [
+      "#monotributo",
+      "#impuestos",
+      "#arca",
+      "#independientes",
+      "#emprendedores",
+      "#argentina"
+    ],
+    "miniatura": {
+      "linea1": "¿Qué es el monotributo?",
+      "linea2": "Capítulo 1",
+      "emoji": "📌",
+      "prompt": ""
+    },
+    "escenas": [
+      {
+        "texto_voz": "Capítulo uno: ¿sos independiente o pensás en hacerte monotributista? Esto es lo primero que tenés que saber.",
+        "texto_pantalla": "¿Pensás en ser monotributista?",
+        "emoji": "🤔",
+        "prompt": "",
+        "broll": [
+          "freelancer thinking laptop",
+          "young professional desk"
+        ]
+      },
+      {
+        "texto_voz": "El monotributo es la forma más simple de pagar impuestos: una sola cuota por mes.",
+        "texto_pantalla": "Una sola cuota por mes",
+        "emoji": "💳",
+        "prompt": "",
+        "broll": [
+          "paying bill phone",
+          "calendar month"
+        ]
+      },
+      {
+        "texto_voz": "Esa cuota junta todo: el IVA, Ganancias, tu jubilación y tu obra social.",
+        "texto_pantalla": "IVA + Ganancias + jubilación + obra social",
+        "emoji": "🧩",
+        "prompt": "",
+        "broll": [
+          "puzzle pieces",
+          "documents folder"
+        ]
+      },
+      {
+        "texto_voz": "Puede entrar cualquiera que trabaje por su cuenta o venda productos. Lo que manda es cuánto facturás por año.",
+        "texto_pantalla": "Manda cuánto facturás",
+        "emoji": "📈",
+        "prompt": "",
+        "broll": [
+          "small business owner",
+          "calculator invoice"
+        ]
+      },
+      {
+        "texto_voz": "Hay categorías según lo que facturás: en pantalla tenés la más baja y la más alta, como referencia. Se actualizan en febrero y agosto.",
+        "texto_pantalla": "Topes de referencia",
+        "emoji": "📊",
+        "prompt": "",
+        "broll": [
+          "chart growth",
+          "spreadsheet numbers"
+        ]
+      },
+      {
+        "texto_voz": "¿Tenés dudas? Los topes actualizados y nuestro contacto están en rama contable punto com punto ar. En el próximo: lo que pagás todos los meses.",
+        "texto_pantalla": "Dudas y topes en ramacontable.com.ar",
+        "emoji": "📌",
+        "prompt": "",
+        "broll": [
+          "person smiling phone",
+          "laptop website"
+        ]
+      }
+    ],
+    "carrusel": [
+      {
+        "titulo": "¿Qué es el monotributo?",
+        "cuerpo": "Lo primero que tenés que saber",
+        "emoji": "📌"
+      },
+      {
+        "titulo": "Una sola cuota por mes",
+        "cuerpo": "Junta IVA, Ganancias, jubilación y obra social.",
+        "emoji": "💳"
+      },
+      {
+        "titulo": "¿Quién puede entrar?",
+        "cuerpo": "Cualquiera que trabaje por su cuenta o venda productos. Manda cuánto facturás por año.",
+        "emoji": "📈"
+      },
+      {
+        "titulo": "Topes de referencia (desde agosto 2026)",
+        "cuerpo": "Categoría A: hasta $12.009.410,45\nCategoría K: hasta $126.610.838,75\nSe actualizan en febrero y agosto.",
+        "emoji": "📊"
+      },
+      {
+        "titulo": "¿Tenés dudas?",
+        "cuerpo": "Más información en ramacontable.com.ar",
+        "emoji": "💬"
+      }
+    ],
+    "estilo_visual": "oscuro",
+    "dibujitos_faltantes": [],
+    "material_que_faltaria": [],
+    "palabras": 113,
+    "animacion": {
+      "serie": {
+        "nombre": "Monotributo de cero",
+        "capitulo": 1,
+        "total": 6
+      },
+      "piezas": [
+        {
+          "tipo": "portada",
+          "titulo": "¿Qué es el monotributo?",
+          "icono": "factura"
+        },
+        {
+          "tipo": "etiquetas",
+          "palabra": "Una cuota",
+          "cintas": [
+            "Por mes",
+            "Y te olvidás"
+          ],
+          "icono_orbita": "moneda"
+        },
+        {
+          "tipo": "checklist",
+          "titulo": "Tu cuota junta",
+          "items": [
+            "IVA",
+            "Ganancias",
+            "Jubilación",
+            "Obra social"
+          ],
+          "activo": 0,
+          "icono": "billetera"
+        },
+        {
+          "tipo": "titulo",
+          "texto": "Manda cuánto facturás",
+          "icono": "grafico",
+          "cinta": "Servicios o productos"
+        },
+        {
+          "tipo": "checklist",
+          "titulo": "Topes (desde agosto 2026)",
+          "items": [
+            "A: $12.009.410",
+            "K: $126.610.838"
+          ],
+          "activo": 1,
+          "icono": "calendario"
+        },
+        {
+          "tipo": "cierre",
+          "texto": "¿Dudas? Topes y contacto en",
+          "web": "ramacontable.com.ar",
+          "proximo": "Lo que pagás todos los meses"
+        }
+      ]
+    },
+    "portada_animada": {
+      "tipo": "cero",
+      "capitulo": 1,
+      "total": 6,
+      "tema": "¿Qué es el monotributo?"
+    }
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "id": "mdc-2",
+  "titulo": "Lo que pagás todos los meses (y lo que te llevás a cambio)",
+  "estado": "revisado",
+  "actualizado": "2026-11-16 10:00",
+  "_ayuda": "Podés corregir el texto de cada escena (texto_voz = lo que dice la voz; texto_pantalla = lo que se lee). Respetá las comillas y las comas. O usá el workflow «Corregir guion» y escribí los cambios.",
+  "contenido": {
+    "titulo": "Lo que pagás en el monotributo (y lo que te llevás a cambio)",
+    "descripcion": "Más info en ramacontable.com.ar, nuestro blog para contadores (link en la bio).\nTu cuota no es solo impuesto: también es tu jubilación y tu obra social. Capítulo 2 de Monotributo de cero. ¿Lo sabías?",
+    "hashtags": [
+      "#monotributo",
+      "#obrasocial",
+      "#jubilacion",
+      "#impuestos",
+      "#arca",
+      "#argentina"
+    ],
+    "miniatura": {
+      "linea1": "Lo que pagás cada mes",
+      "linea2": "Capítulo 2",
+      "emoji": "💸",
+      "prompt": ""
+    },
+    "escenas": [
+      {
+        "texto_voz": "Capítulo dos: ¿sabías que tu cuota del monotributo no es solo impuesto?",
+        "texto_pantalla": "No es solo impuesto",
+        "emoji": "💡",
+        "prompt": "",
+        "broll": [
+          "surprised person phone",
+          "receipt payment"
+        ]
+      },
+      {
+        "texto_voz": "Tiene tres partes: el impuesto, tu jubilación y tu obra social.",
+        "texto_pantalla": "3 partes",
+        "emoji": "🧩",
+        "prompt": "",
+        "broll": [
+          "three parts puzzle",
+          "documents"
+        ]
+      },
+      {
+        "texto_voz": "O sea, con la misma cuota sumás años para jubilarte y tenés cobertura de salud.",
+        "texto_pantalla": "Jubilación + obra social",
+        "emoji": "🏥",
+        "prompt": "",
+        "broll": [
+          "doctor visit",
+          "elderly couple happy"
+        ]
+      },
+      {
+        "texto_voz": "En pantalla tenés lo que paga la categoría más baja y la más alta. Cambia en febrero y agosto.",
+        "texto_pantalla": "Cuotas de referencia",
+        "emoji": "📊",
+        "prompt": "",
+        "broll": [
+          "calculator bills",
+          "calendar"
+        ]
+      },
+      {
+        "texto_voz": "Si además sos empleado, la jubilación y la obra social ya te las cubre tu empleador: solo pagás el impuesto.",
+        "texto_pantalla": "Empleado: solo el impuesto",
+        "emoji": "💼",
+        "prompt": "",
+        "broll": [
+          "office worker",
+          "employee desk"
+        ]
+      },
+      {
+        "texto_voz": "Y la parte de obra social se paga igual, aunque ya tengas otra obra social o prepaga. Si querés un plan mejor, la diferencia va aparte.",
+        "texto_pantalla": "Obra social: se paga igual",
+        "emoji": "🩺",
+        "prompt": "",
+        "broll": [
+          "health insurance card",
+          "clinic reception"
+        ]
+      },
+      {
+        "texto_voz": "Los montos de hoy y cuándo cambian, en rama contable punto com punto ar. En el próximo: ¿te conviene el monotributo?",
+        "texto_pantalla": "Montos de hoy en ramacontable.com.ar",
+        "emoji": "💸",
+        "prompt": "",
+        "broll": [
+          "laptop website",
+          "person reading phone"
+        ]
+      }
+    ],
+    "carrusel": [
+      {
+        "titulo": "Lo que pagás en el monotributo",
+        "cuerpo": "Y lo que te llevás a cambio",
+        "emoji": "💸"
+      },
+      {
+        "titulo": "Tu cuota tiene 3 partes",
+        "cuerpo": "Impuesto, jubilación y obra social.",
+        "emoji": "🧩"
+      },
+      {
+        "titulo": "Cuotas de referencia (desde agosto 2026)",
+        "cuerpo": "Categoría A: $49.527,18\nCategoría K: $1.614.446,04 (servicios) / $702.103,24 (productos)\nCambian en febrero y agosto.",
+        "emoji": "📊"
+      },
+      {
+        "titulo": "¿Sos empleado?",
+        "cuerpo": "Solo pagás el impuesto: la jubilación y la obra social las cubre tu empleador.",
+        "emoji": "💼"
+      },
+      {
+        "titulo": "Obra social",
+        "cuerpo": "Se paga igual aunque tengas otra obra social o prepaga. Un plan mejor se paga aparte.",
+        "emoji": "🩺"
+      },
+      {
+        "titulo": "Guardalo y mandáselo a quien lo dude",
+        "cuerpo": "Más información en ramacontable.com.ar",
+        "emoji": "📌"
+      }
+    ],
+    "estilo_visual": "oscuro",
+    "dibujitos_faltantes": [],
+    "material_que_faltaria": [],
+    "palabras": 124,
+    "animacion": {
+      "serie": {
+        "nombre": "Monotributo de cero",
+        "capitulo": 2,
+        "total": 6
+      },
+      "piezas": [
+        {
+          "tipo": "portada",
+          "titulo": "Lo que pagás todos los meses",
+          "icono": "billetera"
+        },
+        {
+          "tipo": "barrido",
+          "texto": "3 partes"
+        },
+        {
+          "tipo": "checklist",
+          "titulo": "Tu cuota tiene",
+          "items": [
+            "Impuesto",
+            "Jubilación",
+            "Obra social"
+          ],
+          "activo": 1,
+          "icono": "calculadora"
+        },
+        {
+          "tipo": "checklist",
+          "titulo": "Cuotas (desde agosto 2026)",
+          "items": [
+            "A: $49.527",
+            "K serv.: $1.614.446",
+            "K prod.: $702.103"
+          ],
+          "activo": 0,
+          "icono": "calendario"
+        },
+        {
+          "tipo": "banda",
+          "numero": 1,
+          "texto": "Si sos empleado",
+          "icono": "maletin",
+          "detalle": "Solo pagás el impuesto"
+        },
+        {
+          "tipo": "banda",
+          "numero": 2,
+          "texto": "Obra social",
+          "icono": "persona",
+          "detalle": "Se paga igual; un plan mejor va aparte"
+        },
+        {
+          "tipo": "cierre",
+          "texto": "Montos de hoy en",
+          "web": "ramacontable.com.ar",
+          "proximo": "¿Te conviene el monotributo?"
+        }
+      ]
+    },
+    "portada_animada": {
+      "tipo": "cero",
+      "capitulo": 2,
+      "total": 6,
+      "tema": "Lo que pagás todos los meses"
+    }
+  }
+}
