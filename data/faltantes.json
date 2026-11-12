@@ -1446,5 +1446,90 @@
       "clip de alguien cancelando una suscripción en una web",
       "dibujo animado de una alcancía con agujeros"
     ]
+  },
+  {
+    "fecha": "2026-11-12",
+    "turno": 1,
+    "serie": "argentino_que",
+    "titulo": "El argentino que vendió Patagon",
+    "escenas": [
+      {
+        "escena": "Se llama Wenceslao Casares y la empresa era Patagon.",
+        "busqueda": [
+          "young entrepreneur laptop",
+          "man at office"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Arrancó a fines de los noventa, cuando en Argentina casi nadie navegaba en internet.",
+        "busqueda": [
+          "old computer monitor",
+          "retro internet"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "El pibe la vio antes que todos y armó el primer portal financiero de la región.",
+        "busqueda": [
+          "digital banking app",
+          "phone screen money"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Buscó socios, levantó millones de dólares afuera y lo transformó en un banco digital.",
+        "busqueda": [
+          "handshake business meeting",
+          "investors meeting"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "El Banco Santander le compró el 75 por ciento del negocio.",
+        "busqueda": [
+          "bank building facade",
+          "modern skyscraper"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Fueron setecientos cincuenta millones de dólares. Meses después se cayó todo.",
+        "busqueda": [
+          "wallet with cash",
+          "counting money"
+        ],
+        "se_uso": "un clip repetido"
+      },
+      {
+        "escena": "Explotó la burbuja de las puntocom y las empresas de internet perdieron casi todo el valor.",
+        "busqueda": [
+          "stock market chart crashing",
+          "calendar page"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Pero Wenceslao ya tenía la plata en el bolsillo.",
+        "busqueda": [
+          "wallet with cash",
+          "counting money"
+        ],
+        "se_uso": "un clip repetido"
+      },
+      {
+        "escena": "A veces no alcanza con tener una buena idea; lo más difícil es saber cuándo vender.",
+        "busqueda": [
+          "clock gears ticking",
+          "hourglass"
+        ],
+        "se_uso": "un clip aproximado"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "foto de Wenceslao Casares en los años 90",
+      "logo antiguo de Patagon"
+    ]
   }
 ]
