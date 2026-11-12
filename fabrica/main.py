@@ -422,6 +422,24 @@ def generar(simulado=False):
         except Exception as e:  # noqa  (un error suelto de Gemini no tiene que tirar el video del día)
             util.avisar("Falló el guion, pruebo de nuevo", util.ocultar(f"{type(e).__name__}: {e}"))
             contenido = escritor.escribir(serie, fuentes, titulos)
+    nota_repetido = ""
+    if not simulado and not tema:  # los temas que pediste vos no se controlan
+        from . import repetidos
+
+        def _medir(entradas):
+            return _rendimiento(cfg, clave_yt, entradas=entradas)
+
+        def _reescribir(evitar):
+            otra = dict(serie)
+            otra["prompt"] = (serie["prompt"] + "\n\nIMPORTANTE: el tema que salió primero repite una idea ya publicada. "
+                              "Elegí OTRA idea central, bien distinta de estas (ni variantes): "
+                              + "; ".join(evitar[:10]) + ".")
+            return escritor.escribir(otra, [], list(evitar) + titulos)
+
+        nuevo, nota_repetido = repetidos.controlar(contenido, historial, _medir, _reescribir)
+        if nuevo is not contenido:
+            fuentes = []  # el tema nuevo no sale de las fuentes del día: quedan libres para otro video
+            contenido = nuevo
     if tema and _carrusel_tema(tema):
         contenido["carrusel"] = _carrusel_tema(tema)
     if tema:
@@ -444,6 +462,8 @@ def generar(simulado=False):
                             fecha, turno, nombre_carpeta, nota_url=nota_url)
     if tema:
         publicacion["tema_id"] = tema["id"]
+    if nota_repetido:
+        publicacion["control_repetidos"] = nota_repetido
     util.guardar_json("out/publicacion.json", publicacion)
     if not simulado:
         _anotar_sitio(anteriores, publicacion)
@@ -553,7 +573,8 @@ def publicar(base_url):
 
     historial = util.leer_json("data/historial.json", [])
     historial.append({"fecha": p["fecha"], "turno": p.get("turno", 1), "hora": util.ahora().strftime("%H:%M"),
-                      "serie": p["serie"], "titulo": p["titulo"], "fuentes": p["fuentes"], "resultados": resultados})
+                      "serie": p["serie"], "titulo": p["titulo"], "fuentes": p["fuentes"], "resultados": resultados,
+                      "guion": p.get("guion", "")[:400]})
     util.guardar_json("data/historial.json", historial[-400:])
     _marcar_tema(p, resultados)
     _registro(p, resultados, base)
@@ -637,6 +658,7 @@ def _mail_diario(p, res, base):
               f'<p><b>Texto:</b><br>{e(p["caption"]).replace(chr(10), "<br>")}</p>'
               f'<p><b>Para TikTok:</b> bajá el video y, antes de publicar, tocá <b>Más opciones</b> y activá '
               f'<b>«Contenido generado por IA»</b> (la voz es de IA).</p>'
+              + (f'<p><b>Temas repetidos:</b> {e(p["control_repetidos"])}</p>' if p.get("control_repetidos") else "")
               + _faltas_mail(p) +
               f'<hr><p style="color:#666">{e(p["guion"])}</p>')
     try:

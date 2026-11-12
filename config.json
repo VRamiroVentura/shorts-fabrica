@@ -34,6 +34,14 @@
     "_nota": "Instagram le pone un tema de su biblioteca a cada Reel. volumen_* va de 0 a 100. En busquedas, \"\" = temas en tendencia. Si falla, el Reel sale igual sin música."
   },
   "bancos_clips": ["Pixabay", "Pexels", "Coverr"],
+  "control_repetidos": {
+    "activo": true,
+    "dias": 60,
+    "dias_bloqueo": 7,
+    "intentos": 2,
+    "muestra_mediana": 12,
+    "_nota": "Antes de armar el video compara la idea con lo publicado en los últimos 'dias'. Si se repite algo de los últimos 'dias_bloqueo' o algo que anduvo mal, escribe otro tema; si se repite algo que anduvo bien (vistas >= mediana de los últimos 'muestra_mediana' videos), lo deja pasar como relanzamiento."
+  },
   "postales_por_video": 3,
   "fuentes_por_video": 2,
   "plan_semanal": {
