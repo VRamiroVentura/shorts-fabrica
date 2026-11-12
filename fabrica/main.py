@@ -663,7 +663,7 @@ def publicar(base_url):
     historial = util.leer_json("data/historial.json", [])
     historial.append({"fecha": p["fecha"], "turno": p.get("turno", 1), "hora": util.ahora().strftime("%H:%M"),
                       "serie": p["serie"], "titulo": p["titulo"], "fuentes": p["fuentes"], "resultados": resultados,
-                      "guion": p.get("guion", "")[:400]})
+                      "guion": p.get("guion", "")[:400], "tema_id": p.get("tema_id", "")})
     util.guardar_json("data/historial.json", historial[-400:])
     _marcar_tema(p, resultados)
     _registro(p, resultados, base)
