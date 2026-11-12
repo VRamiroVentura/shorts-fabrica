@@ -1,0 +1,12 @@
+{
+  "serie": { "nombre": "Monotributo de cero", "capitulo": 3, "total": 6 },
+  "escenas": [
+    { "tipo": "portada", "segundos": 2.6, "titulo": "Qué pagás en la cuota", "icono": "billetera", "cinta": "Lo que nadie te explica" },
+    { "tipo": "titulo", "segundos": 2.4, "texto": "¿Qué incluye la cuota?", "icono": "lupa" },
+    { "tipo": "barrido", "segundos": 1.4, "texto": "3 partes" },
+    { "tipo": "checklist", "segundos": 2.8, "titulo": "Tu cuota tiene", "items": ["Impuesto", "Jubilación", "Obra social"], "activo": 0, "icono": "calculadora" },
+    { "tipo": "etiquetas", "segundos": 2.6, "palabra": "Impuesto", "cintas": ["Parte 1", "Depende de tu categoría"], "icono_orbita": "moneda" },
+    { "tipo": "banda", "segundos": 2.4, "numero": 2, "texto": "Jubilación", "icono": "persona", "detalle": "Suma años de aportes para jubilarte" },
+    { "tipo": "cierre", "segundos": 2.6, "texto": "Las categorías y montos de este año están en", "proximo": "Cómo facturar" }
+  ]
+}
