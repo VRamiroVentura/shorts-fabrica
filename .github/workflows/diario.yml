@@ -111,6 +111,25 @@ jobs:
             curl -fsSL -o "fonts/$(basename $f)" "https://github.com/google/fonts/raw/main/$f" || echo "No bajó $f"
           done
 
+      - uses: actions/setup-node@v4
+        if: hashFiles('animaciones/package.json') != ''
+        with:
+          node-version: "20"
+
+      - name: Remotion para los capítulos animados (en caché)
+        if: hashFiles('animaciones/package.json') != ''
+        uses: actions/cache@v4
+        with:
+          path: animaciones/node_modules
+          key: remotion-${{ hashFiles('animaciones/package.json') }}
+
+      - name: Instalar Remotion
+        if: hashFiles('animaciones/package.json') != ''
+        working-directory: animaciones
+        run: |
+          [ -d node_modules ] || npm install --no-audit --no-fund
+          npx remotion browser ensure || echo "Remotion baja el navegador al renderizar"
+
       - name: Investigar, escribir y diseñar
         run: python -m fabrica.main generar
 
