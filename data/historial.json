@@ -1149,5 +1149,28 @@
         "id": "1482942283714378"
       }
     }
+  },
+  {
+    "fecha": "2026-11-12",
+    "turno": 2,
+    "hora": "15:18",
+    "serie": "estafas",
+    "titulo": "Te roban el WhatsApp con este truco",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17976378657160332"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "ieCz434HBpA"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1651993633036091"
+      }
+    },
+    "guion": "Te sacan el WhatsApp en dos minutos con una simple llamada. Te habla alguien con foto oficial del gobierno o de un banco. Te inventan que es por un turno o un problema técnico. Ahí te entra un SMS con un código de seis números. Te piden que se los leas rápido para validar el trámite. Si se los das, le abriste tu cuenta en su teléfono. Enseguida le escriben a tus contactos pidiéndoles plata de urge"
   }
 ]

@@ -1531,5 +1531,95 @@
       "foto de Wenceslao Casares en los años 90",
       "logo antiguo de Patagon"
     ]
+  },
+  {
+    "fecha": "2026-11-12",
+    "turno": 2,
+    "serie": "estafas",
+    "titulo": "Te roban el WhatsApp con este truco",
+    "escenas": [
+      {
+        "escena": "Te habla alguien con foto oficial del gobierno o de un banco.",
+        "busqueda": [
+          "typing on smartphone screen",
+          "holding smartphone screen"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Te inventan que es por un turno o un problema técnico.",
+        "busqueda": [
+          "man talking on smartphone",
+          "call center person talking"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Ahí te entra un SMS con un código de seis números.",
+        "busqueda": [
+          "sms notification on smartphone screen",
+          "hand holding phone notification"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Te piden que se los leas rápido para validar el trámite.",
+        "busqueda": [
+          "person typing code on phone",
+          "hands holding phone fast"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Si se los das, le abriste tu cuenta en su teléfono.",
+        "busqueda": [
+          "laptop keyboard typing fast",
+          "hacker keyboard closeup"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Enseguida le escriben a tus contactos pidiéndoles plata de urgencia.",
+        "busqueda": [
+          "argentine pesos bills cash",
+          "hand holding cash money"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "El SMS era la clave oficial para instalar tu cuenta en otro celular.",
+        "busqueda": [
+          "sim card insertion phone",
+          "smartphone settings screen"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Ningún soporte ni empresa te va a pedir un código por llamada.",
+        "busqueda": [
+          "person shaking head no",
+          "hand gesturing stop"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Activá la verificación en dos pasos desde los ajustes de la app.",
+        "busqueda": [
+          "lock icon on phone screen",
+          "smartphone security settings"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Mandáselo a tu familia para que no caigan.",
+        "busqueda": [
+          "sharing link on smartphone screen",
+          "hand tapping phone screen"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]
