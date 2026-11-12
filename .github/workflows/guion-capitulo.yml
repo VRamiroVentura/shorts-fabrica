@@ -1,0 +1,45 @@
+name: Guion del capítulo (lunes)
+
+# Arma el guion del capítulo del miércoles y te lo manda con asunto URGENTE para revisarlo con tiempo.
+on:
+  schedule:
+    - cron: "0 13 * * 1"   # lunes 10:00 de Argentina
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: guion-capitulo
+  cancel-in-progress: false
+
+jobs:
+  guion:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -q -r requirements.txt
+      - name: Armar el guion y mandarlo por mail
+        run: python -m fabrica.main preparar_capitulo
+      - name: Guardar el guion en el repo
+        run: |
+          git config user.name "fabrica-bot"
+          git config user.email "fabrica-bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet && exit 0
+          git commit -m "Guion del capítulo para revisar [skip ci]"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            git pull --rebase -q && continue
+            sleep 5
+          done

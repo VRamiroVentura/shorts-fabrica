@@ -1,0 +1,49 @@
+name: Corregir guion
+
+# Escribí qué cambiar del guion del próximo capítulo; la fábrica lo corrige y te lo manda de nuevo por mail.
+on:
+  workflow_dispatch:
+    inputs:
+      cambios:
+        description: "Qué cambiar (ej.: «sacá la frase de acomodar los números», «el cierre que diga…»)"
+        type: string
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: guion-capitulo
+  cancel-in-progress: false
+
+jobs:
+  corregir:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CAMBIOS: ${{ inputs.cambios }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -q -r requirements.txt
+      - name: Corregir el guion y mandarlo por mail
+        run: python -m fabrica.main corregir_capitulo
+      - name: Guardar el guion corregido
+        run: |
+          git config user.name "fabrica-bot"
+          git config user.email "fabrica-bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet && exit 0
+          git commit -m "Guion del capítulo corregido [skip ci]"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            git pull --rebase -q && continue
+            sleep 5
+          done
