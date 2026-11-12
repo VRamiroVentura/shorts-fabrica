@@ -123,6 +123,19 @@ Instagram solo deja ver datos de otras cuentas con su API de Facebook ("Business
 
 Sin esto, la serie igual funciona con los sitios y YouTube.
 
+## Más bancos de videos y música de Instagram
+
+**Varios bancos a la vez.** La fábrica busca los clips de fondo en todos los bancos que tengan clave cargada (Pixabay, Pexels y Coverr) y mezcla los resultados, así la IA elige entre más opciones. Si uno falla, siguen los otros. Para elegir cuáles usar: `config.json` → `bancos_clips`.
+
+| Secreto | Dónde se saca |
+|---|---|
+| `PEXELS_API_KEY` | Creá una cuenta gratis en https://www.pexels.com y pedí la clave en https://www.pexels.com/api/ |
+| `COVERR_API_KEY` (opcional) | https://coverr.co/developers : creá una cuenta y generá la clave |
+
+**Música de Instagram en los Reels.** Con `config.json` → `instagram_musica.activa: true`, cada Reel sale con un tema de la biblioteca de Instagram, la música bajita (`volumen_musica`, de 0 a 100) y tu voz completa (`volumen_video`). En `busquedas` van los estilos a buscar; `""` significa temas en tendencia. No repite los últimos 30 temas. Si algo falla, el Reel sale igual, sin música, y te avisa.
+
+Necesita el camino de Facebook: los secretos `IG_FB_ID` y `IG_FB_TOKEN` (o `FB_PAGE_TOKEN`), generados con los permisos `instagram_basic` e `instagram_content_publish` (además de `pages_show_list` y `pages_read_engagement`). Facebook, YouTube y TikTok no permiten agregar su música por API: si querés música en esas redes, poné temas libres de derechos en `assets/musica/` y se mezclan bajito (`musica_volumen`). En ese caso Instagram recibe una copia del video solo con la voz, para que no suenen dos músicas.
+
 ## Opcionales que mejoran el resultado (también gratis)
 
 | Secreto | Para qué |

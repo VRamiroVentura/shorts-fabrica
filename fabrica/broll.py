@@ -1,4 +1,4 @@
-"""Videos de fondo: clips de stock gratis (Pixabay o Pexels; uso comercial permitido, sin atribución obligatoria).
+"""Videos de fondo: clips de stock gratis (Pixabay, Pexels y Coverr, en todos los que tengan clave; uso comercial permitido, sin atribución obligatoria).
 Si no hay clave o no aparece nada que sirva, se arma un clip con una imagen (IA o placa con emoji)."""
 import random
 import subprocess
@@ -36,13 +36,50 @@ def _archivo(video):
     return sorted(pool, key=costo)[0]
 
 
-def proveedor():
-    """Qué banco de videos usar según las claves cargadas. Devuelve (nombre, función de búsqueda, clave)."""
+def proveedores():
+    """Todos los bancos con clave cargada: [(nombre, función de búsqueda, clave)]."""
+    out = []
     if util.secreto("PIXABAY_API_KEY"):
-        return "Pixabay", buscar_pixabay, util.secreto("PIXABAY_API_KEY")
+        out.append(("Pixabay", buscar_pixabay, util.secreto("PIXABAY_API_KEY")))
     if util.secreto("PEXELS_API_KEY"):
-        return "Pexels", buscar, util.secreto("PEXELS_API_KEY")
-    return None, None, None
+        out.append(("Pexels", buscar, util.secreto("PEXELS_API_KEY")))
+    if util.secreto("COVERR_API_KEY"):
+        out.append(("Coverr", buscar_coverr, util.secreto("COVERR_API_KEY")))
+    activos = util.config().get("bancos_clips")  # opcional: ["Pixabay", "Pexels", "Coverr"] para elegir cuáles
+    if isinstance(activos, list) and activos:
+        out = [b for b in out if b[0] in activos]
+    return out
+
+
+def buscar_varios(consulta, _clave, usados, cantidad=3, minimo=2.0):
+    """Busca en todos los bancos con clave y mezcla los resultados intercalados (uno de cada banco), así la IA
+    elige entre más opciones. Si un banco falla o no encuentra nada, siguen los otros."""
+    listas = []
+    for nombre, fn, clave in proveedores():
+        try:
+            listas.append(fn(consulta, clave, usados, cantidad=cantidad, minimo=minimo))
+        except Exception as e:  # noqa
+            util.log(f"{nombre} falló:", util.ocultar(e))
+    mezcla, vistos = [], set()
+    for i in range(max((len(x) for x in listas), default=0)):
+        for lista in listas:
+            if i < len(lista) and lista[i]["id"] not in vistos:
+                vistos.add(lista[i]["id"])
+                mezcla.append(lista[i])
+    tope = cantidad + (1 if len(listas) > 1 else 0)  # con varios bancos, una opción más para elegir
+    return mezcla[:tope]
+
+
+def proveedor():
+    """Qué banco de videos usar según las claves cargadas. Devuelve (nombre, función de búsqueda, clave).
+    Con más de un banco cargado, busca en todos a la vez."""
+    bancos = proveedores()
+    if not bancos:
+        return None, None, None
+    if len(bancos) == 1:
+        return bancos[0]
+    nombres = [b[0] for b in bancos]
+    return ", ".join(nombres[:-1]) + " y " + nombres[-1], buscar_varios, "varios"
 
 
 def _rendicion_pixabay(videos):
@@ -86,16 +123,30 @@ def buscar_pixabay(consulta, clave, usados, cantidad=3, minimo=2.0):
     return elegibles[:cantidad]
 
 
+_MEMORIA = {}  # búsquedas ya hechas en esta corrida (no repite pedidos iguales a Pexels ni a Coverr)
+
+
+def _pedir_una_vez(clave_memoria, fn):
+    if clave_memoria not in _MEMORIA:
+        _MEMORIA[clave_memoria] = fn()
+    return _MEMORIA[clave_memoria]
+
+
 def buscar(consulta, clave, usados, cantidad=3, minimo=2.0):
     """Devuelve hasta `cantidad` videos de Pexels para la consulta, sin repetir ids."""
     resultados = []
     for orientacion in ("portrait", "landscape"):
-        r = util.pedir("GET", PEXELS, intentos=2, timeout=40, headers={"Authorization": clave},
-                       params={"query": consulta, "orientation": orientacion, "size": "small", "per_page": 15})
-        if r is None or r.status_code != 200:
-            util.log("Pexels", consulta, getattr(r, "status_code", "?"))
+        def _pedido(o=orientacion):
+            r = util.pedir("GET", PEXELS, intentos=2, timeout=40, headers={"Authorization": clave},
+                           params={"query": consulta, "orientation": o, "size": "small", "per_page": 15})
+            if r is None or r.status_code != 200:
+                util.log("Pexels", consulta, getattr(r, "status_code", "?"))
+                return None
+            return r.json().get("videos", [])
+        videos = _pedir_una_vez(("pexels", consulta, orientacion), _pedido)
+        if videos is None:
             continue
-        for v in r.json().get("videos", []):
+        for v in videos:
             if v.get("id") in usados or (v.get("duration") or 0) < minimo:
                 continue
             f = _archivo(v)
@@ -106,6 +157,43 @@ def buscar(consulta, clave, usados, cantidad=3, minimo=2.0):
         if len(resultados) >= cantidad:
             break
     return resultados[:cantidad]
+
+
+COVERR = "https://api.coverr.co/videos"
+
+
+def buscar_coverr(consulta, clave, usados, cantidad=3, minimo=2.0):
+    """Devuelve hasta `cantidad` videos verticales de Coverr (gratis con clave, uso comercial permitido)."""
+    def _pedido():
+        r = util.pedir("GET", COVERR, intentos=2, timeout=40, headers={"Authorization": f"Bearer {clave}"},
+                       params={"query": consulta[:100], "page_size": 20, "urls": "true", "sort": "popular",
+                               "filter": "is_vertical:true"})
+        if r is None or r.status_code != 200:
+            util.log("Coverr", consulta, getattr(r, "status_code", "?"))
+            return []
+        hits = []
+        for v in (r.json() or {}).get("hits", []) or []:
+            if not isinstance(v, dict):
+                continue
+            urls = v.get("urls") if isinstance(v.get("urls"), dict) else {}
+            link = urls.get("mp4_download") or urls.get("mp4")
+            try:
+                dur = float(v.get("duration") or 0)
+            except (TypeError, ValueError):
+                dur = 0
+            if not v.get("id") or not link:
+                continue
+            thumb = v.get("thumbnail") or v.get("poster") or urls.get("thumbnail") or urls.get("poster") or ""
+            etiquetas = v.get("tags") or []
+            if isinstance(etiquetas, list):
+                etiquetas = " ".join(str(t.get("name", t) if isinstance(t, dict) else t) for t in etiquetas)
+            hits.append({"id": f'coverr-{v["id"]}', "link": link, "dur": dur,
+                         "url": v.get("canonical_url") or v.get("url") or "", "vertical": True,
+                         "tags": f'{v.get("title", "")} {etiquetas}'.strip(),
+                         "thumb": thumb if str(thumb).startswith("http") else ""})
+        return hits
+    hits = _pedir_una_vez(("coverr", consulta), _pedido)
+    return [h for h in hits if h["id"] not in usados and h["dur"] >= minimo][:cantidad]
 
 
 def bajar(link, destino):

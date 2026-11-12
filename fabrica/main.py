@@ -325,7 +325,8 @@ def _producir(cfg, clave_serie, serie, contenido, fuentes, fuentes_detalle, firm
         "fuentes": fuentes,
         "fuentes_detalle": fuentes_detalle,
         "archivos": {"video": f"{nombre_carpeta}/video.mp4", "portada": f"{nombre_carpeta}/thumb.jpg",
-                     "placas": [f"{nombre_carpeta}/{x.name}" for x in placas]},
+                     "placas": [f"{nombre_carpeta}/{x.name}" for x in placas],
+                     **({"video_ig": f"{nombre_carpeta}/video_ig.mp4"} if (carpeta / "video_ig.mp4").exists() else {})},
         "contenido": contenido,
         "video": meta_video,
         "turno": turno,
@@ -340,7 +341,7 @@ def _producir(cfg, clave_serie, serie, contenido, fuentes, fuentes_detalle, firm
 def _anotar_sitio(anteriores, p):
     a = p["archivos"]
     util.guardar_json("data/sitio.json", anteriores + [
-        {"fecha": p["fecha"], "carpeta": p["carpeta"], "archivos": [a["video"], a["portada"]] + a["placas"]}])
+        {"fecha": p["fecha"], "carpeta": p["carpeta"], "archivos": [a["video"], a["portada"]] + a["placas"] + ([a["video_ig"]] if a.get("video_ig") else [])}])
 
 
 def generar(simulado=False):
@@ -537,7 +538,7 @@ def publicar(base_url):
         util.log(nombre, resultados[nombre])
 
     if quiere.get("instagram_reel"):
-        intentar("instagram_reel", lambda: pub.instagram_reel(url(p["archivos"]["video"]),
+        intentar("instagram_reel", lambda: pub.instagram_reel(url(p["archivos"].get("video_ig") or p["archivos"]["video"]),
                                                               url(p["archivos"]["portada"]), p["caption"]))
     if quiere.get("instagram_carrusel") and hoy_carrusel:
         intentar("instagram_carrusel", lambda: pub.instagram_carrusel([url(x) for x in p["archivos"]["placas"]],

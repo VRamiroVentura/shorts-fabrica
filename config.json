@@ -26,6 +26,14 @@
   ],
   "musica": "assets/music.mp3",
   "musica_volumen": 0.08,
+  "instagram_musica": {
+    "activa": true,
+    "volumen_musica": 15,
+    "volumen_video": 100,
+    "busquedas": ["", "lofi", "chill", "acoustic", "piano", "jazz"],
+    "_nota": "Instagram le pone un tema de su biblioteca a cada Reel. volumen_* va de 0 a 100. En busquedas, \"\" = temas en tendencia. Si falla, el Reel sale igual sin música."
+  },
+  "bancos_clips": ["Pixabay", "Pexels", "Coverr"],
   "postales_por_video": 3,
   "fuentes_por_video": 2,
   "plan_semanal": {

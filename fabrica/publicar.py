@@ -1,5 +1,7 @@
 """Publica en Instagram, YouTube y TikTok, y manda el mail de resumen."""
+import json
 import os
+import random
 import smtplib
 import subprocess
 import time
@@ -105,9 +107,95 @@ IG_REINTENTOS = (True, True, False)   # con portada, con portada, sin portada
 IG_ESPERA_REINTENTO = 60
 
 
+# ------------------------------------------------------------------ Reel con música de Instagram
+# La API de audio de Instagram solo anda por el camino de Facebook (graph.facebook.com, con la cuenta de
+# Instagram vinculada a la página). Necesita IG_FB_ID y un token con instagram_basic + instagram_content_publish
+# (IG_FB_TOKEN o, si no está, FB_PAGE_TOKEN). Si algo falla, el Reel sale igual por el camino de siempre, sin música.
+IG_FB = "https://graph.facebook.com/v23.0/"
+
+
+def _ig_fb():
+    return (util.secreto("IG_FB_TOKEN") or util.secreto("FB_PAGE_TOKEN")), util.secreto("IG_FB_ID")
+
+
+def elegir_tema_ig(token, ig_id, im):
+    """Busca un tema en la biblioteca de Instagram (los autorizados para apps) y elige uno que no se haya
+    usado en los últimos videos. Devuelve (id, nombre) o (None, motivo)."""
+    busquedas = [b for b in (im.get("busquedas") or [""]) if isinstance(b, str)] or [""]
+    recientes = util.leer_json("data/estado.json", {}).get("ig_temas_recientes", [])
+    ultimo = "no encontré ningún tema"
+    for q in random.sample(busquedas, len(busquedas))[:3]:
+        params = {"audio_type": "music", "user_id": ig_id, "access_token": token}
+        if q.strip():
+            params["search_query"] = q.strip()  # vacío = los temas en tendencia
+        r = util.pedir("GET", IG_FB + "ig_audio", intentos=2, timeout=40, params=params)
+        if r is None or r.status_code != 200:
+            ultimo = _meta_error(r)
+            util.log("Música de Instagram: la búsqueda falló:", ultimo)
+            continue
+        temas = [t for t in (r.json() or {}).get("data", []) if isinstance(t, dict) and t.get("id")]
+        nuevos = [t for t in temas if str(t["id"]) not in recientes] or temas
+        if nuevos:
+            t = random.choice(nuevos[:15])
+            nombre = " - ".join(str(t.get(k)) for k in ("title", "artist", "display_artist", "name") if t.get(k))
+            return str(t["id"]), (nombre or str(t["id"])) + (f' (búsqueda: "{q}")' if q.strip() else " (tendencia)")
+    return None, ultimo
+
+
+def _anotar_tema(tema_id, nombre):
+    estado = util.leer_json("data/estado.json", {})
+    estado["ig_temas_recientes"] = ([tema_id] + [x for x in estado.get("ig_temas_recientes", []) if x != tema_id])[:30]
+    estado["ig_ultimo_tema"] = nombre
+    util.guardar_json("data/estado.json", estado)
+
+
+def _reel_con_musica(video_url, cover_url, caption, im):
+    token, ig_id = _ig_fb()
+    if not token or not ig_id:
+        raise RuntimeError("faltan IG_FB_ID y IG_FB_TOKEN (o FB_PAGE_TOKEN)")
+    tema_id, nombre = elegir_tema_ig(token, ig_id, im)
+    if not tema_id:
+        raise RuntimeError(nombre)
+    audio = {"audio_id": tema_id,
+             "audio_volume": max(0, min(100, int(im.get("volumen_musica", 15)))),
+             "video_volume": max(0, min(100, int(im.get("volumen_video", 100))))}
+    datos = {"media_type": "REELS", "video_url": video_url, "caption": caption, "share_to_feed": "true",
+             "audio_configuration": json.dumps(audio), "access_token": token}
+    if cover_url:
+        datos["cover_url"] = cover_url
+    r = util.pedir("POST", IG_FB + f"{ig_id}/media", data=datos)
+    if r is None or r.status_code != 200:
+        raise RuntimeError(_meta_error(r))
+    cid = r.json()["id"]
+    fin = time.time() + 6 * 60
+    while True:
+        r = util.pedir("GET", IG_FB + cid, params={"fields": "status_code,status", "access_token": token})
+        st = (r.json() if r is not None and r.status_code == 200 else {}).get("status_code")
+        if st == "FINISHED":
+            break
+        if st == "ERROR" or time.time() > fin:
+            raise RuntimeError("Instagram no pudo procesar el Reel con música: " + str(r.json() if r is not None else ""))
+        time.sleep(10)
+    r = util.pedir("POST", IG_FB + f"{ig_id}/media_publish", data={"creation_id": cid, "access_token": token})
+    if r is None or r.status_code != 200:
+        raise RuntimeError(_meta_error(r))
+    _anotar_tema(tema_id, nombre)
+    util.log("Reel publicado con música de Instagram:", nombre)
+    return r.json()["id"]
+
+
 def instagram_reel(video_url, cover_url, caption):
-    """Sube el Reel. Si Instagram falla al procesarlo (le pasa cada tanto sin motivo), lo vuelve a mandar
+    """Sube el Reel. Si está activa la música de Instagram, primero lo intenta con un tema de su biblioteca;
+    si eso falla, sale por el camino de siempre (sin música de Instagram).
+    Si Instagram falla al procesarlo (le pasa cada tanto sin motivo), lo vuelve a mandar
     con un contenedor nuevo; la última vez sin portada, por si el problema era la portada."""
+    im = util.config().get("instagram_musica") or {}
+    if isinstance(im, dict) and im.get("activa"):
+        try:
+            return _reel_con_musica(video_url, cover_url, caption, im)
+        except Exception as e:  # noqa
+            util.log("Música de Instagram: no se pudo, sale sin música:", util.ocultar(e))
+            util.avisar("Instagram", "Salió sin música de Instagram: " + util.ocultar(e)[:200])
     token, err = ig_token()
     if err:
         raise RuntimeError(err)

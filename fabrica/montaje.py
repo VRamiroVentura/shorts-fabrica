@@ -514,9 +514,17 @@ def _musica(cfg):
     ruta = util.RAIZ / cfg.get("musica", "assets/music.mp3")
     if ruta.exists():
         return ruta
-    carpeta = util.RAIZ / "assets"
-    temas = sorted(list(carpeta.glob("*.mp3")) + list(carpeta.glob("*.m4a"))) if carpeta.exists() else []
-    return random.choice(temas) if temas else None
+    temas = []
+    for carpeta in (util.RAIZ / "assets", util.RAIZ / "assets" / "musica"):  # sueltos o en assets/musica
+        if carpeta.exists():
+            temas += list(carpeta.glob("*.mp3")) + list(carpeta.glob("*.m4a"))
+    return random.choice(sorted(temas)) if temas else None
+
+
+def musica_instagram(cfg):
+    """¿Instagram le pone su propia música al Reel? (config.json → instagram_musica.activa)"""
+    im = cfg.get("instagram_musica") or {}
+    return isinstance(im, dict) and bool(im.get("activa"))
 
 
 def _portada(segmentos, contenido, destino, trabajo, serie_nombre=""):
@@ -597,6 +605,15 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
             "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2", "-movflags", "+faststart",
             str(salida / "video.mp4")]
     _run(cmd)
+
+    # 4b) si Instagram le pone su música y este video ya trae una de assets, se arma una copia solo con la voz
+    #     (misma imagen, sin volver a renderizar) para que en Instagram no suenen dos músicas juntas.
+    if musica and musica_instagram(cfg):
+        _run(["ffmpeg", "-y", "-v", "error", "-i", str(salida / "video.mp4"), "-i", str(wav),
+              "-filter_complex", "[1:a]aresample=44100,apad=pad_dur=0.6,loudnorm=I=-14:TP=-1.5:LRA=11[a]",
+              "-map", "0:v", "-map", "[a]", "-t", f"{total:.3f}", "-c:v", "copy",
+              "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2", "-movflags", "+faststart",
+              str(salida / "video_ig.mp4")])
 
     # 5) portada
     _portada(segmentos, contenido, salida / "thumb.jpg", trabajo, serie_nombre)
