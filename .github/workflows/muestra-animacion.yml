@@ -26,11 +26,16 @@ jobs:
       - name: Preparar el navegador que usa Remotion
         run: npx remotion browser ensure || echo "Sigue igual, lo baja al renderizar"
 
-      - name: Armar el video de muestra (8 segundos)
+      - name: Armar la muestra de promos (8 segundos)
         run: npx remotion render src/index.ts Promo out/muestra.mp4
 
-      - name: Armar el GIF chico
-        run: npx remotion render src/index.ts Promo out/muestra.gif --codec=gif --scale=0.4 --every-nth-frame=2
+      - name: Armar el capítulo de muestra (piezas nuevas)
+        run: npx remotion render src/index.ts Explicativo out/capitulo.mp4 --props=muestras/capitulo.json
+
+      - name: Armar los GIF chicos
+        run: |
+          npx remotion render src/index.ts Promo out/muestra.gif --codec=gif --scale=0.4 --every-nth-frame=2
+          npx remotion render src/index.ts Explicativo out/capitulo.gif --codec=gif --scale=0.4 --every-nth-frame=2 --props=muestras/capitulo.json
 
       - name: Subir video y GIF
         if: always()
