@@ -1392,5 +1392,59 @@
     "material": [
       "foto de las fichas dactilares originales de Juan Vucetich"
     ]
+  },
+  {
+    "fecha": "2026-11-11",
+    "turno": 1,
+    "serie": "economia",
+    "titulo": "¿Suscripciones al divino botón?",
+    "escenas": [
+      {
+        "escena": "Netflix, Spotify, la nube, los juegos... son todos pagos chiquitos que suman.",
+        "busqueda": [
+          "laptop typing",
+          "smart phone screen"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Lo peor es el débito automático. Ni lo ves pasar y se te debita solo.",
+        "busqueda": [
+          "bank app on phone",
+          "person looking at phone"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Las empresas saben esto: hacen que sea fácil pagar pero un dolor de cabeza cancelar.",
+        "busqueda": [
+          "contract signing",
+          "business handshake"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Si pagás tres servicios y usás uno, hacé la cuenta de lo que perdés al año.",
+        "busqueda": [
+          "person looking stressed",
+          "person looking at bank statement"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Agarrá el resumen, mirá qué tenés y cancelá lo que no uses hoy. Tu bolsillo te lo va a agradecer.",
+        "busqueda": [
+          "hand holding credit card",
+          "scissors cutting paper"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "clip de un resumen de tarjeta impreso",
+      "clip de alguien cancelando una suscripción en una web",
+      "dibujo animado de una alcancía con agujeros"
+    ]
   }
 ]

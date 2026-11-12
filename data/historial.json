@@ -1124,5 +1124,30 @@
         "id": "1687645916295141"
       }
     }
+  },
+  {
+    "fecha": "2026-11-11",
+    "turno": 1,
+    "hora": "21:42",
+    "serie": "economia",
+    "titulo": "¿Suscripciones al divino botón?",
+    "fuentes": [
+      "jfXCKtSWLbI",
+      "5XyslxsPLQ4"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18113801780149756"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "RcdDxAnJ-H0"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1482942283714378"
+      }
+    }
   }
 ]
