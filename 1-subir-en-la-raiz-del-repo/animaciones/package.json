@@ -1,0 +1,20 @@
+{
+  "name": "animaciones-ramacontable",
+  "private": true,
+  "description": "Explicativos animados de la fábrica (@ramacontable) hechos con Remotion",
+  "scripts": {
+    "muestra": "remotion render src/index.ts Promo out/muestra.mp4",
+    "muestra-gif": "remotion render src/index.ts Promo out/muestra.gif --codec=gif --scale=0.4 --every-nth-frame=2"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/google-fonts": "^4.0.0",
+    "remotion": "^4.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "typescript": "^5.4.0"
+  }
+}
