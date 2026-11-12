@@ -41,11 +41,84 @@ def _serie_del_dia(cfg, turno=None):
     if forzada in cfg["series"]:
         return forzada
     dia = str(util.ahora().isoweekday())
-    if (turno or _turno()) == 2:
-        clave = (cfg.get("plan_semanal_2") or {}).get(dia)
-        if clave in cfg["series"]:
-            return clave
-    return cfg["plan_semanal"][dia]
+    turno = turno or _turno()
+    valor = (cfg.get("plan_semanal_2") or {}).get(dia) if turno == 2 else None
+    if not valor:
+        valor = cfg["plan_semanal"][dia]
+    return _resolver_plan(cfg, valor, dia, turno)
+
+
+# ---------------------------------------------------------------- franjas especiales de la grilla
+# En plan_semanal, además del nombre de una serie, puede ir:
+#   "a|b"           competencia: se alternan semana por semana y, al terminar la prueba, queda la que más puntúa
+#   "mejor:a|b"     cada semana sale la que viene puntuando más (según el último reporte)
+#   "capitulos"     series por capítulos (series/*.json); mientras no estén activas, va "capitulos_respaldo"
+RENDIMIENTO = "data/rendimiento_series.json"
+
+
+def puntaje_series():
+    """{clave: puntaje} del último reporte. Puntaje = (vistas + 15·(guardados+compartidos) + 10·comentarios) / videos."""
+    datos = util.leer_json(RENDIMIENTO, {}) or {}
+    salida = {}
+    for clave, a in (datos.get("series") or {}).items():
+        n = max(1, int(a.get("posts", 0)))
+        salida[clave] = (a.get("vistas", 0) + 15 * (a.get("guardados", 0) + a.get("compartidos", 0))
+                         + 10 * a.get("comentarios", 0)) / n
+    return salida
+
+
+def _semana():
+    return util.ahora().isocalendar()[1]
+
+
+def _resolver_plan(cfg, valor, dia, turno):
+    valor = str(valor or "").strip()
+    series = cfg["series"]
+    if valor in series:
+        return valor
+    if valor == "capitulos":
+        try:
+            from . import capitulos  # llega con las series por capítulos
+            clave = capitulos.serie_de_hoy(cfg)
+            if clave:
+                return clave
+        except ImportError:
+            pass
+        respaldo = cfg.get("capitulos_respaldo", "monotributo")
+        return respaldo if respaldo in series else cfg["plan_semanal"].get(dia)
+    mejor = valor.startswith("mejor:")
+    opciones = [x.strip() for x in valor.split(":", 1)[-1].split("|") if x.strip() in series]
+    if not opciones:
+        util.log(f"Grilla: «{valor}» no es una serie conocida; uso la del día por defecto.")
+        return next(iter(series))
+    if len(opciones) == 1:
+        return opciones[0]
+    puntos = puntaje_series()
+    if mejor:
+        con_datos = [o for o in opciones if o in puntos]
+        if len(con_datos) == len(opciones):
+            elegida = max(opciones, key=lambda o: puntos[o])
+            util.log(f"Grilla: sale la mejor de {opciones}: {elegida} ({int(puntos[elegida])} puntos)")
+            return elegida
+        return opciones[_semana() % len(opciones)]
+    # competencia: alternan durante la prueba y después queda la ganadora (se anota en estado.json)
+    llave = f"{turno}-{dia}"
+    estado = util.leer_json("data/estado.json", {}) or {}
+    ganadas = estado.get("competencias_resueltas") or {}
+    if ganadas.get(llave, {}).get("plan") == valor and ganadas[llave].get("ganadora") in series:
+        return ganadas[llave]["ganadora"]
+    prueba = (cfg.get("competencias") or {}).get(llave) or {}
+    hasta = prueba.get("hasta", "")
+    hoy = util.ahora().strftime("%Y-%m-%d")
+    if hasta and hoy > hasta and all(o in puntos for o in opciones):
+        ganadora = max(opciones, key=lambda o: puntos[o])
+        ganadas[llave] = {"plan": valor, "ganadora": ganadora, "fecha": hoy,
+                          "puntos": {o: int(puntos[o]) for o in opciones}}
+        estado["competencias_resueltas"] = ganadas
+        util.guardar_json("data/estado.json", estado)
+        util.log(f"Grilla: terminó la competencia {opciones}; queda {ganadora}.")
+        return ganadora
+    return opciones[_semana() % len(opciones)]
 
 
 def _series_con_carrusel(cfg):
@@ -1067,6 +1140,11 @@ def reporte():
                             ("Estructuras virales", "estructuras_virales")]:
         md += ["", f"## {titulo}", ""] + [f"- {x}" for x in a.get(clave_a, [])]
     md += ["", "## Cómo nos fue (últimos 30 días)", ""]
+    try:  # lo usan las competencias de la grilla ("a|b" y "mejor:a|b")
+        por_nombre = {v.get("nombre", k): k for k, v in cfg["series"].items()}
+        util.guardar_json(RENDIMIENTO, {"fecha": fecha, "series": {por_nombre.get(k, k): a for k, a in por_serie.items()}})
+    except Exception as ex:  # noqa
+        util.log("No pude guardar el rendimiento por serie:", ex)
     if por_serie:
         md += ["| Serie | Publicaciones | Vistas promedio | Guardados | Compartidos | Comentarios |",
                "|---|---|---|---|---|---|"]

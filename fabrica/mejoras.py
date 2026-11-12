@@ -71,7 +71,19 @@ def _hora_key(turno):
     return "horarios" if int(turno) == 1 else "horarios_2"
 
 
+def especial(valor):
+    """Franjas especiales de la grilla (competencias, la mejor de dos, capítulos): se cambian a mano."""
+    v = str(valor or "")
+    return "|" in v or v.startswith("mejor:") or v == "capitulos"
+
+
 def _nombre(cfg, clave):
+    v = str(clave or "")
+    if v == "capitulos":
+        return "Series por capítulos"
+    if especial(v):
+        partes = [(cfg["series"].get(x) or {}).get("nombre", x) for x in v.split(":", 1)[-1].split("|")]
+        return ("La mejor entre " if v.startswith("mejor:") else "Compiten ") + " / ".join(partes)
     return (cfg["series"].get(clave) or {}).get("nombre", clave)
 
 
@@ -139,6 +151,8 @@ def validar(cfg, p, posts=None, lista=None):
     if tipo in ("cambiar_serie_dia", "nueva_serie"):
         plan = dict(cfg.get(_plan_key(x["turno"])) or {})
         actual = plan.get(x["dia"])
+        if especial(actual):
+            return False, f"esa franja es «{_nombre(cfg, actual)}»: se cambia a mano, no con sugerencias"
         if tipo == "nueva_serie":
             x["clave"] = re.sub(r"[^a-z0-9_]", "", str(x.get("clave", "")).lower())[:30]
             x["nombre"] = str(x.get("nombre", "")).strip()[:40]
@@ -163,8 +177,9 @@ def validar(cfg, p, posts=None, lista=None):
         x["antes"] = actual
     if tipo == "cambiar_horario":
         h = str(x.get("hora", ""))
-        if not re.fullmatch(r"\d{1,2}:\d{2}", h) or not (_minutos("12:10") <= _minutos(h) <= _minutos("22:30")):
-            return False, "el horario tiene que estar entre las 12:10 y las 22:30"
+        tope = str(cfg.get("hora_maxima", "20:00"))
+        if not re.fullmatch(r"\d{1,2}:\d{2}", h) or not (_minutos("12:10") <= _minutos(h) <= _minutos(tope)):
+            return False, f"el horario tiene que estar entre las 12:10 y las {tope}"
         x["hora"] = f'{int(h.split(":")[0]):02d}:{h.split(":")[1]}'
         otro = (cfg.get(_hora_key(3 - x["turno"])) or {}).get(x["dia"])
         if otro and cfg.get("segundo_turno") and abs(_minutos(otro) - _minutos(x["hora"])) < 240:
@@ -320,7 +335,7 @@ def _pedido(cfg, por_serie, propias, horas, analisis, historia, balance_txt=""):
         "y proponé cambios concretos que suban las vistas, los guardados y los compartidos.\n\n"
         "TIPOS DE CAMBIO PERMITIDOS (usá exactamente estos y estos parámetros):\n"
         '- cambiar_serie_dia: {"turno": 1|2, "dia": "1".."7", "serie": "<clave existente>"}\n'
-        '- cambiar_horario: {"turno": 1|2, "dia": "1".."7", "hora": "HH:MM"} (entre 12:10 y 22:30, a 4 horas o más '
+        '- cambiar_horario: {"turno": 1|2, "dia": "1".."7", "hora": "HH:MM"} (entre 12:10 y 20:00, a 4 horas o más '
         "del otro video de ese día)\n"
         '- ajustar_prompt_serie: {"serie": "<clave>", "texto": "<instrucción concreta de 1 a 3 frases>"} (gancho, '
         "enfoque, largo, tipo de tema; basada en lo que funcionó)\n"

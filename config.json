@@ -30,10 +30,21 @@
     "activa": true,
     "volumen_musica": 15,
     "volumen_video": 100,
-    "busquedas": ["", "lofi", "chill", "acoustic", "piano", "jazz"],
+    "busquedas": [
+      "",
+      "lofi",
+      "chill",
+      "acoustic",
+      "piano",
+      "jazz"
+    ],
     "_nota": "Instagram le pone un tema de su biblioteca a cada Reel. volumen_* va de 0 a 100. En busquedas, \"\" = temas en tendencia. Si falla, el Reel sale igual sin música."
   },
-  "bancos_clips": ["Pixabay", "Pexels", "Coverr"],
+  "bancos_clips": [
+    "Pixabay",
+    "Pexels",
+    "Coverr"
+  ],
   "control_repetidos": {
     "activo": true,
     "dias": 60,
@@ -45,22 +56,22 @@
   "postales_por_video": 3,
   "fuentes_por_video": 2,
   "plan_semanal": {
-    "1": "libro",
-    "2": "plata",
-    "3": "economia",
-    "4": "autor",
+    "1": "libro|autor",
+    "2": "plata_diaria",
+    "3": "capitulos",
+    "4": "mejor:argentino_que|historias",
     "5": "monotributo",
-    "6": "historias",
-    "7": "viral"
+    "6": "argentino_que",
+    "7": "historias"
   },
   "horarios": {
-    "1": "19:30",
-    "2": "13:00",
-    "3": "21:30",
-    "4": "19:30",
-    "5": "12:30",
+    "1": "18:30",
+    "2": "14:00",
+    "3": "20:00",
+    "4": "20:00",
+    "5": "14:00",
     "6": "18:30",
-    "7": "21:00"
+    "7": "20:00"
   },
   "carrusel_dias": [
     2,
@@ -232,6 +243,29 @@
           "pais": "Italia"
         }
       ]
+    },
+    "plata_diaria": {
+      "nombre": "Plata de todos los días",
+      "prompt": "Serie: PLATA DE TODOS LOS DÍAS.\nPartí de algo que la gente vive en la calle o en el súper (\"¿por qué el café sale el doble?\", \"¿la segunda al 50 % o el 3x2?\", \"¿cuánto costaba esto antes?\") y explicá el mecanismo de fondo con un ejemplo en números redondos en pesos.\nUn solo tema por video. Sin política partidaria.\nTerminá siempre con una acción concreta que se pueda hacer hoy, en menos de 10 minutos, o con lo que eso significa para el bolsillo de quien mira.\nSi el tema es de cuentas (promos, cuotas, descuentos, precios de antes ajustados por inflación), las cuentas tienen que dar exactas: hacelas con cuidado y mostralas paso a paso.",
+      "canales": [
+        "Camino Financiero",
+        "Humphrey Yang",
+        "Two Cents",
+        "The Financial Diet",
+        "Memorias de Tiburón",
+        "VisualEconomik",
+        "Economics Explained",
+        "How Money Works"
+      ]
+    }
+  },
+  "hora_maxima": "20:00",
+  "capitulos_respaldo": "monotributo",
+  "competencias": {
+    "1-1": {
+      "desde": "2026-11-16",
+      "hasta": "2026-12-13",
+      "nota": "Un libro en 60 segundos vs La idea de...: alternan 4 semanas y queda la que más puntúa"
     }
   }
 }

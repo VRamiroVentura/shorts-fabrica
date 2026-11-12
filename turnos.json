@@ -12,7 +12,7 @@
   },
   "horarios_2": {
     "1": "12:30",
-    "2": "20:30",
+    "2": "20:00",
     "3": "13:00",
     "4": "12:30",
     "5": "20:00",
@@ -111,7 +111,7 @@
     "datos": {
       "nombre": "La plata en datos",
       "modo": "datos",
-      "respaldo": "economia",
+      "respaldo": "plata_diaria",
       "canales": [],
       "prompt": "Las instrucciones están en prompts/series/datos.md",
       "palabras_max": 150
