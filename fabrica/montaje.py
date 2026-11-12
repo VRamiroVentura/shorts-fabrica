@@ -570,7 +570,15 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
     _fondos.graficos = []
     _fondos.mapas = []
     _fondos.faltas = []
-    segmentos, de_pexels, banco, de_propios, de_postales = _fondos(escenas, tiempos, trabajo, seed, evitar)
+    anim_video, anim_portada = None, None
+    if contenido.get("animacion"):  # capítulos de series: todo el fondo es una animación (Remotion)
+        from . import capitulos
+        anim_video, anim_portada = capitulos.renderizar(contenido, tiempos, total, trabajo)
+    if anim_video:
+        segmentos, de_pexels, banco, de_propios, de_postales = [anim_video], 0, 0, 0, 0
+        _fondos.graficos = [(0.0, total + 2)]  # la animación no se oscurece
+    else:
+        segmentos, de_pexels, banco, de_propios, de_postales = _fondos(escenas, tiempos, trabajo, seed, evitar)
     (trabajo / "lista.txt").write_text("".join(f"file '{p.resolve()}'\n" for p in segmentos))
     _run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(trabajo / "lista.txt"),
           "-c", "copy", str(trabajo / "fondo.mp4")])
@@ -578,7 +586,14 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
     # 3) subtítulos + gancho
     gancho = (contenido["escenas"][0].get("texto_pantalla") or contenido.get("miniatura", {}).get("linea1") or "")
     dur_gancho = min(max(tiempos[0][1], 2.2), 4.0)
-    subtitulos(palabras, gancho, serie_nombre, usuario, dur_gancho, total, trabajo / "subs.ass")
+    if anim_video:  # la animación ya trae título, serie y marca: solo subtítulos, más chicos y más abajo
+        subtitulos(palabras, "", "", "", dur_gancho, total, trabajo / "subs.ass")
+        ass = (trabajo / "subs.ass").read_text(encoding="utf-8")
+        ass = re.sub(r"(Style: Sub,[^,]*,)112,", r"\g<1>80,", ass)
+        ass = ass.replace("\\pos(%d,%d)" % (W // 2, SUB_Y), "\\pos(%d,%d)" % (W // 2, 1530))
+        (trabajo / "subs.ass").write_text(ass, encoding="utf-8")
+    else:
+        subtitulos(palabras, gancho, serie_nombre, usuario, dur_gancho, total, trabajo / "subs.ass")
 
     # 4) mezcla final: fondo oscurecido + subtítulos + barra de progreso + voz (+ música)
     musica = _musica(cfg)
@@ -617,6 +632,12 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
 
     # 5) portada
     _portada(segmentos, contenido, salida / "thumb.jpg", trabajo, serie_nombre)
+    if anim_portada:
+        try:
+            from PIL import Image
+            Image.open(anim_portada).convert("RGB").save(salida / "thumb.jpg", "JPEG", quality=90)
+        except Exception as e:  # noqa
+            util.log("No pude usar la portada animada:", util.ocultar(e))
 
     meta = {"duracion": round(voz.duracion(salida / "video.mp4"), 2), "voz": motor, "clips": len(segmentos),
             "graficos": len(getattr(_fondos, "graficos", [])), "mapas": len(getattr(_fondos, "mapas", [])),

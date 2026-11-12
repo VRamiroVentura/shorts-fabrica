@@ -257,6 +257,12 @@
         "Economics Explained",
         "How Money Works"
       ]
+    },
+    "capitulos": {
+      "nombre": "Series de monotributo",
+      "modo": "capitulos",
+      "prompt": "Serie por capítulos: la guía de cada capítulo está en la carpeta series/ (la fábrica la carga sola).",
+      "canales": []
     }
   },
   "hora_maxima": "20:00",
@@ -267,5 +273,10 @@
       "hasta": "2026-12-13",
       "nota": "Un libro en 60 segundos vs La idea de...: alternan 4 semanas y queda la que más puntúa"
     }
-  }
+  },
+  "capitulos_orden": [
+    "monotributo-de-cero",
+    "secretos-del-monotributo"
+  ],
+  "estilo_por_serie": {}
 }

@@ -146,7 +146,14 @@ def _tema_pedido(turno):
 
 
 def _tema_por_id(tema_id):
-    return next((t for t in _temas() if tema_id and t.get("id") == tema_id), None)
+    t = next((t for t in _temas() if tema_id and t.get("id") == tema_id), None)
+    if t or not tema_id:
+        return t
+    try:  # también puede ser un capítulo de una serie (series/*.json)
+        from . import capitulos
+        return capitulos.tema_por_id(tema_id)
+    except Exception:  # noqa
+        return None
 
 
 def _serie_con_tema(serie, tema):
@@ -430,6 +437,9 @@ def generar(simulado=False):
     inicio = util.datetime.now(util.ZoneInfo("UTC")).isoformat()
     clave_serie = _serie_del_dia(cfg, turno)
     tema = None if simulado else _tema_pedido(turno)
+    if not tema and not simulado and clave_serie == "capitulos":
+        from . import capitulos
+        tema = capitulos.tema_de_hoy(cfg)
     if tema:
         clave_serie = tema.get("serie") if tema.get("serie") in cfg["series"] else clave_serie
         serie = _serie_con_tema(_serie(cfg, clave_serie), tema)
@@ -517,6 +527,9 @@ def generar(simulado=False):
         contenido["carrusel"] = _carrusel_tema(tema)
     if tema:
         contenido = _aplicar_cierre(contenido, tema)
+    if tema and tema.get("capitulo"):
+        from . import capitulos
+        contenido = capitulos.animar(contenido, tema)
 
     nombre_carpeta = _carpeta(fecha, turno)
     if SALIDA.exists():
@@ -571,6 +584,9 @@ def rehacer():
         contenido = dict(contenido, carrusel=_carrusel_tema(tema))  # las placas fijas no se tocan
     if tema and not any(x in cambios.lower() for x in ("cierre", "final", "pregunta", "termin")):
         contenido = _aplicar_cierre(contenido, tema)  # el cierre fijo se mantiene salvo que pidas cambiarlo
+    if tema and tema.get("capitulo"):
+        from . import capitulos
+        contenido = capitulos.animar(contenido, tema)
     otros_clips = any(x in cambios.lower() for x in ("clip", "imagen", "imágen", "fondo", "toma", "visual", "video de fondo"))
     evitar = set((p.get("video") or {}).get("clips_ids") or []) if otros_clips else set()
     nombre = f'{p.get("base") or p["carpeta"]}-v{version}'

@@ -1,7 +1,8 @@
 import React from "react";
-import { Composition } from "remotion";
+import { Composition, Still } from "remotion";
 import { Promo } from "./Promo";
 import { Explicativo, FPS, duracionTotal, PropsExplicativo } from "./Explicativo";
+import { Portada, PropsPortada } from "./Portadas";
 import muestra from "../muestras/capitulo.json";
 
 export const RemotionRoot: React.FC = () => (
@@ -24,6 +25,13 @@ export const RemotionRoot: React.FC = () => (
       height={1920}
       defaultProps={muestra as PropsExplicativo}
       calculateMetadata={({ props }) => ({ durationInFrames: duracionTotal(props as PropsExplicativo) })}
+    />
+    <Still
+      id="Portada"
+      component={Portada}
+      width={1080}
+      height={1920}
+      defaultProps={{ tipo: "cero", capitulo: 2, total: 5, tema: "Lo que pagás todos los meses" } as PropsPortada}
     />
   </>
 );

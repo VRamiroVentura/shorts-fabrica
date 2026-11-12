@@ -105,6 +105,14 @@ const ICONOS: Record<string, React.ReactNode> = {
       <path d="M66 102 L90 126 L136 78" fill="none" stroke={C.negro} strokeWidth="14" strokeLinecap="round" strokeLinejoin="round" />
     </>
   ),
+  maletin: (
+    <>
+      <rect x="26" y="62" width="148" height="104" rx="14" {...L} />
+      <path d="M74 62 V44 Q74 34 84 34 H116 Q126 34 126 44 V62" {...L} />
+      <rect x="26" y="98" width="148" height="20" fill={C.amarillo} />
+      <rect x="88" y="90" width="24" height="36" rx="5" fill={C.crema} />
+    </>
+  ),
   grafico: (
     <>
       <line x1="34" y1="166" x2="170" y2="166" {...L} />

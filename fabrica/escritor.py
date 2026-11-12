@@ -264,6 +264,8 @@ def validar(d):
                             "emoji": _emoji(e.get("emoji"), "💡"),
                             "prompt": str(e.get("prompt") or "").strip(),
                             "broll": _broll(e.get("broll"))})
+            if isinstance(e.get("mapa"), dict) and len(escenas) > 1:
+                escenas[-1]["mapa"] = e["mapa"]  # escena con el plano de La Plata (la arma el montaje)
             g = _grafico(e.get("grafico"))
             seguido = len(escenas) > 1 and escenas[-2].get("grafico")  # nunca dos carteles seguidos
             if g and len(escenas) > 1 and not seguido and sum(1 for x in escenas if x.get("grafico")) < GRAFICOS_MAX:
