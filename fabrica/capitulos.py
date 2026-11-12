@@ -324,6 +324,15 @@ def animar(contenido, tema):
     return dict(contenido, animacion={"serie": serie, "piezas": piezas}, portada_animada=portada)
 
 
+def con_destino(contenido, tema):
+    """Suma a la descripción el link a la guía del capítulo en el portal (si no está)."""
+    url = ((tema or {}).get("capitulo") or {}).get("destino", "")
+    desc = contenido.get("descripcion", "")
+    if not url or url in desc:
+        return contenido
+    return dict(contenido, descripcion=(desc.rstrip() + "\nGuía completa: " + url).strip())
+
+
 # ---------------------------------------------------------------- render (lo llama el montaje)
 def renderizar(contenido, tiempos, total, trabajo):
     """Arma el fondo animado completo y la portada con Remotion. Devuelve (video, portada) o (None, None)."""

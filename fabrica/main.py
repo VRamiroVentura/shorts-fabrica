@@ -539,9 +539,11 @@ def generar(simulado=False):
         contenido["carrusel"] = _carrusel_tema(tema)
     if tema:
         contenido = _aplicar_cierre(contenido, tema)
-    if tema and tema.get("capitulo") and not contenido.get("animacion"):
+    if tema and tema.get("capitulo"):
         from . import capitulos
-        contenido = capitulos.animar(contenido, tema)
+        if not contenido.get("animacion"):
+            contenido = capitulos.animar(contenido, tema)
+        contenido = capitulos.con_destino(contenido, tema)
 
     nombre_carpeta = _carpeta(fecha, turno)
     if SALIDA.exists():

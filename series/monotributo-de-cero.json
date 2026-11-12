@@ -23,7 +23,7 @@
         "pantalla": "Topes de hoy en ramacontable.com.ar",
         "emoji": "⚖️"
       },
-      "destino": "https://ramacontable.com.ar/monotributo-categorias-vigentes.html"
+      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-0"
     },
     {
       "id": "mdc-1",
@@ -44,7 +44,7 @@
         "pantalla": "Topes de hoy en ramacontable.com.ar",
         "emoji": "📌"
       },
-      "destino": "https://ramacontable.com.ar/monotributo-categorias-vigentes.html",
+      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-1",
       "proximo": "Lo que pagás todos los meses"
     },
     {
@@ -66,7 +66,7 @@
         "pantalla": "Montos de hoy en ramacontable.com.ar",
         "emoji": "💸"
       },
-      "destino": "https://ramacontable.com.ar/monotributo-categorias-vigentes.html",
+      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-2",
       "proximo": "¿Qué factura hago y a quién?"
     },
     {
@@ -84,7 +84,7 @@
         "pantalla": "Más en ramacontable.com.ar",
         "emoji": "🧾"
       },
-      "destino": "https://ramacontable.com.ar/guias.html",
+      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-3",
       "proximo": "Recategorización"
     },
     {
@@ -102,7 +102,7 @@
         "pantalla": "Fechas en ramacontable.com.ar",
         "emoji": "📅"
       },
-      "destino": "https://ramacontable.com.ar/cuando-cambia-cada-dato.html",
+      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-4",
       "proximo": "Señales de que llegás al límite"
     },
     {
@@ -123,7 +123,7 @@
         "pantalla": "Valores en ramacontable.com.ar",
         "emoji": "🚦"
       },
-      "destino": "https://ramacontable.com.ar/monotributo-categorias-vigentes.html"
+      "destino": "https://ramacontable.com.ar/monotributo-explicado-facil.html#mdc-5"
     }
   ]
 }
