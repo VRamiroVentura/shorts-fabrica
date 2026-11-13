@@ -42,7 +42,7 @@ jobs:
     env:
       TURNO_MANUAL: ${{ inputs.turno }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.ref_name }}  # siempre la última versión (con el historial de hoy al día)
       - uses: actions/setup-python@v6
@@ -86,7 +86,7 @@ jobs:
       SMTP_PASS: ${{ secrets.SMTP_PASS }}
       GH_PAT: ${{ secrets.GH_PAT }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.ref_name }}  # siempre la última versión (con el historial de hoy al día)
 
@@ -96,7 +96,7 @@ jobs:
           cache: pip
 
       - name: Modelo de Whisper (para sincronizar subtítulos) en caché
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/huggingface
           key: whisper-base-v1
@@ -111,14 +111,14 @@ jobs:
             curl -fsSL -o "fonts/$(basename $f)" "https://github.com/google/fonts/raw/main/$f" || echo "No bajó $f"
           done
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         if: hashFiles('animaciones/package.json') != ''
         with:
           node-version: "20"
 
       - name: Remotion para los capítulos animados (en caché)
         if: hashFiles('animaciones/package.json') != ''
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: animaciones/node_modules
           key: remotion-${{ hashFiles('animaciones/package.json') }}
@@ -133,14 +133,14 @@ jobs:
       - name: Investigar, escribir y diseñar
         run: python -m fabrica.main generar
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: out/sitio
 
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
       - name: Esperar a que los archivos estén online
         run: python -m fabrica.main online --base-url "${{ steps.deployment.outputs.page_url }}"
@@ -160,14 +160,14 @@ jobs:
         run: python -m fabrica.main rehacer
 
       - if: ${{ steps.espera1.outputs.decision == 'cambios' }}
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: out/sitio
           name: github-pages-2
 
       - id: deployment2
         if: ${{ steps.espera1.outputs.decision == 'cambios' }}
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         with:
           artifact_name: github-pages-2
 
@@ -190,14 +190,14 @@ jobs:
         run: python -m fabrica.main rehacer
 
       - if: ${{ steps.espera2.outputs.decision == 'cambios' }}
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: out/sitio
           name: github-pages-3
 
       - id: deployment3
         if: ${{ steps.espera2.outputs.decision == 'cambios' }}
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         with:
           artifact_name: github-pages-3
 
@@ -227,7 +227,23 @@ jobs:
         run: |
           git config user.name "fabrica-bot"
           git config user.email "fabrica-bot@users.noreply.github.com"
-          git add data 2>/dev/null || true
-          git add publicaciones 2>/dev/null || true
-          git diff --cached --quiet || git commit -m "Publicación $(date +%F) [skip ci]"
-          git push || (git pull --rebase && git push)
+          RAMA="${{ github.ref_name }}"
+          BASE=$(git rev-parse HEAD)
+          # 1) guardo aparte solo lo que cambió esta corrida
+          rm -rf /tmp/nuestros && mkdir -p /tmp/nuestros
+          { git diff --name-only HEAD -- data publicaciones; git ls-files --others --exclude-standard data publicaciones; } | sort -u | while read -r f; do
+            [ -f "$f" ] && mkdir -p "/tmp/nuestros/$(dirname "$f")" && cp "$f" "/tmp/nuestros/$f"
+          done
+          [ -n "$(ls -A /tmp/nuestros)" ] || { echo "Nada para guardar."; exit 0; }
+          # 2) traigo lo último del repo, fusiono sin pisar cambios ajenos y subo (con reintentos)
+          for i in 1 2 3 4 5; do
+            git fetch -q origin "$RAMA"
+            git reset -q --hard "origin/$RAMA"
+            python -m fabrica.fusionar /tmp/nuestros . "$BASE"
+            git add data publicaciones 2>/dev/null || true
+            git diff --cached --quiet && { echo "Ya estaba todo guardado."; exit 0; }
+            git commit -q -m "Publicación $(date +%F) [skip ci]"
+            git push -q origin "HEAD:$RAMA" && { echo "Historial guardado."; exit 0; }
+            sleep $((i * 10))
+          done
+          echo "No se pudo guardar el historial" && exit 1

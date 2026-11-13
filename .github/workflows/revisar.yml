@@ -37,7 +37,7 @@ jobs:
       CAMBIOS: ${{ inputs.cambios }}
       TURNO_PEDIDO: ${{ inputs.turno }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v6

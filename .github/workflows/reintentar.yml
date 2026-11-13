@@ -33,7 +33,7 @@ jobs:
       SMTP_PASS: ${{ secrets.SMTP_PASS }}
       GH_PAT: ${{ secrets.GH_PAT }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v6
