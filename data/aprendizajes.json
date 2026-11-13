@@ -1,14 +1,14 @@
 {
-  "fecha": "2026-11-12",
+  "fecha": "2026-11-13",
   "mejores": [
-    "El argentino que cobró 750 millones (6111 vistas)",
-    "Vendió su web en 540 millones (2950 vistas)",
-    "El negocio oculto de McDonald's (2692 vistas)"
+    "El argentino que cobró 750 millones (6173 vistas)",
+    "El negocio oculto de McDonald's (2692 vistas)",
+    "En un bar de La Plata armaron este negocio (2042 vistas)"
   ],
   "peores": [
     "El mito de Disney en La Plata (1 vistas)",
-    "¿Por qué el café te cuesta el doble? (3 vistas)",
-    "El método viral de ahorro que acá no camina (5 vistas)"
+    "Vendió su web en 540 millones (2 vistas)",
+    "¿Por qué el café te cuesta el doble? (3 vistas)"
   ],
   "patrones": [
     "Los hooks con números concretos y foco local argentino arrasan en retention (ej. cotizaciones, feriados bancarios, brechas).",

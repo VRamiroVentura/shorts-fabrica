@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 140 vistas promedio (3 videos) → después 226 (3 videos): mejoró"
+      "balance": "antes 141 vistas promedio (3 videos) → después 228 (3 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -35,7 +35,7 @@
       "aplica_el": "2026-10-30",
       "aplicada_el": "2026-10-30",
       "como": "automática (sin respuesta)",
-      "balance": "antes 90 vistas promedio (2 videos) → después 204 (2 videos): mejoró"
+      "balance": "antes 90 vistas promedio (2 videos) → después 207 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 2495 vistas promedio (2 videos) → después 6111 (1 videos): mejoró"
+      "balance": "antes 1022 vistas promedio (2 videos) → después 6173 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -105,7 +105,7 @@
       "aplica_el": "2026-11-03",
       "aplicada_el": "2026-11-03",
       "como": "automática (sin respuesta)",
-      "balance": "antes 136 vistas promedio (1 videos) → después 265 (2 videos): mejoró"
+      "balance": "antes 136 vistas promedio (1 videos) → después 223 (3 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 6111 (1 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 6173 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 152 vistas promedio (2 videos) → después 171 (1 videos): quedó igual"
+      "balance": "antes 152 vistas promedio (2 videos) → después 172 (1 videos): quedó igual"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -295,15 +295,21 @@
       "tipo": "carrusel_siempre",
       "params": {
         "serie": "datos",
-        "activar": true
+        "activar": true,
+        "antes_lista": [
+          "monotributo"
+        ]
       },
       "titulo": "Activar carrusel en la serie La plata en datos",
       "por_que": "La competencia rompe récords con datos comparativos visuales e infografías limpias. Nuestro único video de 'La plata en datos' ('¿Nafta más cara que en los vecinos?') logró 1638 vistas pero 0 guardados. El formato carrusel facilitará que los usuarios guarden y comparen las placas informativas.",
       "id": 18,
       "fecha": "2026-11-09",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-11",
-      "aplica_el": "2026-11-13"
+      "aplica_el": "2026-11-13",
+      "aplicada_el": "2026-11-13",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "ajustar_prompt_serie",
