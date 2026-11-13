@@ -1612,5 +1612,71 @@
     "material": [
       "foto de Wenceslao Casares"
     ]
+  },
+  {
+    "fecha": "2026-11-13",
+    "turno": 1,
+    "serie": "monotributo",
+    "titulo": "¿Te llegó una multa de ARCA?",
+    "escenas": [
+      {
+        "escena": "Aplica si la infracción fue antes del nueve de octubre de este año.",
+        "busqueda": [
+          "calendar page flipping",
+          "desk calendar"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Entran personas humanas, monotributistas, PyMEs y entidades sin fines de lucro.",
+        "busqueda": [
+          "person working on laptop",
+          "small business shop"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Para tener el descuento, tenés que presentar la declaración jurada que te faltaba.",
+        "busqueda": [
+          "laptop typing keyboard",
+          "filling out form"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Si presentás lo omitido antes de esa fecha, la quita se aplica sola.",
+        "busqueda": [
+          "check mark paper",
+          "approved document stamp"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Pero si la multa estaba en discusión administrativa o judicial, tenés que informarlo en Presentaciones Digitales.",
+        "busqueda": [
+          "typing on notebook",
+          "digital portal screen"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Ojo que si la multa ya la tenías pagada en un plan de pagos, ahí no tenés rebaja.",
+        "busqueda": [
+          "receipt printer",
+          "warning icon sign"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "La nota completa con todos los detalles la tenés en rama contable punto com punto ar.",
+        "busqueda": [
+          "person holding smartphone",
+          "website browsing"
+        ],
+        "se_uso": "un clip aproximado"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]

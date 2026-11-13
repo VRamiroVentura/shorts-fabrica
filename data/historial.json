@@ -1196,5 +1196,36 @@
     },
     "guion": "Un argentino vendió su empresa en quinientos cuarenta millones de dólares en el año dos mil. Se llama Wenceslao Casares. Armó Patagon desde un departamento y el Banco Santander se la compró. Sus socios se fueron a disfrutar la plata, pero él prefirió armar otro negocio. En 2011 conoció el bitcoin cuando no valía nada. Fue el primero en convencer a los millonarios de Silicon Valley para que inviert",
     "tema_id": ""
+  },
+  {
+    "fecha": "2026-11-13",
+    "turno": 1,
+    "hora": "14:52",
+    "serie": "monotributo",
+    "titulo": "¿Te llegó una multa de ARCA?",
+    "fuentes": [
+      "portal:arca-rg-5927-2026-reduccion-multas-formales",
+      "https://www.ignacioonline.com.ar/arca-reglamento-la-reduccion-del-50-de-multas-formales-como-acceder-y-hasta-cuando/"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17875602351640027"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "17934084171420359"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "DVJtKWyBJD0"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1110955601834088"
+      }
+    },
+    "guion": "Si te llegó una multa de ARCA por no presentar una declaración jurada, pará un segundo. Podés pagar la mitad. Salió un beneficio del cincuenta por ciento para multas por no presentar declaraciones juradas. Aplica si la infracción fue antes del nueve de octubre de este año. Entran personas humanas, monotributistas, PyMEs y entidades sin fines de lucro. Para tener el descuento, tenés que presentar l",
+    "tema_id": ""
   }
 ]
