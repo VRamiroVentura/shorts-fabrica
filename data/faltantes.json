@@ -1449,91 +1449,6 @@
   },
   {
     "fecha": "2026-11-12",
-    "turno": 1,
-    "serie": "argentino_que",
-    "titulo": "El argentino que vendió Patagon",
-    "escenas": [
-      {
-        "escena": "Se llama Wenceslao Casares y la empresa era Patagon.",
-        "busqueda": [
-          "young entrepreneur laptop",
-          "man at office"
-        ],
-        "se_uso": "un cartel de reserva"
-      },
-      {
-        "escena": "Arrancó a fines de los noventa, cuando en Argentina casi nadie navegaba en internet.",
-        "busqueda": [
-          "old computer monitor",
-          "retro internet"
-        ],
-        "se_uso": "un clip aproximado"
-      },
-      {
-        "escena": "El pibe la vio antes que todos y armó el primer portal financiero de la región.",
-        "busqueda": [
-          "digital banking app",
-          "phone screen money"
-        ],
-        "se_uso": "un clip aproximado"
-      },
-      {
-        "escena": "Buscó socios, levantó millones de dólares afuera y lo transformó en un banco digital.",
-        "busqueda": [
-          "handshake business meeting",
-          "investors meeting"
-        ],
-        "se_uso": "un clip aproximado"
-      },
-      {
-        "escena": "El Banco Santander le compró el 75 por ciento del negocio.",
-        "busqueda": [
-          "bank building facade",
-          "modern skyscraper"
-        ],
-        "se_uso": "un clip aproximado"
-      },
-      {
-        "escena": "Fueron setecientos cincuenta millones de dólares. Meses después se cayó todo.",
-        "busqueda": [
-          "wallet with cash",
-          "counting money"
-        ],
-        "se_uso": "un clip repetido"
-      },
-      {
-        "escena": "Explotó la burbuja de las puntocom y las empresas de internet perdieron casi todo el valor.",
-        "busqueda": [
-          "stock market chart crashing",
-          "calendar page"
-        ],
-        "se_uso": "un cartel de reserva"
-      },
-      {
-        "escena": "Pero Wenceslao ya tenía la plata en el bolsillo.",
-        "busqueda": [
-          "wallet with cash",
-          "counting money"
-        ],
-        "se_uso": "un clip repetido"
-      },
-      {
-        "escena": "A veces no alcanza con tener una buena idea; lo más difícil es saber cuándo vender.",
-        "busqueda": [
-          "clock gears ticking",
-          "hourglass"
-        ],
-        "se_uso": "un clip aproximado"
-      }
-    ],
-    "dibujitos": [],
-    "material": [
-      "foto de Wenceslao Casares en los años 90",
-      "logo antiguo de Patagon"
-    ]
-  },
-  {
-    "fecha": "2026-11-12",
     "turno": 2,
     "serie": "estafas",
     "titulo": "Te roban el WhatsApp con este truco",
@@ -1621,5 +1536,81 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-11-12",
+    "turno": 1,
+    "serie": "argentino_que",
+    "titulo": "El argentino que hizo USD 1200M",
+    "escenas": [
+      {
+        "escena": "Se llama Wenceslao Casares. Armó Patagon desde un departamento y el Banco Santander se la compró.",
+        "busqueda": [
+          "man typing on laptop",
+          "small apartment desk"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Sus socios se fueron a disfrutar la plata, pero él prefirió armar otro negocio.",
+        "busqueda": [
+          "relaxing on beach",
+          "champagne glass"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Fue el primero en convencer a los millonarios de Silicon Valley para que inviertan ahí.",
+        "busqueda": [
+          "silicon valley building",
+          "tech investors meeting"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Después creó Xapo, una bóveda digital para guardar bitcoin en búnkeres en Suiza.",
+        "busqueda": [
+          "bank vault door closing",
+          "digital security lock"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Vendió la custodia por cincuenta millones de dólares a Coinbase.",
+        "busqueda": [
+          "clock ticking fast",
+          "stock market chart rising"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Hoy su patrimonio ronda los mil doscientos millones de dólares por entender la tecnología diez años antes.",
+        "busqueda": [
+          "hands counting us dollars",
+          "luxury skyscraper view"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Fijate cómo mirar la tendencia que viene te cambia la ecuación.",
+        "busqueda": [
+          "looking through telescope",
+          "future technology concept"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "Mandáselo a ese amigo que siempre está queriendo arrancar algo nuevo.",
+        "busqueda": [
+          "hand holding phone sharing",
+          "two friends talking laugh"
+        ],
+        "se_uso": "un clip repetido"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "foto de Wenceslao Casares"
+    ]
   }
 ]

@@ -1172,5 +1172,29 @@
       }
     },
     "guion": "Te sacan el WhatsApp en dos minutos con una simple llamada. Te habla alguien con foto oficial del gobierno o de un banco. Te inventan que es por un turno o un problema técnico. Ahí te entra un SMS con un código de seis números. Te piden que se los leas rápido para validar el trámite. Si se los das, le abriste tu cuenta en su teléfono. Enseguida le escriben a tus contactos pidiéndoles plata de urge"
+  },
+  {
+    "fecha": "2026-11-12",
+    "turno": 1,
+    "hora": "21:11",
+    "serie": "argentino_que",
+    "titulo": "El argentino que hizo USD 1200M",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "17996612721020820"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "lQzZvMTC8vQ"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "4905370506415903"
+      }
+    },
+    "guion": "Un argentino vendió su empresa en quinientos cuarenta millones de dólares en el año dos mil. Se llama Wenceslao Casares. Armó Patagon desde un departamento y el Banco Santander se la compró. Sus socios se fueron a disfrutar la plata, pero él prefirió armar otro negocio. En 2011 conoció el bitcoin cuando no valía nada. Fue el primero en convencer a los millonarios de Silicon Valley para que inviert",
+    "tema_id": ""
   }
 ]
