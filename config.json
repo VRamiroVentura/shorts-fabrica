@@ -48,10 +48,11 @@
   "control_repetidos": {
     "activo": true,
     "dias": 60,
-    "dias_bloqueo": 7,
+    "dias_bloqueo": 30,
     "intentos": 2,
     "muestra_mediana": 12,
-    "_nota": "Antes de armar el video compara la idea con lo publicado en los últimos 'dias'. Si se repite algo de los últimos 'dias_bloqueo' o algo que anduvo mal, escribe otro tema; si se repite algo que anduvo bien (vistas >= mediana de los últimos 'muestra_mediana' videos), lo deja pasar como relanzamiento."
+    "_nota": "Antes de armar el video compara la idea con lo publicado en los últimos 'dias'. Si se repite algo de los últimos 'dias_bloqueo', si la idea ya salió 'max_veces' veces en esos días, o si repite algo que anduvo mal, escribe otro tema; si repite algo que anduvo bien (vistas >= mediana de los últimos 'muestra_mediana' videos) y pasaron más de 'dias_bloqueo' días, lo deja pasar como relanzamiento.",
+    "max_veces": 2
   },
   "postales_por_video": 3,
   "fuentes_por_video": 2,
@@ -59,7 +60,7 @@
     "1": "libro|autor",
     "2": "plata_diaria",
     "3": "capitulos",
-    "4": "mejor:argentino_que|historias",
+    "4": "mejor:historias|paso_de_verdad",
     "5": "monotributo",
     "6": "argentino_que",
     "7": "historias"

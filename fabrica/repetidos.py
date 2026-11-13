@@ -1,7 +1,8 @@
 """Control de temas repetidos, según cómo rindió el video anterior.
 
 Antes de armar el video, la IA compara el guion nuevo con lo publicado en los últimos `dias` (60 por defecto):
-  - Si es la misma idea que algo de los últimos `dias_bloqueo` (7): se frena siempre y se escribe otro tema.
+  - Si es la misma idea que algo de los últimos `dias_bloqueo` (30): se frena siempre y se escribe otro tema.
+  - Si la idea ya salió `max_veces` (2) en la ventana de `dias`, se frena aunque haya rendido.
   - Si es la misma idea que un video más viejo que ANDUVO BIEN (vistas >= la mediana de los últimos videos):
     pasa como relanzamiento.
   - Si es la misma idea que un video más viejo que ANDUVO MAL: se frena y se escribe otro tema.
@@ -79,6 +80,12 @@ def decidir(contenido, historial, medir):
     if recientes:
         return True, (f'"{contenido.get("titulo")}" es la misma idea que "{recientes[-1]["titulo"]}" '
                       f'({recientes[-1]["fecha"]}), de hace menos de {c.get("dias_bloqueo", 7)} días'), titulos
+    # Ya se relanzó: la misma idea no sale más de `max_veces` en la ventana de `dias`, aunque rinda
+    max_veces = int(c.get("max_veces", 2))
+    if len(parecidos) + 1 > max_veces:
+        return True, (f'"{contenido.get("titulo")}" sería la vez número {len(parecidos) + 1} de la misma idea en '
+                      f'{c.get("dias", 60)} días (ya salió como "{parecidos[-1]["titulo"]}", {parecidos[-1]["fecha"]}); '
+                      f'el tope es {max_veces}'), titulos
     # Más viejos: depende de cómo rindieron, comparado con la mediana de los últimos videos
     muestra = previos[-int(c.get("muestra_mediana", 12)):]
     vistas = _vistas(list({id(h): h for h in muestra + parecidos}.values()), medir)
