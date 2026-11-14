@@ -1,5 +1,5 @@
 {
-  "proximo_id": 20,
+  "proximo_id": 22,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1352 vistas promedio (2 videos) → después 1810 (2 videos): mejoró"
+      "balance": "antes 1352 vistas promedio (2 videos) → después 1811 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1022 vistas promedio (2 videos) → después 6173 (1 videos): mejoró"
+      "balance": "antes 1022 vistas promedio (2 videos) → después 7061 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 6173 (1 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7061 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 152 vistas promedio (2 videos) → después 172 (1 videos): quedó igual"
+      "balance": "antes 152 vistas promedio (2 videos) → después 4045 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -162,7 +162,7 @@
       "aplica_el": "2026-11-06",
       "aplicada_el": "2026-11-06",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1888 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1891 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -181,7 +181,7 @@
       "aplica_el": "2026-11-07",
       "aplicada_el": "2026-11-08",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1888 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1891 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -198,7 +198,7 @@
       "aplica_el": "2026-11-08",
       "aplicada_el": "2026-11-08",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1084 vistas promedio (2 videos) → después 146 (1 videos): empeoró"
+      "balance": "antes 1084 vistas promedio (2 videos) → después 147 (1 videos): empeoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "todavía sin videos de 2 días o más para medir"
+      "balance": "antes 122 vistas promedio (3 videos) → después 7918 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -321,9 +321,40 @@
       "por_que": "Impuestos sin vueltas subió a 226 vistas con los últimos ganchos (#1 mejoró), pero sigue abajo con 183 de promedio. Los temas con impacto inmediato en pesos como Ganancias o el recibo generan más retención.",
       "id": 19,
       "fecha": "2026-11-12",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-12",
-      "aplica_el": "2026-11-14"
+      "aplica_el": "2026-11-14",
+      "aplicada_el": "2026-11-14",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
+    },
+    {
+      "tipo": "cambiar_serie_dia",
+      "params": {
+        "turno": 2,
+        "dia": "7",
+        "serie": "argentino_que",
+        "antes": "negocios_virales"
+      },
+      "titulo": "Reemplazar serie de bajo rendimiento por El argentino que... el domingo",
+      "por_que": "«El argentino que...» es nuestra serie estrella con 4041 vistas promedio y 31 guardados. En el turno 2 del domingo, «negocios_virales» promedia apenas 772 vistas (y cayó a 147 vistas en su último video). Llevar nuestra mejor serie al domingo multiplicará el alcance del fin de semana.",
+      "id": 20,
+      "fecha": "2026-11-14",
+      "estado": "enviada",
+      "enviada_el": "2026-11-14",
+      "aplica_el": "2026-11-16"
+    },
+    {
+      "tipo": "carrusel_siempre",
+      "params": {
+        "serie": "laplata",
+        "activar": true
+      },
+      "titulo": "Activar carrusel para La Plata secreta",
+      "por_que": "«La Plata secreta» junta 874 vistas promedio pero con bajísimos guardados (solo 2 en total). El formato carrusel permite mostrar datos locales paso a paso e imágenes históricas o arquitectónicas, incentivando a guardar la publicación para revisarla luego.",
+      "id": 21,
+      "fecha": "2026-11-14",
+      "estado": "pendiente"
     }
   ]
 }

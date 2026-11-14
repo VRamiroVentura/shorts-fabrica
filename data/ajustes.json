@@ -1,7 +1,8 @@
 {
   "prompts_extra": {
     "monotributo": [
-      "Enfocá el gancho en deudas, multas o trámites que hacen perder plata a la gente de forma directa. Usá preguntas o llamados a la acción concretos sobre trámites cotidianos en Argentina. Mantené un tono directo, práctico y fácil de entender sin usar modismos complejos."
+      "Enfocá el gancho en deudas, multas o trámites que hacen perder plata a la gente de forma directa. Usá preguntas o llamados a la acción concretos sobre trámites cotidianos en Argentina. Mantené un tono directo, práctico y fácil de entender sin usar modismos complejos.",
+      "Explicá el impacto impositivo directamente en pesos perdidos o ahorrados en el bolsillo del contribuyente. Usá un lenguaje simple y directo de calle sin modismos contables rígidos."
     ],
     "historias": [
       "Comenzá los videos revelando el error financiero o el secreto del negocio desde el primer segundo. Usá frases cortas de alto impacto sobre quiebras, fraudes o negocios cotidianos antes de entrar en la historia.",
