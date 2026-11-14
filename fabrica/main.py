@@ -544,6 +544,13 @@ def generar(simulado=False):
         if not contenido.get("animacion"):
             contenido = capitulos.animar(contenido, tema)
         contenido = capitulos.con_destino(contenido, tema)
+    if serie.get("animada") and not contenido.get("animacion"):
+        # series animadas enteras (config: "animada": true), como Impuestos sin vueltas: todo el fondo con Remotion
+        try:
+            from . import animadas
+            contenido = animadas.animar_todo(contenido)
+        except Exception as e:  # noqa
+            util.log("No pude preparar la animación de la serie; sale con clips:", util.ocultar(e))
 
     nombre_carpeta = _carpeta(fecha, turno)
     if SALIDA.exists():
@@ -698,10 +705,22 @@ def publicar(base_url):
     resultados = {}
 
     def intentar(nombre, fn):
-        try:
-            resultados[nombre] = {"ok": True, "id": fn()}
-        except Exception as e:  # noqa
-            resultados[nombre] = {"ok": False, "error": str(e)[:300]}
+        # Si la red falla por algo pasajero (Meta avisa "retriable", un 5xx, un corte), espera 3 minutos y
+        # lo vuelve a probar una vez en la misma corrida. Los bloqueos de cuenta o permisos no se reintentan.
+        for vuelta in (1, 2):
+            try:
+                resultados[nombre] = {"ok": True, "id": fn()}
+                if vuelta == 2:
+                    resultados[nombre]["reintento"] = util.ahora().strftime("%Y-%m-%d %H:%M")
+                break
+            except Exception as e:  # noqa
+                resultados[nombre] = {"ok": False, "error": str(e)[:300]}
+                if vuelta == 1 and error_pasajero(str(e)):
+                    util.log(f"{nombre}: falló por algo pasajero, lo reintento en 3 minutos:", util.ocultar(e)[:200])
+                    import time
+                    time.sleep(int(cfg.get("reintento_segundos", 180)))
+                    continue
+                break
         util.log(nombre, resultados[nombre])
 
     if quiere.get("instagram_reel"):
@@ -1272,6 +1291,16 @@ def reporte():
                  "<pre style='font-family:Arial;white-space:pre-wrap'>" + html.escape("\n".join(md)) + "</pre>")
     except Exception as ex:  # noqa
         util.log("No pude mandar el mail:", ex)
+
+
+def error_pasajero(texto):
+    """¿El error de una red parece pasajero (vale la pena reintentar ya) o es de cuenta/permisos?"""
+    import re
+    t = str(texto).lower()
+    if re.search(r"access blocked|permission|pages_read|pages_manage|faltan los secretos|token|unauthorized|401|403", t):
+        return False
+    return bool(re.search(r"retriable\W+true|temporar|timeout|timed out|http 5\d\d|http 412|http 429|"
+                          r"connection|reset|no pudo procesar|falló \d veces|no recibió el video", t))
 
 
 # ---------------------------------------------------------------- reintentar lo que no salió

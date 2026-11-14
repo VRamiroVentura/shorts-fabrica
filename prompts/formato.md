@@ -13,7 +13,7 @@ Formato: VIDEO CORTO (Reel, Short o TikTok) con voz en off y videos de fondo.
 - El final cumple lo que prometió el gancho con algo concreto: quién, cuánto, qué pasó. Nada de "otros se llenaron los bolsillos": decí quiénes.
 - Si el tema es un impuesto, un trámite o un beneficio: el gancho dice primero la plata que la persona gana, ahorra o pierde, y recién después el trámite. Si solo vale en un lugar (CABA, una provincia, un municipio), decilo en el gancho y en el título. Los topes y requisitos clave van solo si están en el material.
 - texto_voz: lo que se dice, escrito para el oído, como se habla.
-- texto_pantalla: solo en la escena 1, el gancho escrito para leer sin sonido (máximo 7 palabras). En las demás escenas dejalo vacío.
+- texto_pantalla: solo en la escena 1, el gancho escrito para leer sin sonido (máximo 7 palabras). Si el tema tiene una cifra fuerte y chequeada (un monto, un porcentaje, una cantidad), ponela acá con números ("VENDIÓ SU WEB EN $540 MILLONES"): la fábrica la anima en grande. En las demás escenas dejalo vacío (salvo el cierre al portal, como se dice arriba).
 - broll: búsqueda en inglés para encontrar un video de stock que muestre lo que se dice en esa escena. De 2 a 4 palabras, algo filmable y concreto. La cuenta es argentina, así que:
   - Priorizá planos de manos y objetos, que se ven igual en todos lados: "hands paying with card", "hand holding phone", "wallet with cash", "calculator on desk", "receipt printer", "laptop typing", "mate gourd".
   - Si hay plata: "argentine pesos" o "us dollar bills". Nunca otras monedas.

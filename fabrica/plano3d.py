@@ -54,6 +54,10 @@ PALETAS = {
         "resalte": (123, 84, 168), "resalte_claro": (189, 165, 220), "tinta": (40, 38, 46),
         "cartel": (255, 255, 255), "titulo_fondo": (123, 84, 168), "titulo_texto": (255, 255, 255),
         "credito": (90, 86, 96),
+        # lotes dentro de las manzanas (casas vistas desde arriba): crema, terracota, salvia, arena y tilo
+        "lotes": [(241, 228, 200), (222, 150, 108), (205, 128, 92), (176, 192, 158), (230, 204, 160),
+                  (246, 238, 220), (196, 178, 150), (214, 168, 128)],
+        "lote_sombra": (176, 168, 148),
     },
     "noche": {
         "manzana": (38, 44, 58), "manzana_sombra": (26, 30, 40), "calle": (92, 104, 128),
@@ -65,8 +69,13 @@ PALETAS = {
         "resalte": (232, 176, 72), "resalte_claro": (250, 214, 140), "tinta": (20, 22, 30),
         "cartel": (248, 246, 240), "titulo_fondo": (232, 176, 72), "titulo_texto": (24, 26, 34),
         "credito": (170, 178, 196),
+        "lotes": [(52, 60, 78), (66, 74, 96), (78, 70, 64), (58, 76, 70), (70, 80, 102), (46, 52, 68),
+                  (92, 84, 70), (60, 66, 88)],
+        "lote_sombra": (22, 26, 34),
     },
 }
+LOTE = 13.0       # metros de cada lote (frente aproximado de una casa en el casco)
+LOTE_JUNTA = 0.12  # parte del lote que queda libre (patio / medianera)
 ANCHO_CALLE = {  # metros aproximados de calzada + veredas
     "motorway": 30, "trunk": 30, "primary": 26, "secondary": 24, "tertiary": 20,
     "unclassified": 14, "residential": 14, "living_street": 10, "pedestrian": 9,
@@ -289,6 +298,40 @@ class Plano:
         return cam["pos"][:2] + k * d[:2]
 
     # -------------------------------------------------------------- dibujo
+    def _lotes(self, x0, y1, w, h, esc):
+        """Fondo de lotes: una grilla alineada con las calles, cada lote de un color con su sombrita.
+        Las calles se dibujan encima, así que quedan manzanas llenas de casas (efecto maqueta).
+        El color sale de la posición del lote: no cambia entre cuadros."""
+        pal = self.pal
+        colores = np.array(pal["lotes"], dtype=np.uint8)
+        fondo = np.array(pal["manzana"], dtype=np.uint8)
+        sombra = np.array(pal["lote_sombra"], dtype=np.uint8)
+        th = math.radians(self.giro)
+        c, s_ = math.cos(th), math.sin(th)
+        salida = np.empty((h, w, 3), dtype=np.uint8)
+        xs = (x0 + (np.arange(w, dtype=np.float32) + 0.5) / esc)
+        corrida = max(0.6, min(2.2, 0.9 / max(esc, 0.05)))  # desplazamiento de la sombra (metros)
+        g = LOTE_JUNTA
+        for j0 in range(0, h, 512):
+            j1 = min(h, j0 + 512)
+            ys = (y1 - (np.arange(j0, j1, dtype=np.float32) + 0.5) / esc)[:, None]
+            u = (xs[None, :] * c + ys * s_) / LOTE
+            v = (-xs[None, :] * s_ + ys * c) / LOTE
+            cu, cv = np.floor(u), np.floor(v)
+            fu, fv = u - cu, v - cv
+            lote = (fu > g) & (fu < 1 - g) & (fv > g) & (fv < 1 - g)
+            su, sv = fu - corrida / LOTE, fv + corrida / LOTE
+            somb = ~lote & (su > g) & (su < 1 - g) & (sv > g) & (sv < 1 - g)
+            clave = (cu.astype(np.int64) * 73856093) ^ (cv.astype(np.int64) * 19349663)
+            idx = (clave % len(colores)).astype(np.intp)
+            vacio = (clave % 11) == 0  # algún terreno libre o patio grande, para que no sea un damero perfecto
+            bloque = np.broadcast_to(fondo, (j1 - j0, w, 3)).copy()
+            bloque[somb] = sombra
+            m = lote & ~vacio
+            bloque[m] = colores[idx[m]]
+            salida[j0:j1] = bloque
+        return Image.fromarray(salida, "RGB")
+
     def _dibujar_arriba(self, x0, y0, x1, y1, esc, resaltes):
         """Dibuja la zona [x0,x1]x[y0,y1] vista desde arriba, a 'esc' píxeles por metro."""
         pal = self.pal
@@ -302,6 +345,10 @@ class Plano:
         def visible(it, margen=0):
             c = it["c"]
             return not (c[2] < x0 - margen or c[0] > x1 + margen or c[3] < y0 - margen or c[1] > y1 + margen)
+
+        if esc * LOTE >= 5 and pal.get("lotes"):
+            im = self._lotes(x0, y1, w, h, esc)
+            d = ImageDraw.Draw(im)
 
         for it in self.verdes:
             if visible(it) and len(it["p"]) >= 3:
@@ -329,7 +376,7 @@ class Plano:
                 d.line(px(it["p"]), fill=pal["resalte"], width=max(4, int((it["w"] + 4) * esc)), joint="curve")
         # árboles en plazas y parques (de cerca)
         if esc >= 0.22:
-            r = max(1.5, 4.2 * esc)
+            r = max(1.5, 5.4 * esc)
             for it in self.verdes:
                 if not visible(it, 20):
                     continue

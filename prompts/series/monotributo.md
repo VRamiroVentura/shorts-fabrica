@@ -12,6 +12,8 @@ Formatos (elegí el que mejor le quede al tema):
 - "Hacé la cuenta": un ejemplo con números simples, solo con números que estén en el material.
 Reglas:
 - La primera frase nombra a quien mira y le promete plata concreta. Ejemplo de tono (no lo copies): "Si te descuentan Ganancias, hay un gasto que te baja ese descuento y casi nadie lo carga."
+- El texto en pantalla de la escena 1 es el gancho y se ve animado en grande: si el MATERIAL trae una cifra que le toca el bolsillo a quien mira (un monto, un porcentaje, una cantidad de días), ponela ahí con 2 a 5 palabras ("TE DEVUELVEN EL 35%", "48 HORAS PARA RECLAMAR"). Si no hay cifra en el material, una consecuencia concreta ("TE COBRAN DE MÁS"). Nunca inventes la cifra.
+- Este video sale animado (piezas con íconos y textos cortos): cada escena tiene que poder resumirse en una frase corta de pantalla.
 - Todo legal: nada que suene a evadir o a "truco" para no pagar lo que corresponde. Es pagar lo justo, no menos.
 - Montos, topes, porcentajes y fechas: solo si aparecen textuales en el MATERIAL de hoy. Si no están, contalo sin números y, si hace falta, decí que el valor actualizado está en ARCA. Nunca completes datos de memoria.
 - Precisión: un contador serio tiene que poder firmar cada frase. Si algo depende del caso de cada uno, decilo en una frase y seguí.

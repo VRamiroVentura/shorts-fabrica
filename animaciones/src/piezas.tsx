@@ -246,3 +246,45 @@ export const Cierre: React.FC<{ dur: number; texto: string; web?: string; proxim
     </Escena>
   );
 };
+
+// ---------------------------------------------------------------- gancho: la cifra grande que cuenta hasta el número
+// Para los primeros segundos de los videos comunes: "COBRÓ" + "$750" que sube + "MILLONES".
+const formatear = (n: number, decimales: number) =>
+  n.toLocaleString("es-AR", { minimumFractionDigits: decimales, maximumFractionDigits: decimales });
+
+export const Gancho: React.FC<{ dur: number; numero: number; decimales?: number; prefijo?: string; sufijo?: string; arriba?: string; abajo?: string; contar?: boolean; icono?: string }> = ({
+  dur, numero, decimales = 0, prefijo = "", sufijo = "", arriba = "", abajo = "", contar = true, icono,
+}) => {
+  const frame = useCurrentFrame();
+  const res = useResorte();
+  const fin_cuenta = Math.min(Math.max(18, dur * 0.45), 34);
+  const avance = contar ? interpolate(frame, [3, fin_cuenta], [0, 1], { ...CLAMP, easing: SUAVE }) : 1;
+  const valor = numero * avance;
+  const golpe = interpolate(frame, [fin_cuenta, fin_cuenta + 5, fin_cuenta + 12], [1, 1.12, 1], CLAMP);
+  const temblor = frame > fin_cuenta && frame < fin_cuenta + 10 ? Math.sin(frame * 2.3) * 6 : 0;
+  const tam = String(Math.round(numero)).length + decimales > 5 ? 200 : 260;
+  return (
+    <Escena dur={dur}>
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", gap: 34, padding: "0 70px" }}>
+        {arriba ? <Cinta texto={arriba} desde={0} giro={-3} fondo={C.crema} tam={58} /> : null}
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 10, scale: String(res(0, 9, 0.6) * golpe), translate: `${temblor}px 0px` }}>
+          {prefijo ? <span style={{ color: C.amarillo, fontWeight: 800, fontSize: tam * 0.45, lineHeight: 1.2 }}>{prefijo}</span> : null}
+          <span style={{ color: C.amarillo, fontWeight: 800, fontSize: tam, lineHeight: 1, letterSpacing: -4, textShadow: "10px 12px 0 rgba(0,0,0,0.45)" }}>
+            {contar ? formatear(valor, decimales) : formatear(numero, decimales)}
+          </span>
+        </div>
+        {sufijo ? (
+          <div style={{ color: C.crema, fontWeight: 800, fontSize: 104, textTransform: "uppercase", lineHeight: 1, opacity: interpolate(frame, [fin_cuenta - 6, fin_cuenta], [0, 1], CLAMP), translate: `0px ${interpolate(frame, [fin_cuenta - 6, fin_cuenta + 4], [40, 0], { ...CLAMP, easing: SUAVE })}px` }}>
+            {sufijo}
+          </div>
+        ) : null}
+        {abajo ? <Cinta texto={abajo} desde={Math.round(fin_cuenta) + 2} giro={2} fondo={C.amarillo} tam={52} /> : null}
+        {icono ? (
+          <div style={{ marginTop: 10, scale: String(res(fin_cuenta + 4, 10)), rotate: `${Math.sin(frame / 12) * 5}deg` }}>
+            <Icono nombre={icono} tam={220} />
+          </div>
+        ) : null}
+      </AbsoluteFill>
+    </Escena>
+  );
+};

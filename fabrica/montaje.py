@@ -294,6 +294,63 @@ def _falta(esc, que):
             "se_uso": que}
 
 
+def _tema_argentino(texto):
+    """¿El video habla de algo de Argentina? (para decidir si pegan las postales de paisajes argentinos)."""
+    claves = (" argentin", " buenos aires", " la plata ", " platense", " porteñ", " cordoba", " rosario", " mendoza",
+              " patagonia", " bariloche", " mar del plata", " pesos ", " arca ", " afip", " anses", " bcra",
+              " monotribut", " mercado pago", " mercado libre", " conurbano", " provincia ")
+    return any(c in texto for c in claves)
+
+
+def _piezas_animadas(escenas, tiempos, puntajes, banco_lp, trabajo, cfg):
+    """Elige qué escenas van con pieza animada y las arma todas juntas con Remotion.
+    - Escena 1: si el texto en pantalla trae una cifra, va el gancho con la cifra grande.
+    - Resto: las escenas sin ningún video que muestre lo que se dice (puntaje máximo 2 o menos), las más flojas
+      primero, nunca dos seguidas y hasta `animadas_por_video` (config, 3 por defecto).
+    Devuelve {índice de escena: ruta del clip}. Si Remotion no está o falla, devuelve {} y todo sigue igual."""
+    from . import animadas
+    tope = int(cfg.get("animadas_por_video", 3))
+    if tope <= 0 and not cfg.get("gancho_animado", True):
+        return {}
+    if not animadas.disponible():
+        return {}
+    elegidas, piezas = [], {}
+    if cfg.get("gancho_animado", True) and escenas and not escenas[0].get("grafico") and not escenas[0].get("mapa"):
+        g = animadas.numero_del_gancho(escenas[0].get("pantalla"))
+        if g:
+            elegidas.append(0)
+            piezas[0] = g
+    flojas = []
+    for i, esc in enumerate(escenas):
+        if i == 0 or esc.get("grafico") or esc.get("mapa") or esc.get("plan_b"):
+            continue  # el cartel propuesto por la IA (plan B) va primero: trae datos de esa escena
+        if any(p >= 3 for p in puntajes[i]):
+            continue
+        if banco_lp and _fotos_del_lugar(banco_lp, esc, set()):
+            continue
+        flojas.append((max(puntajes[i] or [0]), i))
+    cuantas = 0
+    for _, i in sorted(flojas):
+        if cuantas >= tope:
+            break
+        if any(abs(i - j) <= 1 for j in elegidas):
+            continue
+        elegidas.append(i)
+        cuantas += 1
+    elegidas.sort()
+    if not elegidas:
+        return {}
+    sueltas = [i for i in elegidas if i not in piezas]
+    for i, p in zip(sueltas, animadas.piezas_para([escenas[i] for i in sueltas])):
+        piezas[i] = p
+    clips = animadas.renderizar([piezas[i] for i in elegidas], [tiempos[i][1] - tiempos[i][0] for i in elegidas],
+                                trabajo, compacto=True, marca=False)
+    if not clips:
+        return {}
+    util.log("Piezas animadas en las escenas:", [i + 1 for i in elegidas])
+    return dict(zip(elegidas, clips))
+
+
 def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
     """Un clip cada ~2.3 s. Siempre video: primero lo que muestra justo lo que se dice, si no un comodín
     de plata y trámites; nunca algo de otro país ni sin relación. Devuelve (segmentos, de stock, banco, propios)."""
@@ -339,6 +396,8 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
     comodines = [c for c in comodines if c["id"] not in ya]
     cfg = util.config()
     tope_postales = int(cfg.get("postales_por_video", 3))
+    if not getattr(_fondos, "argentino", True):
+        tope_postales = 0  # una postal de Argentina en una historia de afuera confunde: solo en temas argentinos
     lindas = broll.postales(buscar, clave) if (clave and tope_postales > 0) else []
     # 2) la IA puntúa
     puntajes, p_comodin, p_postal = _puntuar_con_ia(escenas, candidatos, comodines, trabajo, lindas)
@@ -364,8 +423,20 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
     mapas_ok, anterior_mapa = [], False
     tope_mapas = int(cfg.get("mapas_por_video", 2))
     banco_lp = _banco_laplata() if getattr(_fondos, "la_plata", False) else []
+    animadas_ok = _piezas_animadas(escenas, tiempos, puntajes, banco_lp, trabajo, cfg)
+    tramos_animados = []
     for i, (esc, (ini, fin)) in enumerate(zip(escenas, tiempos)):
         dur = fin - ini
+        # Pieza animada (Remotion): el gancho con la cifra o una escena sin ningún video que muestre lo que se dice
+        if i in animadas_ok:
+            segmentos.append(animadas_ok[i])
+            colocados.append({"dest": animadas_ok[i], "largo": dur, "i": i, "clip": None, "n": n})
+            tramos_animados.append((ini, fin))  # no se oscurece, pero no gasta el cupo de carteles
+            if i > 0:
+                faltas.append(_falta(esc, "una pieza animada"))
+            anterior_postal, anterior_grafico, anterior_mapa = False, True, False
+            n += 1
+            continue
         # Plan B: si para esta escena no hay ningún video que muestre justo lo que se dice (o los únicos buenos
         # ya salieron en los últimos videos), va el cartel de reserva que propuso la IA. Nunca dos carteles seguidos.
         if not esc.get("grafico") and esc.get("plan_b") and not anterior_grafico and len(graficos_ok) < tope_graficos:
@@ -504,9 +575,10 @@ def _fondos(escenas, tiempos, trabajo, seed, evitar=()):
                 x["clip"] = None
         revisar = nuevos
     _fondos.ids = [x["clip"]["id"] for x in colocados if x.get("clip") and x["clip"].get("id")]
-    _fondos.graficos = graficos_ok
+    _fondos.graficos = graficos_ok + tramos_animados
     _fondos.mapas = mapas_ok
     _fondos.faltas = faltas
+    _fondos.animadas = sorted(animadas_ok)
     return segmentos, de_video, banco, de_propios, postales_usadas
 
 
@@ -558,6 +630,8 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
     _fondos.estilo = estilo_graficos
     todo = _normal(serie_nombre + " " + " ".join(e["texto"] for e in escenas) + " " + contenido.get("titulo", ""))
     _fondos.la_plata = any(x in todo for x in (" la plata ", " platense", " platenses "))
+    _fondos.argentino = _tema_argentino(todo)
+    _fondos.animadas = []
     seed = random.randint(1, 10_000_000)
 
     # 1) voz y tiempos
@@ -593,6 +667,8 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
         ass = ass.replace("\\pos(%d,%d)" % (W // 2, SUB_Y), "\\pos(%d,%d)" % (W // 2, 1530))
         (trabajo / "subs.ass").write_text(ass, encoding="utf-8")
     else:
+        if 0 in getattr(_fondos, "animadas", []):
+            gancho = ""  # la cifra ya está animada en pantalla: no va el cartel amarillo encima
         subtitulos(palabras, gancho, serie_nombre, usuario, dur_gancho, total, trabajo / "subs.ass")
 
     # 4) mezcla final: fondo oscurecido + subtítulos + barra de progreso + voz (+ música)
@@ -631,7 +707,8 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
               str(salida / "video_ig.mp4")])
 
     # 5) portada
-    _portada(segmentos, contenido, salida / "thumb.jpg", trabajo, serie_nombre)
+    para_portada = segmentos[1:] if (0 in getattr(_fondos, "animadas", []) and len(segmentos) > 1) else segmentos
+    _portada(para_portada, contenido, salida / "thumb.jpg", trabajo, serie_nombre)
     if anim_portada:
         try:
             from PIL import Image
@@ -640,7 +717,7 @@ def generar(contenido, serie_nombre, usuario, carpeta, evitar=(), estilo_grafico
             util.log("No pude usar la portada animada:", util.ocultar(e))
 
     meta = {"duracion": round(voz.duracion(salida / "video.mp4"), 2), "voz": motor, "clips": len(segmentos),
-            "graficos": len(getattr(_fondos, "graficos", [])), "mapas": len(getattr(_fondos, "mapas", [])),
+            "graficos": len(getattr(_fondos, "graficos", [])), "animadas": len(getattr(_fondos, "animadas", [])), "mapas": len(getattr(_fondos, "mapas", [])),
             "estilo_graficos": getattr(_fondos, "estilo", ""),
             "faltas": getattr(_fondos, "faltas", []),
             "clips_stock": de_pexels, "banco": banco, "clips_propios": de_propios, "postales": de_postales, "musica": musica.name if musica else None, "voz_seg": round(dur_voz, 2),
