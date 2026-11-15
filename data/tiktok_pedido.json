@@ -1,60 +1,50 @@
 {
-  "fecha": "2026-11-08",
+  "fecha": "2026-11-15",
   "items": [
     {
-      "fecha": "2026-11-01",
+      "fecha": "2026-11-08",
       "turno": 2,
-      "titulo": "¿Un negocio con un solo plato?"
+      "titulo": "Peluches en frasco: el negocio viral"
     },
     {
-      "fecha": "2026-11-01",
+      "fecha": "2026-11-08",
       "turno": 1,
-      "titulo": "¿Por qué no te dura el sueldo?"
+      "titulo": "El secreto de la mesa VIP"
     },
     {
-      "fecha": "2026-11-03",
+      "fecha": "2026-11-10",
       "turno": 1,
-      "titulo": "Sueldo contra inflación"
+      "titulo": "El truco del banco para que pierdas"
     },
     {
-      "fecha": "2026-11-03",
+      "fecha": "2026-11-10",
       "turno": 2,
-      "titulo": "¿Nafta más cara que en los vecinos?"
+      "titulo": "Inflación: Argentina vs región"
     },
     {
-      "fecha": "2026-11-04",
-      "turno": 1,
-      "titulo": "¿Por qué el café te cuesta el doble?"
-    },
-    {
-      "fecha": "2026-11-04",
-      "turno": 1,
-      "titulo": "Cinco días sin bancos"
-    },
-    {
-      "fecha": "2026-11-04",
+      "fecha": "2026-11-11",
       "turno": 2,
-      "titulo": "La casa de Le Corbusier en La Plata"
+      "titulo": "El invento platense que usa el FBI"
     },
     {
-      "fecha": "2026-11-05",
-      "turno": 2,
-      "titulo": "La estafa de Theranos en 1 minuto"
-    },
-    {
-      "fecha": "2026-11-05",
+      "fecha": "2026-11-11",
       "turno": 1,
-      "titulo": "Morgan Housel y el truco de la plata"
+      "titulo": "¿Suscripciones al divino botón?"
     },
     {
-      "fecha": "2026-11-06",
-      "turno": 1,
-      "titulo": "Formulario 2711 de Ganancias"
-    },
-    {
-      "fecha": "2026-11-06",
+      "fecha": "2026-11-12",
       "turno": 2,
-      "titulo": "El argentino que cobró 750 millones"
+      "titulo": "Te roban el WhatsApp con este truco"
+    },
+    {
+      "fecha": "2026-11-12",
+      "turno": 1,
+      "titulo": "El argentino que hizo USD 1200M"
+    },
+    {
+      "fecha": "2026-11-13",
+      "turno": 1,
+      "titulo": "¿Te llegó una multa de ARCA?"
     }
   ]
 }
