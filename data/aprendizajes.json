@@ -1,8 +1,8 @@
 {
-  "fecha": "2026-11-14",
+  "fecha": "2026-11-16",
   "mejores": [
-    "El argentino que hizo USD 1200M (7918 vistas)",
-    "El argentino que cobró 750 millones (6205 vistas)",
+    "El argentino que hizo USD 1200M (8539 vistas)",
+    "El argentino que cobró 750 millones (6290 vistas)",
     "El negocio oculto de McDonald's (2692 vistas)"
   ],
   "peores": [
@@ -11,31 +11,31 @@
     "¿Por qué el café te cuesta el doble? (3 vistas)"
   ],
   "patrones": [
-    "Los hooks con números concretos y foco local argentino arrasan en retention (ej. cotizaciones, feriados bancarios, brechas).",
-    "Los temas sobre desmitificar el gasto aspiracional y la acumulación real de liquidez generan altísimo ratio de guardados/compartidos.",
-    "El formato de historias de salida exitosa o 'timing perfecto' (como vender antes de una crisis) despierta morbo y curiosidad emprendedora."
+    "Historias de éxito/dinero local (historias humanas argentinas) arrasan frente al contenido teórico abstracto.",
+    "Hooks orientados al bolsillo cotidiano, como consumo, trampas de deuda o costumbres de gasto (dos Cents, Humphrey Yang).",
+    "El formato 'Explicador de crisis y modelos de negocio' (Modern MBA, VisualEconomik) genera alta retención si hay un villano o un número impactante."
   ],
   "analisis": {
     "patrones": [
-      "Los hooks con números concretos y foco local argentino arrasan en retention (ej. cotizaciones, feriados bancarios, brechas).",
-      "Los temas sobre desmitificar el gasto aspiracional y la acumulación real de liquidez generan altísimo ratio de guardados/compartidos.",
-      "El formato de historias de salida exitosa o 'timing perfecto' (como vender antes de una crisis) despierta morbo y curiosidad emprendedora.",
-      "Las referencias visuales genéricas (postales/stock impreciso) tiran abajo la retención cuando el guion menciona cosas técnicas o muy específicas.",
-      "El contenido impositivo super formal o rígido pierde tracción rápido; rinde cuando se conecta con el impacto directo al bolsillo del usuario."
+      "Historias de éxito/dinero local (historias humanas argentinas) arrasan frente al contenido teórico abstracto.",
+      "Hooks orientados al bolsillo cotidiano, como consumo, trampas de deuda o costumbres de gasto (dos Cents, Humphrey Yang).",
+      "El formato 'Explicador de crisis y modelos de negocio' (Modern MBA, VisualEconomik) genera alta retención si hay un villano o un número impactante.",
+      "Noticias impositivas/laborales muy específicas (Errepar, Camino Financiero) convierten bien en guardados cuando resuelven un problema práctico e inminente.",
+      "Uso excesivo de stock genérico ('postales de Argentina' o 'carteles de reserva') destruye el engagement en los remates de los videos."
     ],
     "formatos_que_rinden": [
-      "Casos de estudio 'Caso de Éxito vs. Fracaso' explicados en vertical sin cara con apoyo de material real/b-roll preciso.",
-      "Listas de datos comparativos de costo de vida o precios entre Argentina y la región con placas textuales limpias.",
-      "Explicaciones de libros de finanzas aterrizadas con ejemplos cotidianos del día a día argentino (ej. delibery vs. ahorro).",
-      "Desglose de feriados, operativas bancarias y billeteras virtuales con llamados a la acción de compartidos directa a WhatsApp.",
-      "Historias de estafas o negocios raros del exterior explicados con foco en la lección financiera/alerta de peligro."
+      "Storytelling biográfico rápido sobre emprendedores/financistas ('El argentino que...').",
+      "Desglose de 'Costos ocultos' y trampas de consumo cotidiano en formato vertical agitado.",
+      "Casos de estudio de negocios o estafas con datos duros ('Destapó un fraude con...').",
+      "Explicación de cambios normativos/impuestos al hueso (paso a paso de trámites/ahorro).",
+      "Visualización de hitos financieros ('De $0 a $1M' adaptado a montos o presupuestos locales)."
     ],
     "estructuras_virales": [
-      "Hook chocante (Dato/Cifra) + Situación local de dolor + Giro o lección + Llamado a compartir.",
-      "Pregunta contraintuitiva + Caso real (El argentino que...) + Momento de tensión + Moraleja sobre el dinero.",
-      "Mito financiero popular + Exposición del error + Solución práctica en 15 segundos + Guardado para después.",
-      "Hecho insólito + Explicación de cómo hacen plata por detrás + Ejemplo de aplicación rápida.",
-      "Noticia impositiva/bancaria rápida + Impacto en tu cuenta en 3 puntos + Qué tenés que hacer hoy."
+      "Hook con dato insólito/local -> Problema histórico o cotidiano -> La solución ingeniosa -> Remate con llamada a compartir.",
+      "Afirmación contraintuitiva ('Por qué X gasto te arruina') -> Desglose en 3 puntos con números -> Acción concreta a tomar hoy.",
+      "El villano del negocio -> Cómo nos sacan plata sin darnos cuenta -> El truco para evitarlo.",
+      "Estafa revelada: Cómo opera el engaño -> El error fatal de la víctima -> El método exacto de protección.",
+      "Libro en 60s: La idea incómoda del autor -> Aplicación al bolsillo argentino -> Moraleja práctica."
     ]
   }
 }

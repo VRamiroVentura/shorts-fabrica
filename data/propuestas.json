@@ -1,5 +1,5 @@
 {
-  "proximo_id": 22,
+  "proximo_id": 23,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 141 vistas promedio (3 videos) → después 218 (4 videos): mejoró"
+      "balance": "antes 141 vistas promedio (3 videos) → después 220 (4 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -35,7 +35,7 @@
       "aplica_el": "2026-10-30",
       "aplicada_el": "2026-10-30",
       "como": "automática (sin respuesta)",
-      "balance": "antes 90 vistas promedio (2 videos) → después 200 (3 videos): mejoró"
+      "balance": "antes 91 vistas promedio (2 videos) → después 202 (3 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1352 vistas promedio (2 videos) → después 1813 (2 videos): mejoró"
+      "balance": "antes 1352 vistas promedio (2 videos) → después 1814 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1022 vistas promedio (2 videos) → después 7347 (2 videos): mejoró"
+      "balance": "antes 1023 vistas promedio (2 videos) → después 7414 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 7347 (2 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7414 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 152 vistas promedio (2 videos) → después 4312 (2 videos): mejoró"
+      "balance": "antes 153 vistas promedio (2 videos) → después 4355 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "antes 122 vistas promedio (3 videos) → después 8452 (1 videos): mejoró"
+      "balance": "antes 122 vistas promedio (3 videos) → después 8539 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -357,6 +357,18 @@
       "estado": "enviada",
       "enviada_el": "2026-11-15",
       "aplica_el": "2026-11-17"
+    },
+    {
+      "tipo": "carrusel_siempre",
+      "params": {
+        "serie": "laplata",
+        "activar": true
+      },
+      "titulo": "Activar carrusel en 'La Plata secreta'",
+      "por_que": "'La Plata secreta' tiene buen rendimiento visual y 874 vistas promedio, pero pocos guardados (2). Los datos locales e historia visual convierten mucho mejor a guardados y compartidos cuando se estructuran en formato carrusel.",
+      "id": 22,
+      "fecha": "2026-11-16",
+      "estado": "pendiente"
     }
   ]
 }
