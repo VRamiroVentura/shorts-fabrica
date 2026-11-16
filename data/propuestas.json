@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1023 vistas promedio (2 videos) → después 7414 (2 videos): mejoró"
+      "balance": "antes 1023 vistas promedio (2 videos) → después 7418 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 7414 (2 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7418 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 153 vistas promedio (2 videos) → después 4355 (2 videos): mejoró"
+      "balance": "antes 153 vistas promedio (2 videos) → después 4357 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "antes 122 vistas promedio (3 videos) → después 8539 (1 videos): mejoró"
+      "balance": "antes 122 vistas promedio (3 videos) → después 8542 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -340,9 +340,12 @@
       "por_que": "«El argentino que...» es nuestra serie estrella con 4041 vistas promedio y 31 guardados. En el turno 2 del domingo, «negocios_virales» promedia apenas 772 vistas (y cayó a 147 vistas en su último video). Llevar nuestra mejor serie al domingo multiplicará el alcance del fin de semana.",
       "id": 20,
       "fecha": "2026-11-14",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-14",
-      "aplica_el": "2026-11-16"
+      "aplica_el": "2026-11-16",
+      "aplicada_el": "2026-11-16",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "carrusel_siempre",
@@ -368,7 +371,9 @@
       "por_que": "'La Plata secreta' tiene buen rendimiento visual y 874 vistas promedio, pero pocos guardados (2). Los datos locales e historia visual convierten mucho mejor a guardados y compartidos cuando se estructuran en formato carrusel.",
       "id": 22,
       "fecha": "2026-11-16",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-11-16",
+      "aplica_el": "2026-11-18"
     }
   ]
 }
