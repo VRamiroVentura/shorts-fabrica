@@ -1,5 +1,5 @@
 {
-  "proximo_id": 23,
+  "proximo_id": 25,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 141 vistas promedio (3 videos) → después 220 (4 videos): mejoró"
+      "balance": "antes 142 vistas promedio (3 videos) → después 220 (4 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1023 vistas promedio (2 videos) → después 7418 (2 videos): mejoró"
+      "balance": "antes 1023 vistas promedio (2 videos) → después 7471 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 7418 (2 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7471 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 153 vistas promedio (2 videos) → después 4357 (2 videos): mejoró"
+      "balance": "antes 153 vistas promedio (2 videos) → después 4386 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "antes 122 vistas promedio (3 videos) → después 8542 (1 videos): mejoró"
+      "balance": "antes 122 vistas promedio (3 videos) → después 8601 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -351,15 +351,22 @@
       "tipo": "carrusel_siempre",
       "params": {
         "serie": "laplata",
-        "activar": true
+        "activar": true,
+        "antes_lista": [
+          "monotributo",
+          "datos"
+        ]
       },
       "titulo": "Activar carrusel para La Plata secreta",
       "por_que": "«La Plata secreta» junta 874 vistas promedio pero con bajísimos guardados (solo 2 en total). El formato carrusel permite mostrar datos locales paso a paso e imágenes históricas o arquitectónicas, incentivando a guardar la publicación para revisarla luego.",
       "id": 21,
       "fecha": "2026-11-14",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-15",
-      "aplica_el": "2026-11-17"
+      "aplica_el": "2026-11-17",
+      "aplicada_el": "2026-11-17",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "carrusel_siempre",
@@ -374,6 +381,32 @@
       "estado": "enviada",
       "enviada_el": "2026-11-16",
       "aplica_el": "2026-11-18"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "negocios_virales",
+        "texto": "Enfocate en la rareza del negocio y cómo genera ingresos diarios con una sola cosa. Explicá el modelo simple sin vueltas técnicas."
+      },
+      "titulo": "Deshacer giro y volver al enfoque original en Negocios virales",
+      "por_que": "El balance #11 muestra que el cambio de modelo oculto en 'Negocios virales del mundo' hizo que las vistas cayeran de 1085 a 147 promedio. Volvemos a las bases que funcionaban.",
+      "id": 23,
+      "fecha": "2026-11-17",
+      "estado": "enviada",
+      "enviada_el": "2026-11-17",
+      "aplica_el": "2026-11-19"
+    },
+    {
+      "tipo": "carrusel_siempre",
+      "params": {
+        "serie": "economia",
+        "activar": true
+      },
+      "titulo": "Activar carrusel en Economía de todos los días",
+      "por_que": "Los ajustes de bolsillo real mejoraron el rendimiento (#6), y sumar formato carrusel ayuda a retener al lector en temas económicos complejos con datos duros.",
+      "id": 24,
+      "fecha": "2026-11-17",
+      "estado": "pendiente"
     }
   ]
 }
