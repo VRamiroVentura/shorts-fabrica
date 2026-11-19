@@ -35,7 +35,7 @@
       "aplica_el": "2026-10-30",
       "aplicada_el": "2026-10-30",
       "como": "automática (sin respuesta)",
-      "balance": "antes 91 vistas promedio (2 videos) → después 202 (3 videos): mejoró"
+      "balance": "antes 91 vistas promedio (2 videos) → después 203 (3 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1352 vistas promedio (2 videos) → después 1814 (2 videos): mejoró"
+      "balance": "antes 1352 vistas promedio (2 videos) → después 1815 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1023 vistas promedio (2 videos) → después 7494 (2 videos): mejoró"
+      "balance": "antes 1023 vistas promedio (2 videos) → después 7516 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 7494 (2 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7516 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 153 vistas promedio (2 videos) → después 4397 (2 videos): mejoró"
+      "balance": "antes 153 vistas promedio (2 videos) → después 4410 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -162,7 +162,7 @@
       "aplica_el": "2026-11-06",
       "aplicada_el": "2026-11-06",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1896 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1897 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -181,7 +181,7 @@
       "aplica_el": "2026-11-07",
       "aplicada_el": "2026-11-08",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1896 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1897 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "antes 122 vistas promedio (3 videos) → después 8623 (1 videos): mejoró"
+      "balance": "antes 122 vistas promedio (3 videos) → después 8648 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -393,9 +393,12 @@
       "por_que": "El balance #11 muestra que el cambio de modelo oculto en 'Negocios virales del mundo' hizo que las vistas cayeran de 1085 a 147 promedio. Volvemos a las bases que funcionaban.",
       "id": 23,
       "fecha": "2026-11-17",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-17",
-      "aplica_el": "2026-11-19"
+      "aplica_el": "2026-11-19",
+      "aplicada_el": "2026-11-19",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "carrusel_siempre",
