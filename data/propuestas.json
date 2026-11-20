@@ -1,5 +1,5 @@
 {
-  "proximo_id": 25,
+  "proximo_id": 26,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -16,7 +16,7 @@
       "aplica_el": "2026-10-29",
       "aplicada_el": "2026-10-29",
       "como": "automática (sin respuesta)",
-      "balance": "antes 142 vistas promedio (3 videos) → después 220 (4 videos): mejoró"
+      "balance": "antes 142 vistas promedio (3 videos) → después 221 (4 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1023 vistas promedio (2 videos) → después 7516 (2 videos): mejoró"
+      "balance": "antes 1024 vistas promedio (2 videos) → después 7536 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 7516 (2 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7536 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 153 vistas promedio (2 videos) → después 4410 (2 videos): mejoró"
+      "balance": "antes 153 vistas promedio (2 videos) → después 4421 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "antes 122 vistas promedio (3 videos) → después 8648 (1 videos): mejoró"
+      "balance": "antes 122 vistas promedio (3 videos) → después 8671 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -404,15 +404,37 @@
       "tipo": "carrusel_siempre",
       "params": {
         "serie": "economia",
-        "activar": true
+        "activar": true,
+        "antes_lista": [
+          "monotributo",
+          "datos",
+          "laplata"
+        ]
       },
       "titulo": "Activar carrusel en Economía de todos los días",
       "por_que": "Los ajustes de bolsillo real mejoraron el rendimiento (#6), y sumar formato carrusel ayuda a retener al lector en temas económicos complejos con datos duros.",
       "id": 24,
       "fecha": "2026-11-17",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-18",
-      "aplica_el": "2026-11-20"
+      "aplica_el": "2026-11-20",
+      "aplicada_el": "2026-11-20",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "historias",
+        "texto": "Empezá la primera escena nombrando una cifra exacta y millonaria en dólares o una pérdida astronómica para impactar desde el gancho. Explicá cómo la decisión o el modelo de negocio generó ese monto extremo. Cerrá mostrando la lección financiera o la trampa a evitar."
+      },
+      "titulo": "Cifras millonarias en títulos de Historias de plata",
+      "por_que": "En la serie 'El argentino que...', arrancar el gancho citando cifras en dólares exactas y millonarias (cambio #4) disparó el promedio de vistas de 1024 a 7536 por video. Citar la cifra concreta en el primer segundo maximiza el enganche.",
+      "id": 25,
+      "fecha": "2026-11-20",
+      "estado": "enviada",
+      "enviada_el": "2026-11-20",
+      "aplica_el": "2026-11-22"
     }
   ]
 }
