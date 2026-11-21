@@ -1,5 +1,5 @@
 {
-  "proximo_id": 26,
+  "proximo_id": 28,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1024 vistas promedio (2 videos) → después 7536 (2 videos): mejoró"
+      "balance": "antes 1024 vistas promedio (2 videos) → después 7553 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 7536 (2 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7553 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 153 vistas promedio (2 videos) → después 4421 (2 videos): mejoró"
+      "balance": "antes 153 vistas promedio (2 videos) → después 4426 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "antes 122 vistas promedio (3 videos) → después 8671 (1 videos): mejoró"
+      "balance": "antes 122 vistas promedio (3 videos) → después 8681 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -435,6 +435,34 @@
       "estado": "enviada",
       "enviada_el": "2026-11-20",
       "aplica_el": "2026-11-22"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "estafas",
+        "texto": "Empezá con la cifra exacta robada y la trampa cotidiana que usó el estafador. Mostrá en 2 pasos el error fatal de la víctima y cerrá con la regla concreta para blindar tu plata hoy."
+      },
+      "titulo": "Enfocar Grandes estafas en el truco exacto",
+      "por_que": "Grandes estafas tiene 4 videos con apenas 241 vistas promedio y 0 guardados. Necesita abrir con la suma exacta estafada y mostrar el error de la víctima para generar alerta y compartidos.",
+      "id": 26,
+      "fecha": "2026-11-21",
+      "estado": "enviada",
+      "enviada_el": "2026-11-21",
+      "aplica_el": "2026-11-23"
+    },
+    {
+      "tipo": "cambiar_horario",
+      "params": {
+        "turno": 1,
+        "dia": "5",
+        "hora": "15:30",
+        "antes": "14:00"
+      },
+      "titulo": "Pasar el turno 1 del viernes a las 15:30",
+      "por_que": "El horario de las 14:00 promedia 473 vistas, pero el cambio aplicado #2 demostró que correr monotributo a la tarde mejoró su promedio de 91 a 203 vistas. Dejamos 4 horas y media de margen con el turno 2 (20:00).",
+      "id": 27,
+      "fecha": "2026-11-21",
+      "estado": "pendiente"
     }
   ]
 }
