@@ -1,100 +1,86 @@
 {
-  "fecha": "2026-11-16",
+  "fecha": "2026-11-23",
   "series": {
+    "paso_de_verdad": {
+      "posts": 2,
+      "vistas": 1748,
+      "guardados": 2,
+      "compartidos": 3,
+      "comentarios": 0
+    },
     "historias": {
-      "posts": 4,
-      "vistas": 6333,
+      "posts": 3,
+      "vistas": 6326,
       "guardados": 11,
       "compartidos": 10,
       "comentarios": 1
     },
-    "viral": {
+    "negocios_virales": {
       "posts": 3,
-      "vistas": 624,
+      "vistas": 2319,
+      "guardados": 2,
+      "compartidos": 2,
+      "comentarios": 0
+    },
+    "viral": {
+      "posts": 2,
+      "vistas": 619,
       "guardados": 1,
       "compartidos": 3,
       "comentarios": 0
     },
-    "inventos": {
-      "posts": 1,
-      "vistas": 57,
-      "guardados": 0,
-      "compartidos": 0,
-      "comentarios": 0
-    },
-    "libro": {
-      "posts": 1,
-      "vistas": 141,
-      "guardados": 0,
-      "compartidos": 0,
-      "comentarios": 0
-    },
     "plata": {
-      "posts": 4,
-      "vistas": 866,
+      "posts": 3,
+      "vistas": 660,
       "guardados": 0,
       "compartidos": 0,
-      "comentarios": 0
-    },
-    "autor": {
-      "posts": 3,
-      "vistas": 368,
-      "guardados": 1,
-      "compartidos": 2,
       "comentarios": 0
     },
     "laplata": {
-      "posts": 4,
-      "vistas": 3498,
+      "posts": 3,
+      "vistas": 3501,
       "guardados": 2,
       "compartidos": 3,
       "comentarios": 2
     },
-    "economia": {
-      "posts": 4,
-      "vistas": 807,
+    "monotributo": {
+      "posts": 5,
+      "vistas": 1130,
       "guardados": 1,
-      "compartidos": 12,
+      "compartidos": 2,
       "comentarios": 0
     },
     "estafas": {
-      "posts": 4,
-      "vistas": 965,
+      "posts": 3,
+      "vistas": 616,
       "guardados": 0,
       "compartidos": 0,
       "comentarios": 0
     },
-    "monotributo": {
-      "posts": 6,
-      "vistas": 1275,
-      "guardados": 1,
-      "compartidos": 2,
-      "comentarios": 0
-    },
     "argentino_que": {
-      "posts": 4,
-      "vistas": 16875,
-      "guardados": 30,
+      "posts": 3,
+      "vistas": 17268,
+      "guardados": 31,
       "compartidos": 24,
       "comentarios": 7
     },
-    "paso_de_verdad": {
-      "posts": 2,
-      "vistas": 1746,
-      "guardados": 2,
-      "compartidos": 3,
-      "comentarios": 0
-    },
-    "negocios_virales": {
-      "posts": 3,
-      "vistas": 2317,
-      "guardados": 2,
-      "compartidos": 2,
-      "comentarios": 0
-    },
     "datos": {
       "posts": 2,
-      "vistas": 1871,
+      "vistas": 1873,
+      "guardados": 0,
+      "compartidos": 1,
+      "comentarios": 0
+    },
+    "economia": {
+      "posts": 3,
+      "vistas": 670,
+      "guardados": 1,
+      "compartidos": 12,
+      "comentarios": 0
+    },
+    "autor": {
+      "posts": 1,
+      "vistas": 172,
       "guardados": 0,
       "compartidos": 1,
       "comentarios": 0

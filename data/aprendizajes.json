@@ -1,8 +1,8 @@
 {
-  "fecha": "2026-11-21",
+  "fecha": "2026-11-23",
   "mejores": [
-    "El argentino que hizo USD 1200M (8681 vistas)",
-    "El argentino que cobró 750 millones (6426 vistas)",
+    "El argentino que hizo USD 1200M (8738 vistas)",
+    "El argentino que cobró 750 millones (6485 vistas)",
     "El negocio oculto de McDonald's (2692 vistas)"
   ],
   "peores": [
@@ -11,31 +11,31 @@
     "¿Por qué el café te cuesta el doble? (3 vistas)"
   ],
   "patrones": [
-    "Historias de éxito/dinero local (historias humanas argentinas) arrasan frente al contenido teórico abstracto.",
-    "Hooks orientados al bolsillo cotidiano, como consumo, trampas de deuda o costumbres de gasto (dos Cents, Humphrey Yang).",
-    "El formato 'Explicador de crisis y modelos de negocio' (Modern MBA, VisualEconomik) genera alta retención si hay un villano o un número impactante."
+    "Uso de dinamizadores generacionales y hábitos de consumo actual (ej. 'Gen Z arruinando negocios', 'Delusional about food').",
+    "Preguntas de confrontación o hipótesis alarmistas (ej. '¿Por qué la economía no despega?', '¿Burbuja a punto de estallar?').",
+    "Desglose de la 'fórmula secreta' o del 'trasfondo económico' de empresas o figuras famosas (ej. 'Cómo los ricos viven de préstamos', 'El lado oscuro de...')."
   ],
   "analisis": {
     "patrones": [
-      "Historias de éxito/dinero local (historias humanas argentinas) arrasan frente al contenido teórico abstracto.",
-      "Hooks orientados al bolsillo cotidiano, como consumo, trampas de deuda o costumbres de gasto (dos Cents, Humphrey Yang).",
-      "El formato 'Explicador de crisis y modelos de negocio' (Modern MBA, VisualEconomik) genera alta retención si hay un villano o un número impactante.",
-      "Noticias impositivas/laborales muy específicas (Errepar, Camino Financiero) convierten bien en guardados cuando resuelven un problema práctico e inminente.",
-      "Uso excesivo de stock genérico ('postales de Argentina' o 'carteles de reserva') destruye el engagement en los remates de los videos."
+      "Uso de dinamizadores generacionales y hábitos de consumo actual (ej. 'Gen Z arruinando negocios', 'Delusional about food').",
+      "Preguntas de confrontación o hipótesis alarmistas (ej. '¿Por qué la economía no despega?', '¿Burbuja a punto de estallar?').",
+      "Desglose de la 'fórmula secreta' o del 'trasfondo económico' de empresas o figuras famosas (ej. 'Cómo los ricos viven de préstamos', 'El lado oscuro de...').",
+      "Clickbait contable/fiscal transformado en revelación o impuesto oculto (ej. 'El impuesto que nadie te cuenta', 'Fraude descubierto con Google Maps').",
+      "Listas de activos o de desmitificación financiera en pasos (ej. 'Milestones de $0 a $1M', 'El arte de gastar dinero')."
     ],
     "formatos_que_rinden": [
-      "Storytelling biográfico rápido sobre emprendedores/financistas ('El argentino que...').",
-      "Desglose de 'Costos ocultos' y trampas de consumo cotidiano en formato vertical agitado.",
-      "Casos de estudio de negocios o estafas con datos duros ('Destapó un fraude con...').",
-      "Explicación de cambios normativos/impuestos al hueso (paso a paso de trámites/ahorro).",
-      "Visualización de hitos financieros ('De $0 a $1M' adaptado a montos o presupuestos locales)."
+      "Caso de estudio/Desglose de negocio o estafa con storytelling narrativo rápido (estilo Modern MBA / Lord Draugr).",
+      "Explicación de 'Finanzas de la vida real' mediante comparación de hábitos diarios vs. costo oculto (estilo Two Cents / Humphrey Yang).",
+      "Resumen ultra-digerible de libros o conceptos de gurús con enfoque en decisiones tácticas (estilo Libros para Emprendedores).",
+      "Debates sobre Argentina y macroeconomía contada en formato de enigma (estilo VisualEconomik / Memorias de Tiburón).",
+      "Explicación de vacuidades fiscales o vacíos legales explicados 'para humanos' sin jerga técnica (estilo Errepar Play / Camino Financiero pero masificado)."
     ],
     "estructuras_virales": [
-      "Hook con dato insólito/local -> Problema histórico o cotidiano -> La solución ingeniosa -> Remate con llamada a compartir.",
-      "Afirmación contraintuitiva ('Por qué X gasto te arruina') -> Desglose en 3 puntos con números -> Acción concreta a tomar hoy.",
-      "El villano del negocio -> Cómo nos sacan plata sin darnos cuenta -> El truco para evitarlo.",
-      "Estafa revelada: Cómo opera el engaño -> El error fatal de la víctima -> El método exacto de protección.",
-      "Libro en 60s: La idea incómoda del autor -> Aplicación al bolsillo argentino -> Moraleja práctica."
+      "Gancho de paradoja ('Todos creen X, pero la verdad es Y') -> Datos inesperados -> Moraleja/Aplicación práctica.",
+      "Caso real impactante ('El tipo que descubrió X con Google Maps') -> El paso a paso de la avivada -> Qué aprendemos.",
+      "Pregunta incómoda ('¿Por qué sentís que todos son más ricos que vos?') -> Explicación psicológica/económica -> Solución en 3 pasos.",
+      "El desglose del producto/servicio ('Cómo hace plata realmente una pizzería/un supermercado') -> Margen real -> El truco final.",
+      "Alerta de cambio impositivo o de mercado ('El impuesto oculto que te cobran sin avisar') -> Impacto en el bolsillo -> Cómo zafar legalmente."
     ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "proximo_id": 28,
+  "proximo_id": 31,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1352 vistas promedio (2 videos) → después 1815 (2 videos): mejoró"
+      "balance": "antes 1352 vistas promedio (2 videos) → después 1817 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1024 vistas promedio (2 videos) → después 7586 (2 videos): mejoró"
+      "balance": "antes 1024 vistas promedio (2 videos) → después 7611 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 7586 (2 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7611 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 153 vistas promedio (2 videos) → después 4440 (2 videos): mejoró"
+      "balance": "antes 153 vistas promedio (2 videos) → después 4455 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -162,7 +162,7 @@
       "aplica_el": "2026-11-06",
       "aplicada_el": "2026-11-06",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1898 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1901 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -181,7 +181,7 @@
       "aplica_el": "2026-11-07",
       "aplicada_el": "2026-11-08",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1898 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1901 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "antes 122 vistas promedio (3 videos) → después 8709 (1 videos): mejoró"
+      "balance": "antes 122 vistas promedio (3 videos) → después 8738 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -468,6 +468,42 @@
       "estado": "enviada",
       "enviada_el": "2026-11-22",
       "aplica_el": "2026-11-24"
+    },
+    {
+      "tipo": "carrusel_siempre",
+      "params": {
+        "serie": "argentino_que",
+        "activar": true
+      },
+      "titulo": "Activar carrusel permanente en El argentino que...",
+      "por_que": "Es la serie con mejor rendimiento de la cuenta (4317 vistas y 31 guardados promedio). El formato carrusel aumentará la interacción y el tiempo de permanencia en nuestro mejor contenido.",
+      "id": 28,
+      "fecha": "2026-11-23",
+      "estado": "pendiente"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "paso_de_verdad",
+        "texto": "Arrancá el primer segundo citando una cifra monetaria exacta o un número descolocante. Enfocá el desarrollo en el método o avivada concreta que generó esa fortuna o pérdida real."
+      },
+      "titulo": "Aplicar ganchos con cifras exactas en Esto pasó de verdad",
+      "por_que": "El video de las casas de USD 3M logró 1573 vistas (casi el doble del promedio de la serie de 874). Citar montos específicos al inicio demostró multiplicar las reproducciones.",
+      "id": 29,
+      "fecha": "2026-11-23",
+      "estado": "pendiente"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "monotributo",
+        "texto": "Abrí con una advertencia directa sobre multas, retenciones o vencimientos inminentes que te hacen perder plata. Explicá cómo resolver el trámite paso a paso en criollo y sin jerga técnica."
+      },
+      "titulo": "Orientar Impuestos sin vueltas a alertas de multas y trámites",
+      "por_que": "La serie promedia 187 vistas y no se puede eliminar por ser contenido institucional. Los videos sobre multas de ARCA y trámites inmediatos rindieron mejor que la teoría impositiva.",
+      "id": 30,
+      "fecha": "2026-11-23",
+      "estado": "pendiente"
     }
   ]
 }
