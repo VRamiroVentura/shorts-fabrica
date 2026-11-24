@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1024 vistas promedio (2 videos) → después 7611 (2 videos): mejoró"
+      "balance": "antes 1024 vistas promedio (2 videos) → después 7613 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 7611 (2 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7613 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 153 vistas promedio (2 videos) → después 4455 (2 videos): mejoró"
+      "balance": "antes 153 vistas promedio (2 videos) → después 4456 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "antes 122 vistas promedio (3 videos) → después 8738 (1 videos): mejoró"
+      "balance": "antes 122 vistas promedio (3 videos) → después 8740 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -449,9 +449,12 @@
       "por_que": "Grandes estafas tiene 4 videos con apenas 241 vistas promedio y 0 guardados. Necesita abrir con la suma exacta estafada y mostrar el error de la víctima para generar alerta y compartidos.",
       "id": 26,
       "fecha": "2026-11-21",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-21",
-      "aplica_el": "2026-11-23"
+      "aplica_el": "2026-11-23",
+      "aplicada_el": "2026-11-23",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "cambiar_horario",
@@ -479,7 +482,9 @@
       "por_que": "Es la serie con mejor rendimiento de la cuenta (4317 vistas y 31 guardados promedio). El formato carrusel aumentará la interacción y el tiempo de permanencia en nuestro mejor contenido.",
       "id": 28,
       "fecha": "2026-11-23",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-11-23",
+      "aplica_el": "2026-11-25"
     },
     {
       "tipo": "ajustar_prompt_serie",
