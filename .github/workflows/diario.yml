@@ -133,14 +133,14 @@ jobs:
       - name: Investigar, escribir y diseñar
         run: python -m fabrica.main generar
 
-      - uses: actions/configure-pages@v6
+      - uses: actions/configure-pages@v5
 
-      - uses: actions/upload-pages-artifact@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: out/sitio
 
       - id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v4
 
       - name: Esperar a que los archivos estén online
         run: python -m fabrica.main online --base-url "${{ steps.deployment.outputs.page_url }}"
@@ -160,14 +160,14 @@ jobs:
         run: python -m fabrica.main rehacer
 
       - if: ${{ steps.espera1.outputs.decision == 'cambios' }}
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@v3
         with:
           path: out/sitio
           name: github-pages-2
 
       - id: deployment2
         if: ${{ steps.espera1.outputs.decision == 'cambios' }}
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-2
 
@@ -190,14 +190,14 @@ jobs:
         run: python -m fabrica.main rehacer
 
       - if: ${{ steps.espera2.outputs.decision == 'cambios' }}
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@v3
         with:
           path: out/sitio
           name: github-pages-3
 
       - id: deployment3
         if: ${{ steps.espera2.outputs.decision == 'cambios' }}
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-3
 
