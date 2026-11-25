@@ -7,9 +7,13 @@ Antes de armar el video, la IA compara el guion nuevo con lo publicado en los ú
   - Si es la misma idea que un video más viejo que ANDUVO BIEN (vistas >= la mediana de los últimos videos):
     pasa como relanzamiento.
   - Si es la misma idea que un video más viejo que ANDUVO MAL: se frena y se escribe otro tema.
+Además de lo que dice data/historial.json, mira data/publicados_manual.json (videos que salieron pero no quedaron en
+el historial, con las vistas de Instagram cargadas a mano) y frena si el título nuevo repite la cifra central de un
+video reciente ("47 mil millones" tres veces seguidas: 2.807 → 446 → 168 vistas).
 Si después de `intentos` sigue parecido, sale igual (nunca se pierde el video del día) y queda el aviso en el mail.
 Se configura en config.json → control_repetidos. Si algo falla (IA, métricas), el video sigue sin control.
 """
+import re
 import statistics
 
 from . import util
@@ -18,7 +22,10 @@ COMPARAR = """Sos editor de una cuenta de videos cortos sobre plata, economía e
 Te paso un VIDEO NUEVO y una lista de VIDEOS YA PUBLICADOS.
 Decime cuáles de los publicados cuentan LA MISMA IDEA CENTRAL que el nuevo, aunque usen otras palabras,
 otro título u otros ejemplos. Ejemplo: "Tu plata vale menos", "Tu sueldo pierde" y "La plata no dura nada"
-son la misma idea (la inflación te come la plata). En cambio, dos videos de impuestos sobre trámites distintos
+son la misma idea (la inflación te come la plata). También es la misma idea si cuentan la historia del MISMO
+protagonista (la misma persona o empresa) o giran alrededor de la MISMA CIFRA central, aunque el enfoque cambie:
+"De 47 mil millones a cero", "Perdieron 47 mil millones de dólares" y "De USD 47 mil millones a la quiebra" son la
+misma idea. En cambio, dos videos de impuestos sobre trámites distintos
 NO son la misma idea. Si dudás, NO lo marques.
 Respondé solo con JSON: {"iguales": [números de los videos publicados con la misma idea], "idea": "la idea central
 del video nuevo en pocas palabras"}"""
@@ -33,10 +40,41 @@ def activo():
     return bool(_cfg().get("activo", True))
 
 
+MANUAL = "data/publicados_manual.json"
+
+
 def _publicados(historial, dias):
     desde = (util.ahora() - util.timedelta(days=dias)).strftime("%Y-%m-%d")
-    return [h for h in historial if h.get("fecha", "") >= desde and not h.get("cancelado")
-            and any(r.get("ok") for r in (h.get("resultados") or {}).values() if isinstance(r, dict))]
+    salida = [h for h in historial if h.get("fecha", "") >= desde and not h.get("cancelado")
+              and any(r.get("ok") for r in (h.get("resultados") or {}).values() if isinstance(r, dict))]
+    # videos publicados que no quedaron en el historial (cargados a mano, con sus vistas de Instagram)
+    ya = {(h.get("titulo") or "").strip().lower() for h in salida}
+    for h in (util.leer_json(MANUAL, []) or []):
+        if isinstance(h, dict) and h.get("fecha", "") >= desde and (h.get("titulo") or "").strip().lower() not in ya:
+            salida.append(dict(h, manual=True))
+    return sorted(salida, key=lambda h: (h.get("fecha", ""), h.get("turno", 1)))
+
+
+def _cifras(texto):
+    """Cifras centrales de un título: "USD 47 mil millones" → {"47 mil millones"}. Ignora años y números chicos."""
+    t = (texto or "").lower().replace(".", "").replace("usd", " ").replace("u$s", " ")
+    salida = set()
+    for m in re.finditer(r"(\d+(?:,\d+)?)\s*(mil millones|millones|millón|millon|mil|m\b)?(?!\s*%)", t):
+        n, u = m.group(1), (m.group(2) or "")
+        u = {"millón": "millones", "millon": "millones", "m": "millones"}.get(u, u)
+        if not u and (len(n) <= 2 or 1800 <= int(n.split(",")[0]) <= 2100):
+            continue
+        salida.add(f"{n} {u}".strip())
+    return salida
+
+
+def misma_cifra(contenido, previos, bloqueo):
+    """Índices de videos recientes (desde `bloqueo`) con la misma cifra central en el título."""
+    nuevas = _cifras(contenido.get("titulo", "")) | _cifras(
+        " ".join(e.get("texto_pantalla", "") for e in (contenido.get("escenas") or [])[:1]))
+    if not nuevas:
+        return []
+    return [i for i, h in enumerate(previos) if h.get("fecha", "") >= bloqueo and nuevas & _cifras(h.get("titulo", ""))]
 
 
 def _texto(contenido):
@@ -59,9 +97,14 @@ def iguales(contenido, previos):
 
 
 def _vistas(entradas, medir):
-    """{(fecha, turno, titulo): vistas} usando la función de métricas de la fábrica."""
-    filas, _ = medir(entradas)
-    return {(f["fecha"], f.get("turno", 1), f["titulo"]): f["vistas"] for f in filas}
+    """{(fecha, turno, titulo): vistas} usando la función de métricas de la fábrica (o las vistas cargadas a mano)."""
+    salida = {(h["fecha"], h.get("turno", 1), h["titulo"]): int(h.get("vistas", 0) or 0)
+              for h in entradas if h.get("manual")}
+    reales = [h for h in entradas if not h.get("manual")]
+    if reales:
+        filas, _ = medir(reales)
+        salida.update({(f["fecha"], f.get("turno", 1), f["titulo"]): f["vistas"] for f in filas})
+    return salida
 
 
 def decidir(contenido, historial, medir):
@@ -71,11 +114,12 @@ def decidir(contenido, historial, medir):
     previos = _publicados(historial, int(c.get("dias", 60)))[-80:]
     if not previos:
         return False, "", []
+    bloqueo = (util.ahora() - util.timedelta(days=int(c.get("dias_bloqueo", 7)))).strftime("%Y-%m-%d")
     idx, idea = iguales(contenido, previos)
+    idx = sorted(set(idx) | set(misma_cifra(contenido, previos, bloqueo)))
     if not idx:
         return False, "", []
     parecidos = [previos[i] for i in idx]
-    bloqueo = (util.ahora() - util.timedelta(days=int(c.get("dias_bloqueo", 7)))).strftime("%Y-%m-%d")
     titulos = [h["titulo"] for h in parecidos]
     recientes = [h for h in parecidos if h.get("fecha", "") >= bloqueo]
     if recientes:

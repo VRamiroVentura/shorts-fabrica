@@ -48,11 +48,11 @@
   "control_repetidos": {
     "activo": true,
     "dias": 60,
-    "dias_bloqueo": 14,
+    "dias_bloqueo": 21,
     "intentos": 2,
     "muestra_mediana": 12,
-    "_nota": "Antes de armar el video compara la idea con lo publicado en los últimos 'dias'. Si se repite algo de los últimos 'dias_bloqueo', si la idea ya salió 'max_veces' veces en esos días (0 = sin tope), o si repite algo que anduvo mal, escribe otro tema; si repite algo que anduvo bien (vistas >= mediana de los últimos 'muestra_mediana' videos) y pasaron más de 'dias_bloqueo' días, lo deja pasar como relanzamiento.",
-    "max_veces": 0
+    "_nota": "Antes de armar el video compara la idea con lo publicado en los últimos 'dias'. Si se repite algo de los últimos 'dias_bloqueo', si la idea ya salió 'max_veces' veces en esos días (0 = sin tope), si repite la cifra central de un video reciente, o si repite algo que anduvo mal, escribe otro tema; si repite algo que anduvo bien (vistas >= mediana de los últimos 'muestra_mediana' videos) y pasaron más de 'dias_bloqueo' días, lo deja pasar como relanzamiento.",
+    "max_veces": 2
   },
   "postales_por_video": 3,
   "animadas_por_video": 3,
@@ -270,6 +270,7 @@
     }
   },
   "hora_maxima": "20:00",
+  "max_por_semana": {"argentino_que": 2, "_nota": "La automejora no puede poner una serie más veces por semana que esto."},
   "capitulos_respaldo": "monotributo",
   "competencias": {
     "2-1": {"desde": "2026-11-30", "hasta": "2026-12-27"},

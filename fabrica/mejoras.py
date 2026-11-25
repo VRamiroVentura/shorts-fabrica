@@ -174,6 +174,15 @@ def validar(cfg, p, posts=None, lista=None):
             planes = list((cfg.get("plan_semanal") or {}).items()) + list((cfg.get("plan_semanal_2") or {}).items())
             if sum(1 for _, s in planes if s == actual) <= 1:
                 return False, f"«{_nombre(cfg, actual)}» es una serie protegida y es su último día"
+        # tope de veces por semana (config "max_por_semana"): "El argentino que..." máximo 2, para que no canse
+        tope_sem = (cfg.get("max_por_semana") or {}).get(nueva)
+        if tope_sem:
+            planes = dict(((1, d), v) for d, v in (cfg.get("plan_semanal") or {}).items())
+            planes.update(((2, d), v) for d, v in (cfg.get("plan_semanal_2") or {}).items())
+            planes[(x["turno"], x["dia"])] = nueva
+            veces = sum(1 for v in planes.values() if nueva in str(v).replace("mejor:", "").split("|"))
+            if veces > int(tope_sem):
+                return False, f"«{_nombre(cfg, nueva)}» ya sale {int(tope_sem)} veces por semana (es el tope)"
         x["antes"] = actual
     if tipo == "cambiar_horario":
         h = str(x.get("hora", ""))
