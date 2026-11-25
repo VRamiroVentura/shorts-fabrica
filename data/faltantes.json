@@ -1678,5 +1678,66 @@
     ],
     "dibujitos": [],
     "material": []
+  },
+  {
+    "fecha": "2026-11-25",
+    "turno": 2,
+    "serie": "laplata",
+    "titulo": "El cofre escondido bajo Plaza Moreno",
+    "escenas": [
+      {
+        "escena": "Fue el mismo día que fundó La Plata.",
+        "busqueda": [
+          "crowd in historic city",
+          "Buenos Aires street"
+        ],
+        "se_uso": "una postal de Argentina"
+      },
+      {
+        "escena": "En la piedra fundamental metió una caja de plomo bien sellada.",
+        "busqueda": [
+          "laying foundation stone",
+          "old document vault"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Pero cuando levantaron la tapa se querían matar.",
+        "busqueda": [
+          "opening rusty chest",
+          "shocked person looking"
+        ],
+        "se_uso": "una pieza animada"
+      },
+      {
+        "escena": "Las napas de agua habían filtrado el plomo durante cien años.",
+        "busqueda": [
+          "water leaking wall",
+          "mud puddle close up"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Los documentos y los planos históricos eran una masa de barro insalvable.",
+        "busqueda": [
+          "wet torn paper",
+          "hands holding mud"
+        ],
+        "se_uso": "una pieza animada"
+      },
+      {
+        "escena": "Igual algo zafó: las medallas y las monedas de metal precioso estaban impecables.",
+        "busqueda": [
+          "shiny gold coin",
+          "hands cleaning relic"
+        ],
+        "se_uso": "una postal de Argentina"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "foto de la apertura de la piedra fundamental de La Plata en 1982",
+      "foto de Plaza Moreno en La Plata"
+    ]
   }
 ]
