@@ -272,11 +272,11 @@
   "hora_maxima": "20:00",
   "capitulos_respaldo": "monotributo",
   "competencias": {
-    "2-1": {"desde": "2026-11-16", "hasta": "2026-12-13"},
-    "2-4": {"desde": "2026-11-19", "hasta": "2026-12-17"},
+    "2-1": {"desde": "2026-11-30", "hasta": "2026-12-27"},
+    "2-4": {"desde": "2026-11-26", "hasta": "2026-12-24"},
     "1-1": {
-      "desde": "2026-11-16",
-      "hasta": "2026-12-13",
+      "desde": "2026-11-30",
+      "hasta": "2026-12-27",
       "nota": "Un libro en 60 segundos vs La idea de...: alternan 4 semanas y queda la que más puntúa"
     }
   },
