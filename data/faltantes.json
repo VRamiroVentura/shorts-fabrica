@@ -1739,5 +1739,73 @@
       "foto de la apertura de la piedra fundamental de La Plata en 1982",
       "foto de Plaza Moreno en La Plata"
     ]
+  },
+  {
+    "fecha": "2026-11-26",
+    "turno": 2,
+    "serie": "estafas",
+    "titulo": "Te vacían la cuenta con un llamado",
+    "escenas": [
+      {
+        "escena": "Te atiende alguien con tonada formal que dice ser del banco.",
+        "busqueda": [
+          "man talking on phone",
+          "customer support agent"
+        ],
+        "se_uso": "una pieza animada"
+      },
+      {
+        "escena": "Te avisa de un consumo raro y te pide confirmar un código para frenarlo.",
+        "busqueda": [
+          "hand typing on phone",
+          "sms message on screen"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "El tema es que ese código no es para cancelar nada, es para pedir un préstamo.",
+        "busqueda": [
+          "hands typing notebook",
+          "calculator on desk"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Apenas se lo decís, sacan un crédito a tu nombre al instante.",
+        "busqueda": [
+          "credit card terminal",
+          "hand holding credit card"
+        ],
+        "se_uso": "una pieza animada"
+      },
+      {
+        "escena": "Y ahí mismo mandan la guita a varias cuentas para que no la rastrees más.",
+        "busqueda": [
+          "argentine pesos",
+          "hand counting cash"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "Si te llaman con este cuento, cortá de una y bloqueá el número.",
+        "busqueda": [
+          "hand holding phone",
+          "mobile screen off"
+        ],
+        "se_uso": "una pieza animada"
+      },
+      {
+        "escena": "Mandáselo a tus viejos para que estén atentos.",
+        "busqueda": [
+          "family holding phone",
+          "hands on smartphone"
+        ],
+        "se_uso": "un clip aproximado"
+      }
+    ],
+    "dibujitos": [],
+    "material": [
+      "clip de pantalla de WhatsApp con llamada entrante de un banco"
+    ]
   }
 ]

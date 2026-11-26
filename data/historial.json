@@ -1255,5 +1255,29 @@
     },
     "guion": "Dardo Rocha enterró medallas de oro bajo Plaza Moreno el diecinueve de noviembre de 1882. Fue el mismo día que fundó La Plata. En la piedra fundamental metió una caja de plomo bien sellada. Adentro guardaron monedas de la época, medallas de oro, planos de la ciudad y diarios del día. La orden era clara: abrirla recién en noviembre de 1982, para el centenario. Llegó el día, picaron el piso ante mil",
     "tema_id": ""
+  },
+  {
+    "fecha": "2026-11-26",
+    "turno": 2,
+    "hora": "17:02",
+    "serie": "estafas",
+    "titulo": "Te vacían la cuenta con un llamado",
+    "fuentes": [],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18150124480580826"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "8ikg7ffgTkg"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1620833459251034"
+      }
+    },
+    "guion": "Te llaman por WhatsApp y te vacían la cuenta en tres minutos. Te atiende alguien con tonada formal que dice ser del banco. Te avisa de un consumo raro y te pide confirmar un código para frenarlo. El tema es que ese código no es para cancelar nada, es para pedir un préstamo. Apenas se lo decís, sacan un crédito a tu nombre al instante. Y ahí mismo mandan la guita a varias cuentas para que no la ras",
+    "tema_id": ""
   }
 ]
