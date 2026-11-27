@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1353 vistas promedio (2 videos) → después 1821 (2 videos): mejoró"
+      "balance": "antes 1353 vistas promedio (2 videos) → después 1822 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1024 vistas promedio (2 videos) → después 7651 (2 videos): mejoró"
+      "balance": "antes 1024 vistas promedio (2 videos) → después 7658 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 7651 (2 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7658 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 153 vistas promedio (2 videos) → después 4476 (2 videos): mejoró"
+      "balance": "antes 153 vistas promedio (2 videos) → después 4479 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -162,7 +162,7 @@
       "aplica_el": "2026-11-06",
       "aplicada_el": "2026-11-06",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1910 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1911 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -181,7 +181,7 @@
       "aplica_el": "2026-11-07",
       "aplicada_el": "2026-11-08",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1910 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1911 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "antes 122 vistas promedio (3 videos) → después 8781 (1 videos): mejoró"
+      "balance": "antes 123 vistas promedio (3 videos) → después 8786 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -366,7 +366,7 @@
       "aplica_el": "2026-11-17",
       "aplicada_el": "2026-11-17",
       "como": "automática (sin respuesta)",
-      "balance": "todavía sin videos de 2 días o más para medir"
+      "balance": "antes 875 vistas promedio (4 videos) → después 982 (1 videos): quedó igual"
     },
     {
       "tipo": "carrusel_siempre",
@@ -525,9 +525,12 @@
       "por_que": "La serie promedia 187 vistas y no se puede eliminar por ser contenido institucional. Los videos sobre multas de ARCA y trámites inmediatos rindieron mejor que la teoría impositiva.",
       "id": 30,
       "fecha": "2026-11-23",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-25",
-      "aplica_el": "2026-11-27"
+      "aplica_el": "2026-11-27",
+      "aplicada_el": "2026-11-27",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "cambiar_horario",
@@ -555,7 +558,9 @@
       "por_que": "Historias de plata es la segunda serie más vista (1587 promedio, videos de hasta 2693 y 1910 vistas) y acumula 11 guardados y 10 compartidos. El formato carrusel fomenta retención y guardados en contenidos narrativos con datos y negocios ocultos.",
       "id": 32,
       "fecha": "2026-11-26",
-      "estado": "pendiente"
+      "estado": "enviada",
+      "enviada_el": "2026-11-27",
+      "aplica_el": "2026-11-29"
     }
   ]
 }
