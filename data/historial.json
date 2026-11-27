@@ -1279,5 +1279,35 @@
     },
     "guion": "Te llaman por WhatsApp y te vacían la cuenta en tres minutos. Te atiende alguien con tonada formal que dice ser del banco. Te avisa de un consumo raro y te pide confirmar un código para frenarlo. El tema es que ese código no es para cancelar nada, es para pedir un préstamo. Apenas se lo decís, sacan un crédito a tu nombre al instante. Y ahí mismo mandan la guita a varias cuentas para que no la ras",
     "tema_id": ""
+  },
+  {
+    "fecha": "2026-11-27",
+    "turno": 1,
+    "hora": "16:36",
+    "serie": "monotributo",
+    "titulo": "Monotributo: ARCA te devuelve plata",
+    "fuentes": [
+      "portal:arca-devolucion-cuota-monotributo-modalidades-reintegro-2026"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18006228342040723"
+      },
+      "instagram_carrusel": {
+        "ok": true,
+        "id": "18044678846656298"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "TTK5g7WVLi8"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1545149074121552"
+      }
+    },
+    "guion": "ARCA te devuelve una cuota entera del componente impositivo si sos monotributista. Te reintegran hasta el cien por ciento de ese concepto impositivo. Básicamente, te regalan una cuota impositiva al año en tu cuenta. Ojo, que hay un requisito puntual que deja afuera a medio mundo. No sirve pagar a mano con VEP ni por transferencia. Tenés que ponerlo sí o sí en débito automático. Va con tarjeta de c",
+    "tema_id": ""
   }
 ]
