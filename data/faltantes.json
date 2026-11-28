@@ -1807,5 +1807,63 @@
     "material": [
       "clip de pantalla de WhatsApp con llamada entrante de un banco"
     ]
+  },
+  {
+    "fecha": "2026-11-28",
+    "turno": 2,
+    "serie": "paso_de_verdad",
+    "titulo": "Tiró 181 millones a la basura",
+    "escenas": [
+      {
+        "escena": "Fue en Newport, Reino Unido. Año dos mil trece.",
+        "busqueda": [
+          "united kingdom city street",
+          "city aerial view"
+        ],
+        "se_uso": "un clip aproximado"
+      },
+      {
+        "escena": "James Howells minó siete mil quinientos bitcoins cuando valían chirolas.",
+        "busqueda": [
+          "laptop typing dark room",
+          "computer screen code"
+        ],
+        "se_uso": "una pieza animada"
+      },
+      {
+        "escena": "Años después metió ese disco en una bolsa para tirar, pensando que era otro.",
+        "busqueda": [
+          "person cleaning house",
+          "throwing stuff away"
+        ],
+        "se_uso": "una pieza animada"
+      },
+      {
+        "escena": "Cuando quiso buscarlos ya era tarde: estaba abajo de montañas de mugre.",
+        "busqueda": [
+          "worried man looking at phone",
+          "man holding head"
+        ],
+        "se_uso": "una pieza animada"
+      },
+      {
+        "escena": "Te deja una lección clarita: lo que no respaldás bien, en finanzas, lo terminás perdiendo.",
+        "busqueda": [
+          "writing in notebook",
+          "notebook desk"
+        ],
+        "se_uso": "un cartel de reserva"
+      },
+      {
+        "escena": "Mandáselo al colgado que siempre pierde sus claves.",
+        "busqueda": [
+          "hand holding phone",
+          "sending message phone"
+        ],
+        "se_uso": "un clip repetido"
+      }
+    ],
+    "dibujitos": [],
+    "material": []
   }
 ]

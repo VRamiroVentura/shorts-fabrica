@@ -1309,5 +1309,31 @@
     },
     "guion": "ARCA te devuelve una cuota entera del componente impositivo si sos monotributista. Te reintegran hasta el cien por ciento de ese concepto impositivo. Básicamente, te regalan una cuota impositiva al año en tu cuenta. Ojo, que hay un requisito puntual que deja afuera a medio mundo. No sirve pagar a mano con VEP ni por transferencia. Tenés que ponerlo sí o sí en débito automático. Va con tarjeta de c",
     "tema_id": ""
+  },
+  {
+    "fecha": "2026-11-28",
+    "turno": 2,
+    "hora": "15:38",
+    "serie": "paso_de_verdad",
+    "titulo": "Tiró 181 millones a la basura",
+    "fuentes": [
+      "ZQnJl6rQs50"
+    ],
+    "resultados": {
+      "instagram_reel": {
+        "ok": true,
+        "id": "18171519412474771"
+      },
+      "youtube": {
+        "ok": true,
+        "id": "EUwr0sKDp-o"
+      },
+      "facebook": {
+        "ok": true,
+        "id": "1458795919709708"
+      }
+    },
+    "guion": "Un tipo tiró ciento ochenta y un millones de dólares a la basura. Fue en Newport, Reino Unido. Año dos mil trece. James Howells minó siete mil quinientos bitcoins cuando valían chirolas. Guardó las claves privadas en el disco rígido de una notebook vieja. Años después metió ese disco en una bolsa para tirar, pensando que era otro. La pareja sacó la bolsa a la calle y la agarró el camión. Cuando qu",
+    "tema_id": ""
   }
 ]
