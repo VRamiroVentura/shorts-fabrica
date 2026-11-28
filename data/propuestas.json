@@ -1,5 +1,5 @@
 {
-  "proximo_id": 33,
+  "proximo_id": 35,
   "lista": [
     {
       "tipo": "ajustar_prompt_serie",
@@ -52,7 +52,7 @@
       "aplica_el": "2026-10-31",
       "aplicada_el": "2026-10-31",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1353 vistas promedio (2 videos) → después 1822 (2 videos): mejoró"
+      "balance": "antes 1353 vistas promedio (2 videos) → después 1823 (2 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -69,7 +69,7 @@
       "aplica_el": "2026-11-01",
       "aplicada_el": "2026-11-01",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1024 vistas promedio (2 videos) → después 7658 (2 videos): mejoró"
+      "balance": "antes 1024 vistas promedio (2 videos) → después 7675 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -105,7 +105,7 @@
       "aplica_el": "2026-11-03",
       "aplicada_el": "2026-11-03",
       "como": "automática (sin respuesta)",
-      "balance": "antes 137 vistas promedio (1 videos) → después 223 (3 videos): mejoró"
+      "balance": "antes 137 vistas promedio (1 videos) → después 224 (3 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -124,7 +124,7 @@
       "aplica_el": "2026-11-04",
       "aplicada_el": "2026-11-04",
       "como": "automática (sin respuesta)",
-      "balance": "antes 1479 vistas promedio (3 videos) → después 7658 (2 videos): mejoró"
+      "balance": "antes 1479 vistas promedio (3 videos) → después 7675 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -143,7 +143,7 @@
       "aplica_el": "2026-11-05",
       "aplicada_el": "2026-11-05",
       "como": "automática (sin respuesta)",
-      "balance": "antes 153 vistas promedio (2 videos) → después 4479 (2 videos): mejoró"
+      "balance": "antes 153 vistas promedio (2 videos) → después 4484 (2 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -162,7 +162,7 @@
       "aplica_el": "2026-11-06",
       "aplicada_el": "2026-11-06",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1911 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1913 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -181,7 +181,7 @@
       "aplica_el": "2026-11-07",
       "aplicada_el": "2026-11-08",
       "como": "automática (sin respuesta)",
-      "balance": "antes 208 vistas promedio (3 videos) → después 1911 (1 videos): mejoró"
+      "balance": "antes 208 vistas promedio (3 videos) → después 1913 (1 videos): mejoró"
     },
     {
       "tipo": "ajustar_prompt_serie",
@@ -217,7 +217,7 @@
       "aplica_el": "2026-11-10",
       "aplicada_el": "2026-11-10",
       "como": "automática (sin respuesta)",
-      "balance": "antes 123 vistas promedio (3 videos) → después 8786 (1 videos): mejoró"
+      "balance": "antes 123 vistas promedio (3 videos) → después 8795 (1 videos): mejoró"
     },
     {
       "tipo": "cambiar_serie_dia",
@@ -454,7 +454,7 @@
       "aplica_el": "2026-11-23",
       "aplicada_el": "2026-11-23",
       "como": "automática (sin respuesta)",
-      "balance": "todavía sin videos de 2 días o más para medir"
+      "balance": "antes 241 vistas promedio (4 videos) → después 133 (1 videos): empeoró"
     },
     {
       "tipo": "cambiar_horario",
@@ -544,9 +544,12 @@
       "por_que": "La franja de las 20 hs promedia 1436 vistas frente a las 1479 de las 18 hs pero con 9 videos consistentes y mayor tracción nocturna en días hábiles. El turno actual de las 18:30 queda desfasado frente al pico de consumo.",
       "id": 31,
       "fecha": "2026-11-26",
-      "estado": "enviada",
+      "estado": "aplicada",
       "enviada_el": "2026-11-26",
-      "aplica_el": "2026-11-28"
+      "aplica_el": "2026-11-28",
+      "aplicada_el": "2026-11-28",
+      "como": "automática (sin respuesta)",
+      "balance": "todavía sin videos de 2 días o más para medir"
     },
     {
       "tipo": "carrusel_siempre",
@@ -561,6 +564,32 @@
       "estado": "enviada",
       "enviada_el": "2026-11-27",
       "aplica_el": "2026-11-29"
+    },
+    {
+      "tipo": "ajustar_prompt_serie",
+      "params": {
+        "serie": "plata",
+        "texto": "Empezá con una pregunta incómoda sobre gastos cotidianos citando una cifra exacta. Explicá el truco o error que te hace perder plata y cerrá con un paso práctico para frenarlo."
+      },
+      "titulo": "Enfocar Plata fácil en la pérdida silenciosa con cifras",
+      "por_que": "«Plata fácil» promedia apenas 216 vistas y 0 guardados en 4 videos. Ajustar el gancho hacia preguntas incómodas sobre dinero con cifras concretas busca replicar el impacto de nuestros videos más vistos.",
+      "id": 33,
+      "fecha": "2026-11-28",
+      "estado": "enviada",
+      "enviada_el": "2026-11-28",
+      "aplica_el": "2026-11-30"
+    },
+    {
+      "tipo": "carrusel_siempre",
+      "params": {
+        "serie": "paso_de_verdad",
+        "activar": true
+      },
+      "titulo": "Activar carrusel en Esto pasó de verdad",
+      "por_que": "«Esto pasó de verdad» promedia 874 vistas pero solo 2 guardados en 2 videos. El formato carrusel fomenta que la gente guarde el posteo para leer la historia completa.",
+      "id": 34,
+      "fecha": "2026-11-28",
+      "estado": "pendiente"
     }
   ]
 }
